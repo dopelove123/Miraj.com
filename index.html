@@ -848,29 +848,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
       <div id="admin-auth-box" class="text-center py-6">
          <div class="w-14 h-14 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl border border-amber-500/25"><i class="fa-solid fa-shield-halved"></i></div>
          <h3 class="text-xl font-bold text-white mb-1 font-luxury">Secure Owner Login</h3>
-         <p class="text-xs text-amber-200/70 mb-5">PIN ke baad OTP verification</p>
+         <p class="text-xs text-amber-200/70 mb-5">Supabase authentication — PIN code website mein store nahi hai</p>
          <div class="max-w-sm mx-auto space-y-3">
-           <div id="pin-step">
-             <input type="password" id="admin-pin" maxlength="4" inputmode="numeric" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-center text-xl font-bold tracking-widest text-white focus:outline-none focus:border-amber-400" placeholder="Enter 4-digit PIN" />
-             <button onclick="verifyAdminPIN()" class="w-full btn-gold-royal py-3 rounded-xl text-xs transition mt-3"><i class="fa-solid fa-key mr-1"></i> Verify PIN</button>
-           </div>
-           <div id="otp-step" class="hidden">
-             <div class="text-left bg-[#0c0117] border border-purple-800 rounded-xl p-3 mb-3">
-               <div class="text-[10px] text-amber-200/60 uppercase">OTP destination</div>
-               <div class="text-sm font-bold text-white mt-1">+91 9729843519</div>
-             </div>
-             <input type="text" id="admin-otp" maxlength="6" inputmode="numeric" autocomplete="one-time-code" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-center text-xl font-bold tracking-[.45em] text-white focus:outline-none focus:border-amber-400" placeholder="Enter OTP" />
-<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-  <button type="button" class="btn" onclick="sendOTPOnWhatsApp()">💬 Send OTP on WhatsApp</button>
-</div>
-<div id="wa-otp-note" style="font-size:12px;opacity:.75;margin-top:8px">
-  WhatsApp delivery requires a WhatsApp Business API/backend connection for automatic OTP.
-</div>
-
-             <button onclick="verifyAdminOTP()" class="w-full btn-gold-royal py-3 rounded-xl text-xs transition mt-3"><i class="fa-solid fa-mobile-screen-button mr-1"></i> Verify OTP</button>
-             <button onclick="sendAdminOTP(true)" class="w-full text-amber-300 text-[10px] mt-3 hover:text-white">Resend OTP <span id="otp-countdown"></span></button>
-             <p class="text-[9px] text-amber-200/45 mt-3">Automatic SMS delivery requires an SMS API/backend; this HTML opens the phone's SMS composer.</p>
-           </div>
+           <input type="email" id="admin-email" autocomplete="username" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Owner email" />
+           <input type="password" id="admin-password" autocomplete="current-password" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Owner password" />
+           <button onclick="loginOwner()" class="w-full btn-gold-royal py-3 rounded-xl text-xs transition mt-2"><i class="fa-solid fa-right-to-bracket mr-1"></i> Owner Login</button>
+           <p class="text-[9px] text-amber-200/45 mt-3">Only the Supabase Auth account you create as owner can manage the catalog.</p>
          </div>
        </div>
 
@@ -1085,9 +1068,9 @@ body.golden-awakened #hero > .miraj-video-bg video{
   </script>
 
   <script>
-    const OWNER_PHONE = "9729843519";
-    const SECRET_ADMIN_PIN = "3728";
-    let adminOTP = null, otpExpiresAt = 0, otpTimer = null, selectedProductPhotos = [];
+    const OWNER_EMAIL = ""; // Set this only if you want to prefill the owner email.
+    let selectedProductPhotos = [];
+    let mirajOwnerSession = null;
 
     const STORE_LAT = 29.8020;
     const STORE_LON = 76.9280;
@@ -1732,35 +1715,39 @@ body.golden-awakened #hero > .miraj-video-bg video{
     function galleryPrev(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderGalleryImage();}}
     function galleryNext(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderGalleryImage();}}
     function closeImgModal(){document.getElementById('img-modal').classList.add('hidden');}
-    function openAdminModal(){
-      document.getElementById('admin-modal').classList.remove('hidden');document.getElementById('admin-pin').value='';document.getElementById('admin-otp').value='';
-      document.getElementById('pin-step').classList.remove('hidden');document.getElementById('otp-step').classList.add('hidden');document.getElementById('admin-auth-box').classList.remove('hidden');document.getElementById('admin-dashboard-box').classList.add('hidden');
+    async function openAdminModal(){
+      document.getElementById('admin-modal').classList.remove('hidden');
+      document.getElementById('admin-auth-box').classList.remove('hidden');
+      document.getElementById('admin-dashboard-box').classList.add('hidden');
+      const emailEl=document.getElementById('admin-email');
+      if(emailEl && OWNER_EMAIL) emailEl.value=OWNER_EMAIL;
+      if(window.mirajSupabase){
+        const {data}=await mirajSupabase.auth.getSession();
+        if(data && data.session){ showOwnerDashboard(data.session); }
+      }
     }
     function closeAdminModal(){document.getElementById('admin-modal').classList.add('hidden');}
-    function verifyAdminPIN(){
-      if(document.getElementById('admin-pin').value.trim()===SECRET_ADMIN_PIN){document.getElementById('pin-step').classList.add('hidden');document.getElementById('otp-step').classList.remove('hidden');sendAdminOTP(false);}
-      else alert("Incorrect PIN! Access Denied.");
+    function showOwnerDashboard(session){
+      mirajOwnerSession=session;
+      document.getElementById('admin-auth-box').classList.add('hidden');
+      document.getElementById('admin-dashboard-box').classList.remove('hidden');
+      renderAdminList();
     }
-    function sendAdminOTP(resend){
-      if(resend&&Date.now()<otpExpiresAt){alert("Please wait before requesting another OTP.");return;}
-      adminOTP=String(Math.floor(100000+Math.random()*900000));otpExpiresAt=Date.now()+300000;startOtpCountdown();
-      const body=encodeURIComponent("MIRAJ Owner Login OTP: "+adminOTP+". Valid for 5 minutes.");
-      try{window.location.href="sms:+919729843519?body="+body}catch(e){}
-      alert("OTP generated for testing: "+adminOTP+"\\n\\nAutomatic SMS ke liye SMS API/backend connect karna hoga.");
+    async function loginOwner(){
+      if(!mirajSupabase) return alert('Supabase is not connected.');
+      const email=(document.getElementById('admin-email').value||'').trim();
+      const password=document.getElementById('admin-password').value;
+      if(!email || !password) return alert('Email aur password dono enter karo.');
+      const {data,error}=await mirajSupabase.auth.signInWithPassword({email,password});
+      if(error){ console.error(error); return alert('Owner login failed: '+error.message); }
+      showOwnerDashboard(data.session);
     }
-    function startOtpCountdown(){
-      clearInterval(otpTimer);const el=document.getElementById('otp-countdown');
-      otpTimer=setInterval(()=>{const left=Math.max(0,otpExpiresAt-Date.now());if(!left){clearInterval(otpTimer);el.innerText='';return;}const sec=Math.ceil(left/1000);el.innerText='('+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')+')';},250);
-    }
-    function verifyAdminOTP(){
-      if(Date.now()>otpExpiresAt)return alert("OTP expired. Please request a new OTP.");
-      if(document.getElementById('admin-otp').value.trim()===adminOTP){document.getElementById('admin-auth-box').classList.add('hidden');document.getElementById('admin-dashboard-box').classList.remove('hidden');renderAdminList();}
-      else alert("Invalid OTP! Access Denied.");
-    }
-
-    function lockAdmin() {
+    async function lockAdmin(){
+      try{ if(mirajSupabase) await mirajSupabase.auth.signOut(); }catch(e){}
+      mirajOwnerSession=null;
       document.getElementById('admin-dashboard-box').classList.add('hidden');
       document.getElementById('admin-auth-box').classList.remove('hidden');
+      const pass=document.getElementById('admin-password'); if(pass) pass.value='';
       closeAdminModal();
     }
 
@@ -1955,10 +1942,10 @@ function sendOTPOnWhatsApp(){
   <div class="miraj-secret-card">
     <div style="font-size:28px;color:#f5c443;margin-bottom:8px">✦</div>
     <h3 style="color:#fff;font-weight:700;font-size:18px">Owner Access</h3>
-    <p style="color:rgba(255,230,170,.65);font-size:11px;margin-top:5px">Enter secret code to manage creations</p>
-    <input id="miraj-secret-code" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+    <p style="color:rgba(255,230,170,.65);font-size:11px;margin-top:5px">Owner login required</p>
+    <input id="miraj-secret-code" type="password" inputmode="text" autocomplete="off" placeholder="Open owner login">
     <div id="miraj-secret-error"></div>
-    <button type="button" onclick="mirajUnlockAdmin()" class="btn-gold-royal">Unlock Catalog</button>
+    <button type="button" onclick="mirajUnlockAdmin()" class="btn-gold-royal">Open Owner Login</button>
     <button type="button" onclick="mirajCloseSecret()" style="background:transparent;color:#d9b86c;margin-top:8px">Cancel</button>
   </div>
 </div>
@@ -1990,12 +1977,13 @@ function mirajCloseSecret(){
 function mirajUnlockAdmin(){
   const code=document.getElementById('miraj-secret-code').value.trim();
   const err=document.getElementById('miraj-secret-error');
-  if(code !== SECRET_ADMIN_PIN){ err.textContent='Wrong secret code'; return; }
+  if(!code){ err.textContent='Enter your owner login code'; return; }
   mirajCloseSecret();
-  document.getElementById('admin-modal').classList.remove('hidden');
-  document.getElementById('admin-auth-box').classList.add('hidden');
-  document.getElementById('admin-dashboard-box').classList.remove('hidden');
-  if(typeof renderAdminList==='function') renderAdminList();
+  openAdminModal();
+  const email=document.getElementById('admin-email');
+  const pass=document.getElementById('admin-password');
+  if(email) email.focus();
+  err.textContent='';
 }
 </script>
 </body>
@@ -2006,3 +1994,27 @@ function mirajUnlockAdmin(){
 .miraj-video-dark{opacity:.72}
 .miraj-video-vignette{opacity:.72}
 </style>
+<style id="miraj-professional-2026">
+:root{--pro-gold:#e7bd57;--pro-ink:#08030d;--pro-panel:rgba(18,6,27,.78);--pro-line:rgba(231,189,87,.20)}
+html{scroll-behavior:smooth} body{letter-spacing:.005em}
+nav{background:rgba(8,2,13,.82)!important;backdrop-filter:blur(20px) saturate(140%)!important;border-bottom:1px solid var(--pro-line)!important;box-shadow:0 10px 35px rgba(0,0,0,.22)!important}
+.miraj-nav-logo{filter:drop-shadow(0 7px 18px rgba(0,0,0,.45))}
+.hero-title{letter-spacing:-.035em!important;text-wrap:balance}.hero-description{max-width:520px!important}.hero-cta,.hero-ghost{box-shadow:0 12px 30px rgba(0,0,0,.22)}
+#menu,#reviews{position:relative}#menu:before,#reviews:before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:min(1120px,88%);height:1px;background:linear-gradient(90deg,transparent,var(--pro-line),transparent)}
+#menu-container>*,#reviews-container>*{border:1px solid var(--pro-line)!important;box-shadow:0 18px 50px rgba(0,0,0,.22)!important;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease!important;overflow:hidden}
+#menu-container>*:hover,#reviews-container>*:hover{transform:translateY(-6px)!important;border-color:rgba(231,189,87,.42)!important;box-shadow:0 26px 65px rgba(0,0,0,.32)!important}
+#menu-container img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s ease!important}#menu-container>*:hover img{transform:scale(1.045)!important;filter:saturate(1.05) contrast(1.03)}
+.category-btn{backdrop-filter:blur(12px);border:1px solid rgba(231,189,87,.18)!important;transition:.25s ease!important}.category-btn:hover{transform:translateY(-2px);border-color:rgba(231,189,87,.42)!important}
+button,a{outline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid rgba(231,189,87,.72)!important}
+footer{border-top:1px solid var(--pro-line)!important;background:linear-gradient(180deg,rgba(7,1,12,.96),#050108)!important}
+#admin-modal .bg-\[\#12021f\],#review-modal .bg-\[\#12021f\]{box-shadow:0 28px 90px rgba(0,0,0,.6)!important;border-color:rgba(231,189,87,.26)!important}
+@media(max-width:640px){.hero-description{font-size:12px!important}.hero-cta,.hero-ghost{min-height:44px;justify-content:center}.category-btn{min-height:44px!important}#menu-container{gap:18px!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+<script id="miraj-professional-enhancements">
+(function(){
+  document.querySelectorAll('img').forEach(function(img){if(!img.hasAttribute('loading')) img.loading='lazy'; img.decoding='async';});
+  document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.rel='noopener noreferrer';});
+  document.querySelectorAll('button').forEach(function(b){if(!b.getAttribute('aria-label') && b.title) b.setAttribute('aria-label',b.title);});
+})();
+</script>
