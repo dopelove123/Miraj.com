@@ -966,7 +966,63 @@ body.golden-awakened #hero > .miraj-video-bg video{
     </div>
   </footer>
 
-  <script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script>
+    /*
+      MIRAJ SHARED CATALOG
+      IMPORTANT: Paste your Firebase Web App config below.
+      This changes the catalog from browser-only localStorage to a shared online catalog.
+    */
+    const MIRAJ_FIREBASE_CONFIG = {
+      apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
+      authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://PASTE_YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "PASTE_YOUR_PROJECT",
+      storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+      messagingSenderId: "PASTE_YOUR_SENDER_ID",
+      appId: "PASTE_YOUR_APP_ID"
+    };
+
+    let mirajSharedDB = null;
+    let mirajSharedCatalogEnabled = false;
+
+    function initMirajSharedCatalog(){
+      try{
+        const cfg = MIRAJ_FIREBASE_CONFIG;
+        if(!cfg.apiKey || cfg.apiKey.startsWith("PASTE_") || !cfg.databaseURL || cfg.databaseURL.includes("PASTE_YOUR_PROJECT")){
+          console.warn("MIRAJ shared catalog is not configured. Using local catalog.");
+          return;
+        }
+        if(!firebase.apps.length) firebase.initializeApp(cfg);
+        mirajSharedDB = firebase.database();
+        mirajSharedCatalogEnabled = true;
+
+        // REAL-TIME SYNC: when owner adds/deletes a product, every visitor gets it automatically.
+        mirajSharedDB.ref("miraj/products").on("value", snap => {
+          const data = snap.val();
+          if(data && typeof data === "object"){
+            menuItems = Object.values(data).filter(Boolean);
+            localStorage.setItem("miraz_products", JSON.stringify(menuItems));
+            refreshCategoryFilters();
+            renderMenu();
+            if(typeof renderAdminList === "function") renderAdminList();
+          }
+        }, err => console.error("MIRAJ catalog sync error:", err));
+      }catch(err){
+        console.error("MIRAJ shared catalog initialization failed:", err);
+      }
+    }
+
+    function pushMirajCatalogToCloud(){
+      if(!mirajSharedCatalogEnabled || !mirajSharedDB) return;
+      const payload = {};
+      menuItems.forEach(item => { payload[String(item.id)] = item; });
+      mirajSharedDB.ref("miraj/products").set(payload)
+        .catch(err => console.error("MIRAJ catalog save failed:", err));
+    }
+
+<script>
     const OWNER_PHONE = "9729843519";
     const SECRET_ADMIN_PIN = "3728";
     let adminOTP = null, otpExpiresAt = 0, otpTimer = null, selectedProductPhotos = [];
@@ -1116,9 +1172,14 @@ body.golden-awakened #hero > .miraj-video-bg video{
     }
 
     function saveProducts() {
+      // Keep local cache for offline/fallback use.
       localStorage.setItem('miraz_products', JSON.stringify(menuItems));
       refreshCategoryFilters();
       renderMenu();
+
+      // If Firebase is configured, save to the shared online catalog.
+      // All visitors then receive the same product list in real time.
+      pushMirajCatalogToCloud();
     }
 
     function loadLiveReviews() {
@@ -1653,6 +1714,8 @@ body.golden-awakened #hero > .miraj-video-bg video{
 
     loadLiveProducts();
     loadLiveReviews();
+    // Start shared catalog after the local fallback has loaded.
+    initMirajSharedCatalog();
   
     // MIRAJ signature interaction: click the real flower and awaken the whole website in golden light.
     (function(){
