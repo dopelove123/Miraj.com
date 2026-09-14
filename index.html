@@ -1087,6 +1087,8 @@ body.golden-awakened #hero > .miraj-video-bg video{
     const STORE_LON = 76.9280;
 
     let detectedDistanceKm = null;
+    let customerLatitude = null;
+    let customerLongitude = null;
     let deliveryCharges = 0;
     let isDistanceChecked = false;
 
@@ -1506,6 +1508,8 @@ body.golden-awakened #hero > .miraj-video-bg video{
         (position) => {
           const userLat = position.coords.latitude;
           const userLon = position.coords.longitude;
+          customerLatitude = userLat;
+          customerLongitude = userLon;
           const dist = calculateDistanceKm(STORE_LAT, STORE_LON, userLat, userLon);
           applyDistanceCalculation(dist);
         },
@@ -1745,16 +1749,28 @@ body.golden-awakened #hero > .miraj-video-bg video{
       let msg = `✨ *NEW ORDER - MIRAJ HANDMADE CRAFTS* ✨\n\n`;
       msg += `👤 *Client:* ${custName}\n`;
       msg += `📞 *Phone:* ${custPhone}\n`;
-      msg += `📍 *Distance:* ${detectedDistanceKm ? detectedDistanceKm + ' km' : 'Taraori Region'}\n`;
-      msg += `🏠 *Delivery Address:* ${custAddress}\n\n`;
-      msg += `🛒 *Items in Order:*\n${cart.map(i => `• ${i.name} x ${i.qty} (₹${i.price * i.qty})`).join('\n')}\n\n`;
+      msg += `🏠 *Delivery Address:* ${custAddress}\n`;
+      msg += `📍 *Distance:* ${detectedDistanceKm ? detectedDistanceKm + ' km' : 'Not detected'}\n`;
+
+      if (customerLatitude && customerLongitude) {
+        msg += `🗺️ *CUSTOMER LOCATION:*\n`;
+        msg += `https://www.google.com/maps?q=${customerLatitude},${customerLongitude}\n\n`;
+      } else {
+        msg += `🗺️ *CUSTOMER LOCATION:* GPS location not available / permission denied\n\n`;
+      }
+
+      msg += `🛒 *ORDER DETAILS:*\n`;
+      msg += `${cart.map(i => `• ${i.name} x ${i.qty} = ₹${getNumericPrice(i) * getNumericQty(i)}`).join('\n')}\n\n`;
       if(isDiscountApplied) msg += `🏷️ *Coupon (MIRAJ10):* -₹${discount}\n`;
       msg += `🚚 *Delivery:* ${deliveryCharges > 0 ? '₹' + deliveryCharges + ' (>15km)' : 'FREE (Local)'}\n`;
       msg += `💳 *Grand Total:* ₹${grandTotal}\n`;
       msg += `💰 *Payment Method:* ${payMethod === 'ONLINE' ? 'UPI QR (9729843519@upi)' : 'Cash on Delivery (COD)'}\n\n`;
-      msg += `💬 *Note:* Open for custom embroidery / photo customization details in WhatsApp chat!`;
+      msg += `📲 *WhatsApp Order Number:* 9729843519\n`;
+      msg += `💬 *Note:* Open WhatsApp chat for custom embroidery / photo customization details.`;
 
-      window.open(`https://wa.me/91${OWNER_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
+      const whatsappNumber = "9729843519";
+      const whatsappUrl = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+      window.location.href = whatsappUrl;
       closeCheckout();
     }
     let activeGallery=[],activeGalleryIndex=0;
