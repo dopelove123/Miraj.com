@@ -1021,8 +1021,9 @@ body.golden-awakened #hero > .miraj-video-bg video{
       mirajSharedDB.ref("miraj/products").set(payload)
         .catch(err => console.error("MIRAJ catalog save failed:", err));
     }
+  </script>
 
-<script>
+  <script>
     const OWNER_PHONE = "9729843519";
     const SECRET_ADMIN_PIN = "3728";
     let adminOTP = null, otpExpiresAt = 0, otpTimer = null, selectedProductPhotos = [];
@@ -1693,7 +1694,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       if(!selectedProductPhotos.length&&!urlInput){alert("Please add at least 1 product photo.");return;}
       const gallery=(selectedProductPhotos.length?[...selectedProductPhotos]:[urlInput]).slice(0,5);
       const newProduct={id:Date.now(),name,category,price,desc,img:gallery[0]||"images/mini-album.jpg",images:gallery,fallback:"https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80"};
-      menuItems.unshift(newProduct);saveProducts();renderAdminList();renderMenu();
+      menuItems.unshift(newProduct);saveProducts();pushMirajCatalogToCloud();renderAdminList();renderMenu();
       selectedProductPhotos=[];renderProductPhotoPreview();document.getElementById('add-product-form').reset();
       alert("✓ Product added with "+gallery.length+" photo"+(gallery.length>1?'s':'')+"!");
     }
@@ -1702,6 +1703,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       if(confirm("Are you sure you want to delete this creation?")) {
         menuItems = menuItems.filter(item => item.id !== id);
         saveProducts();
+        pushMirajCatalogToCloud();
         renderAdminList();
       }
     }
