@@ -742,6 +742,17 @@ body.golden-awakened #hero > .miraj-video-bg video{
         <button onclick="closeCheckout()" class="text-amber-300 hover:text-white text-2xl leading-none">&times;</button>
       </div>
 
+      <div id="checkout-order-summary" class="mb-4 rounded-2xl border border-amber-500/35 bg-gradient-to-br from-[#1b0530] to-[#12021f] p-3.5 shadow-lg">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-amber-400"></i>
+            <span class="text-sm font-bold text-white">Your Order</span>
+          </div>
+          <span id="co-item-count" class="text-[11px] text-amber-200/70">0 items</span>
+        </div>
+        <div id="checkout-items-list" class="space-y-2.5"></div>
+      </div>
+
       <div class="bg-[#210533] border border-amber-400/35 rounded-xl p-3 mb-4 text-xs text-amber-200 flex items-center gap-2.5">
         <i class="fa-solid fa-handshake text-amber-400 text-base shrink-0"></i>
         <span>Prices are <strong>Negotiable</strong>! Final rates can be adjusted directly on WhatsApp discussion.</span>
@@ -1516,7 +1527,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       const feeEl = document.getElementById('co-delivery-fee');
       const submitBtn = document.getElementById('btn-submit-order');
 
-      let rawTotal = cart.reduce((acc, c) => acc + (c.price * c.qty), 0);
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
       let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
       let discountedItemsTotal = rawTotal - discount;
 
@@ -1560,7 +1571,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       const qrImg = document.getElementById('upi-qr-image');
 
       if (selected === 'ONLINE') {
-        let rawTotal = cart.reduce((acc, c) => acc + (c.price * c.qty), 0);
+        let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
         let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
         let finalGrand = (rawTotal - discount) + deliveryCharges;
 
@@ -1572,11 +1583,26 @@ body.golden-awakened #hero > .miraj-video-bg video{
       }
     }
 
+    function getNumericPrice(item) {
+      const raw = item && (item.price ?? item.amount ?? item.cost);
+      if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+      const cleaned = String(raw ?? "0").replace(/[^0-9.\-]/g, "");
+      const n = Number(cleaned);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function getNumericQty(item) {
+      const n = Number(item && item.qty);
+      return Number.isFinite(n) && n > 0 ? n : 1;
+    }
+
     function addToCart(id) {
-      const item = menuItems.find(p => p.id === id);
-      const inCart = cart.find(c => c.id === id);
-      if(inCart) { inCart.qty += 1; } else { cart.push({...item, qty: 1}); }
-      
+      const item = menuItems.find(p => String(p.id) === String(id));
+      if (!item) return;
+      const normalized = {...item, id: String(item.id), price: getNumericPrice(item)};
+      const inCart = cart.find(c => String(c.id) === String(normalized.id));
+      if (inCart) { inCart.qty = getNumericQty(inCart) + 1; inCart.price = getNumericPrice(inCart); }
+      else { cart.push({...normalized, qty: 1}); }
       playLotusChimeSound();
       triggerLotusPetalShower();
       updateCartUI();
@@ -1643,14 +1669,45 @@ body.golden-awakened #hero > .miraj-video-bg video{
       if(cart.length === 0) return alert("Your cart is empty!");
       toggleCart();
       document.getElementById('checkout-modal').classList.remove('hidden');
+      renderCheckoutItems();
       detectUserLocation();
       updateCheckoutTotals();
+    }
+
+    function renderCheckoutItems() {
+      const list = document.getElementById('checkout-items-list');
+      const count = document.getElementById('co-item-count');
+      if (!list) return;
+      const totalQty = cart.reduce((sum, item) => sum + getNumericQty(item), 0);
+      if (count) count.textContent = `${totalQty} ${totalQty === 1 ? 'item' : 'items'}`;
+      if (!cart.length) {
+        list.innerHTML = '<div class="text-center text-amber-200/70 text-xs py-3">Your cart is empty.</div>';
+        return;
+      }
+      list.innerHTML = cart.map((item) => {
+        const qty = getNumericQty(item);
+        const price = getNumericPrice(item);
+        const lineTotal = price * qty;
+        const img = (item.images && item.images[0]) || item.image || item.img || item.fallback || '';
+        const safeName = String(item.name || 'Product').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+        return `<div class="flex items-center gap-3 rounded-xl border border-purple-900/70 bg-[#170326] p-2.5">
+          <div class="w-16 h-16 rounded-lg overflow-hidden bg-black/30 border border-amber-500/20 shrink-0">
+            ${img ? `<img src="${img}" alt="${safeName}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : '<div class="w-full h-full flex items-center justify-center text-amber-400"><i class="fa-solid fa-gift"></i></div>'}
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-white text-sm font-bold leading-tight">${safeName}</div>
+            <div class="text-amber-300 text-xs font-semibold mt-1">₹${price.toLocaleString('en-IN')} × ${qty}</div>
+          </div>
+          <div class="text-amber-300 font-extrabold text-base whitespace-nowrap">₹${lineTotal.toLocaleString('en-IN')}</div>
+        </div>`;
+      }).join('');
     }
 
     function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
     function updateCheckoutTotals() {
-      let rawTotal = cart.reduce((acc, c) => acc + (c.price * c.qty), 0);
+      renderCheckoutItems();
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
       let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
       let discountedItemsTotal = rawTotal - discount;
       let grandTotal = discountedItemsTotal + deliveryCharges;
@@ -1674,7 +1731,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       const custAddress = document.getElementById('cust-address').value;
       const payMethod = document.querySelector('input[name="paymethod"]:checked').value;
 
-      let rawTotal = cart.reduce((acc, c) => acc + (c.price * c.qty), 0);
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
       let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
       let itemsTotal = rawTotal - discount;
 
