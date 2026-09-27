@@ -549,6 +549,11 @@ body.golden-awakened #hero > .miraj-video-bg video{
 </style>
 
 
+<style id="miraj-agentic-stability-final">
+/* Keep dynamically populated content from causing measurable layout shifts. */
+#menu-container{min-height:380px;}
+#reviews-container{min-height:180px;}
+</style>
 <style id="miraj-layout-stability-final">
 #menu-container img,#reviews-container img{aspect-ratio:1/1;}
 .product-img-box img{height:100%;}
@@ -865,7 +870,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           <p class="text-[11px] text-amber-200/80 mb-2">Merchant UPI ID: <b class="text-amber-300">9729843519@upi</b></p>
           
           <div class="inline-block p-2 bg-white rounded-xl shadow-lg border border-amber-300 my-1">
-            <img id="upi-qr-image" src="" alt="Scan & Pay QR" class="w-40 h-40 object-contain mx-auto" />
+            <img id="upi-qr-image" src="" alt="Scan & Pay QR" class="w-40 h-40 object-contain mx-auto" width="160" height="160" />
           </div>
           <p class="text-[10px] text-amber-300 mt-1">Payment screenshot WhatsApp par bhej dein!</p>
         </div>
@@ -902,7 +907,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
        <button aria-label="Close image viewer" onclick="closeImgModal()" class="absolute top-3 right-3 text-white bg-black/70 w-9 h-9 rounded-full flex items-center justify-center text-lg hover:bg-amber-600 transition z-20">&times;</button>
        <div class="relative flex items-center justify-center bg-black/30 rounded-xl min-h-[55vh]">
          <button aria-label="Previous image" id="gallery-prev" onclick="galleryPrev()" class="absolute left-2 z-10 w-10 h-10 rounded-full bg-black/70 border border-amber-400/40 text-amber-300">&lsaquo;</button>
-         <img id="modal-img-tag" src="" alt="Product image preview" class="w-full h-[62vh] object-contain rounded-xl" />
+         <img id="modal-img-tag" src="" alt="Product image preview" class="w-full h-[62vh] object-contain rounded-xl" width="800" height="800" />
          <button aria-label="Next image" id="gallery-next" onclick="galleryNext()" class="absolute right-2 z-10 w-10 h-10 rounded-full bg-black/70 border border-amber-400/40 text-amber-300">&rsaquo;</button>
        </div>
        <div id="modal-gallery-thumbs" class="flex gap-2 overflow-x-auto mt-3 pb-1"></div>
@@ -1520,7 +1525,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           </span>
           <div class="product-img-box cursor-pointer" onclick="openImgModal('${item.img}', '${item.fallback || ''}', '${encodeURIComponent(item.name)}', '${encodeURIComponent(JSON.stringify(item.images || [item.img]))}')"
 >
-            <img src="${item.img}" onerror="this.onerror=null; this.src='${item.fallback || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" alt="${item.name}" loading="lazy" />\n             ${(item.images && item.images.length > 1) ? `<span class="absolute top-2 left-2 bg-black/80 text-amber-300 px-2 py-1 rounded-full text-[9px] font-bold border border-amber-500/35"><i class="fa-solid fa-images mr-1"></i>${item.images.length} PHOTOS</span>` : ''}
+            <img width="500" height="500" src="${item.img}" onerror="this.onerror=null; this.src='${item.fallback || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" alt="${item.name}" loading="lazy" />\n             ${(item.images && item.images.length > 1) ? `<span class="absolute top-2 left-2 bg-black/80 text-amber-300 px-2 py-1 rounded-full text-[9px] font-bold border border-amber-500/35"><i class="fa-solid fa-images mr-1"></i>${item.images.length} PHOTOS</span>` : ''}
             <div class="absolute bottom-2.5 right-2.5 bg-black/80 backdrop-blur-sm text-amber-200 text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 opacity-90">
               <i class="fa-solid fa-magnifying-glass-plus text-amber-300"></i> Zoom
             </div>
@@ -1906,7 +1911,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       list.innerHTML = menuItems.map(item => `
         <div class="flex items-center justify-between p-2 rounded-xl bg-[#0b0114] border border-purple-900/80 text-xs">
           <div class="flex items-center gap-2.5 overflow-hidden">
-            <img src="${item.img}" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=100&q=80';" class="w-8 h-8 rounded-lg object-cover shrink-0" />
+            <img width="500" height="500" src="${item.img}" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=100&q=80';" class="w-8 h-8 rounded-lg object-cover shrink-0" />
             <div class="truncate">
               <p class="text-white font-bold truncate">${item.name}</p>
               <p class="text-amber-300 text-[10px]">₹${item.price} &bull; ${item.category}</p>
@@ -2087,7 +2092,7 @@ function sendOTPOnWhatsApp(){
 .miraj-secret-card button{width:100%;padding:12px;border-radius:13px;border:0;cursor:pointer}
 #miraj-secret-error{color:#ff8caa;font-size:11px;min-height:18px;margin-bottom:5px}
 </style>
-<div id="miraj-secret-modal" aria-hidden="true">
+<div id="miraj-secret-modal" aria-hidden="true" inert>
   <div class="miraj-secret-card">
     <div style="font-size:28px;color:#f5c443;margin-bottom:8px">✦</div>
     <h3 style="color:#fff;font-weight:700;font-size:18px">Owner Access</h3>
@@ -2121,7 +2126,7 @@ function sendOTPOnWhatsApp(){
 })();
 function mirajCloseSecret(){
   const m=document.getElementById('miraj-secret-modal');
-  m.classList.remove('show'); m.setAttribute('aria-hidden','true');
+  m.classList.remove('show'); m.setAttribute('aria-hidden','true'); m.setAttribute('inert','');
 }
 function mirajUnlockAdmin(){
   const code=document.getElementById('miraj-secret-code').value.trim();
