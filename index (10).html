@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <title>MIRAJ | Luxury Photo Gifting & Handmade Crafts Taraori Karnal</title>
+
+  <!-- MIRAJ SEO: search metadata + local business structured data -->
+  <meta name="description" content="MIRAJ offers luxury photo gifting, personalized gifts, handmade crafts and crochet art in Taraori, Karnal, Haryana. Custom gifts made with love.">
+  <link rel="canonical" href="https://mirajcraft.shop/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="preload" as="image" href="miraj-hero-flower.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="miraj-hero-poster.jpg" fetchpriority="low">
+  <link rel="preconnect" href="https://pmhodsbcvpwvzhchrfvb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://wsrv.nl" crossorigin>
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MIRAJ | Luxury Photo Gifting & Handmade Crafts">
+  <meta property="og:description" content="Luxury photo gifting, personalized gifts, handmade crafts and crochet art in Taraori, Karnal, Haryana.">
+  <meta property="og:url" content="https://mirajcraft.shop/">
+  <meta property="og:site_name" content="MIRAJ">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MIRAJ | Luxury Photo Gifting & Handmade Crafts">
+  <meta name="twitter:description" content="Luxury photo gifting, personalized gifts, handmade crafts and crochet art in Taraori, Karnal, Haryana.">
+
+  <script id="miraj-seo-meta" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "MIRAJ",
+    "url": "https://mirajcraft.shop/",
+    "telephone": "+919729843519",
+    "description": "Luxury photo gifting, personalized gifts, handmade crafts and crochet art.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Taraori",
+      "addressRegion": "Haryana",
+      "postalCode": "132116",
+      "addressCountry": "IN"
+    },
+    "areaServed": [
+      {
+        "@type": "City",
+        "name": "Taraori"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Karnal"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Haryana"
+      }
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
+  <style>
+    /* Fonts are loaded non-blocking in <head>; fallback keeps first paint immediate. */
+    
+    :root {
+      --bg-dark: #07010e;
+      --gold-primary: #f5c443;
+      --gold-bright: #fff3a1;
+      --gold-deep: #8f6409;
+    }
+
+    body {
+      background-color: #06010c !important;
+      color: #fefce8 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-luxury {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .ambient-glow {
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(120, 25, 170, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(245, 196, 67, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(88, 12, 130, 0.18) 0%, transparent 50%),
+        #06010c;
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #fff2a8 30%, #e8ba3c 70%, #996e0a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 14px rgba(245, 196, 67, 0.35));
+    }
+
+    .luxury-card {
+      background: linear-gradient(145deg, rgba(28, 8, 44, 0.65) 0%, rgba(13, 2, 22, 0.85) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(245, 196, 67, 0.22);
+      box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 245, 180, 0.25);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .luxury-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 235, 130, 0.7);
+      box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.95), 0 0 25px rgba(245, 196, 67, 0.25);
+    }
+
+    .btn-gold-royal {
+      background: linear-gradient(180deg, #fff7c2 0%, #f1c543 45%, #b48512 85%, #7e5703 100%);
+      color: #11021c !important;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      border: 1px solid #fffae0;
+      box-shadow: 0 4px 0 #4a3302, 0 10px 22px rgba(240, 195, 65, 0.45);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-gold-royal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #4a3302, 0 14px 26px rgba(240, 195, 65, 0.6);
+      filter: brightness(1.08);
+    }
+
+    .btn-velvet-dark {
+      background: linear-gradient(180deg, #240538 0%, #130121 100%);
+      border: 1px solid rgba(245, 196, 67, 0.35);
+      box-shadow: 0 4px 0 #08000d, 0 8px 18px rgba(0, 0, 0, 0.7);
+      transition: all 0.2s ease;
+    }
+    .btn-velvet-dark:hover {
+      border-color: #f5c443;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #08000d, 0 10px 22px rgba(245, 196, 67, 0.25);
+    }
+
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px) rotate(0.5deg); }
+      50% { transform: translateY(-12px) rotate(-0.5deg); }
+    }
+
+    .rotate-slow { animation: spinSlow 75s linear infinite; }
+    .rotate-slow:hover { animation-play-state: paused; }
+    .float-item { animation: floatGentle 6s ease-in-out infinite; }
+
+    .category-btn.active {
+      background: linear-gradient(135deg, #fff3a1, #f5c443);
+      color: #0b0113 !important;
+      font-weight: 800;
+      border-color: #ffffff;
+      box-shadow: 0 0 18px rgba(245, 196, 67, 0.55);
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-wrapper {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 34s linear infinite;
+    }
+    .marquee-wrapper:hover {
+      animation-play-state: paused;
+    }
+
+    .lotus-petal {
+      position: fixed;
+      top: -50px;
+      z-index: 9999;
+      pointer-events: none;
+      user-select: none;
+      animation: petalFall linear forwards;
+    }
+    @keyframes petalFall {
+      0% { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0.9; }
+      100% { transform: translateY(105vh) rotate(540deg) scale(1.1); opacity: 0; }
+    }
+
+    .product-img-box {
+      width: 100%;
+      height: 230px;
+      background: #11021c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-img-box img {
+      max-height: 100%;
+      width: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .product-img-box:hover img {
+      transform: scale(1.09);
+    }
+
+    .star-rating i {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .review-bubble {
+      width: 330px;
+      min-width: 330px;
+    }
+
+    .marquee-fade-left {
+      background: linear-gradient(to right, #06010c 0%, transparent 100%);
+    }
+    .marquee-fade-right {
+      background: linear-gradient(to left, #06010c 0%, transparent 100%);
+    }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: #06010c; }
+    ::-webkit-scrollbar-thumb { background: #350854; border-radius: 4px; border: 1px solid rgba(245,196,67,0.3); }
+    ::-webkit-scrollbar-thumb:hover { background: #f5c443; }
+  
+/* ================= MIRAJ LUXURY REDESIGN ================= */
+.miraj-nav-logo{position:relative;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;flex:none;background:#0b020f;border:1px solid #d9a72d;box-shadow:0 0 22px rgba(245,196,67,.22),inset 0 0 18px rgba(245,196,67,.08);overflow:hidden;padding:4px}
+.miraj-nav-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%;filter:saturate(1.15) contrast(1.05)}
+.miraj-logo-ring{position:absolute;inset:3px;border:1px solid rgba(255,238,150,.7);border-radius:50%;z-index:2;pointer-events:none}
+.miraj-hero{min-height:660px;border-bottom:1px solid rgba(220,166,44,.35);background:radial-gradient(circle at 52% 45%,rgba(107,16,91,.38),transparent 31%),radial-gradient(circle at 90% 45%,rgba(68,11,69,.35),transparent 32%),linear-gradient(110deg,#050108 0%,#0c0215 45%,#050108 100%)}
+.hero-fabric{position:absolute;inset:0;opacity:.5;background:radial-gradient(ellipse at 40% 80%,rgba(111,15,85,.3),transparent 38%),linear-gradient(165deg,transparent 25%,rgba(95,8,69,.14) 48%,transparent 68%);filter:blur(14px)}
+.hero-glow{position:absolute;border-radius:50%;filter:blur(75px);pointer-events:none}.hero-glow-one{width:260px;height:260px;background:rgba(238,39,158,.12);left:38%;top:28%}.hero-glow-two{width:330px;height:330px;background:rgba(245,196,67,.08);right:3%;top:35%}
+.hero-copy{animation:heroIn .9s ease both}.hero-kicker{color:#e9b83f;font-size:11px;letter-spacing:.28em;font-weight:800;margin-bottom:22px}.hero-kicker span{opacity:.5;margin:0 5px}.hero-title{font-size:clamp(42px,5vw,70px);line-height:.98;color:#fff8ea;font-weight:600;letter-spacing:-.02em;text-shadow:0 8px 35px rgba(0,0,0,.8)}.hero-title em{color:#eac04e;text-shadow:0 0 22px rgba(245,196,67,.16)}.hero-description{max-width:490px;color:rgba(255,244,222,.72);font-size:14px;line-height:1.8;margin:24px 0 28px}.hero-cta,.hero-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 24px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.09em;transition:.25s}.hero-cta{background:linear-gradient(135deg,#fff0a0,#d89e20);color:#180b04;box-shadow:0 10px 28px rgba(214,157,25,.3)}.hero-ghost{border:1px solid rgba(234,192,78,.38);color:#f5d36c;background:rgba(31,7,39,.55)}.hero-cta:hover,.hero-ghost:hover{transform:translateY(-3px);filter:brightness(1.08)}.hero-mini-stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:rgba(255,235,184,.52);font-size:10px;letter-spacing:.06em}.hero-mini-stats b{color:#e6b43c;margin-right:5px}
+.hero-emblem-wrap{position:relative;width:min(100%,510px);aspect-ratio:1}.hero-emblem-glow{position:absolute;inset:13%;border-radius:50%;background:rgba(219,37,147,.16);filter:blur(45px)}.hero-emblem{position:absolute;inset:2%;border-radius:50%;animation:emblemFloat 6s ease-in-out infinite;filter:drop-shadow(0 24px 30px rgba(0,0,0,.85))}.emblem-ring{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box}.ring-outer{width:96%;height:96%;border:2px solid #c89626;box-shadow:0 0 16px rgba(245,196,67,.18),inset 0 0 12px rgba(245,196,67,.08)}.ring-dots{width:91%;height:91%;border:1px dotted #f0c94c}.ring-middle{width:74%;height:74%;border:1px solid rgba(236,191,60,.7)}.emblem-rays{position:absolute;inset:17%;border-radius:50%;background:repeating-conic-gradient(from 0deg,transparent 0 13deg,rgba(226,178,50,.7) 13deg 13.8deg,transparent 13.8deg 30deg);mask:radial-gradient(circle,transparent 0 55%,#000 56% 100%);-webkit-mask:radial-gradient(circle,transparent 0 55%,#000 56% 100%)}
+.emblem-petals{position:absolute;inset:7%;animation:spinSlow 90s linear infinite}.emblem-petals span{position:absolute;left:50%;top:50%;width:12%;height:35%;border:1.5px solid rgba(236,191,60,.85);border-radius:65% 65% 50% 50%;transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(calc(var(--n,0)*30deg));}.emblem-petals span:nth-child(1){--n:0}.emblem-petals span:nth-child(2){--n:1}.emblem-petals span:nth-child(3){--n:2}.emblem-petals span:nth-child(4){--n:3}.emblem-petals span:nth-child(5){--n:4}.emblem-petals span:nth-child(6){--n:5}.emblem-petals span:nth-child(7){--n:6}.emblem-petals span:nth-child(8){--n:7}.emblem-petals span:nth-child(9){--n:8}.emblem-petals span:nth-child(10){--n:9}.emblem-petals span:nth-child(11){--n:10}.emblem-petals span:nth-child(12){--n:11}
+.emblem-jewels{position:absolute;inset:0}.emblem-jewels i{position:absolute;left:50%;top:8%;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#ffe46b 38%,#ad760e 78%);box-shadow:0 0 8px rgba(255,218,88,.8);transform:translateX(-50%) rotate(calc(var(--n,0)*30deg));transform-origin:0 210px}.emblem-jewels i:nth-child(1){--n:0}.emblem-jewels i:nth-child(2){--n:1}.emblem-jewels i:nth-child(3){--n:2}.emblem-jewels i:nth-child(4){--n:3}.emblem-jewels i:nth-child(5){--n:4}.emblem-jewels i:nth-child(6){--n:5}.emblem-jewels i:nth-child(7){--n:6}.emblem-jewels i:nth-child(8){--n:7}.emblem-jewels i:nth-child(9){--n:8}.emblem-jewels i:nth-child(10){--n:9}.emblem-jewels i:nth-child(11){--n:10}.emblem-jewels i:nth-child(12){--n:11}
+.rose-core{position:absolute;left:50%;top:50%;width:39%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;overflow:hidden;border:3px solid #d5a52f;box-shadow:0 0 0 5px rgba(19,2,28,.9),0 0 0 6px rgba(237,194,69,.55),0 0 38px rgba(234,77,178,.25)}.rose-core img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.22) contrast(1.05)}.rose-shade{position:absolute;inset:0;background:radial-gradient(circle,transparent 35%,rgba(20,2,35,.1) 55%,rgba(20,2,35,.62) 100%)}.rose-name{position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:25px;letter-spacing:.2em;font-weight:800;text-shadow:0 2px 9px #000,0 0 15px rgba(245,196,67,.7);transform:rotate(-12deg)}
+.gift-scene{position:relative;height:420px}.gift-glow{position:absolute;right:2%;top:28%;width:300px;height:220px;background:rgba(214,31,143,.18);filter:blur(60px)}.gift-box{position:absolute;width:245px;height:185px;right:2%;top:36%;transform:rotate(-5deg);filter:drop-shadow(0 25px 25px rgba(0,0,0,.7))}.gift-front{position:absolute;left:0;bottom:0;width:185px;height:135px;background:linear-gradient(145deg,#29152b,#0e0710 75%);border:1px solid #9e7120;transform:skewY(8deg);display:flex;align-items:center;justify-content:center}.gift-front span{border:1px solid #d9ad3e;color:#e9c65d;padding:8px 18px;font-family:Georgia,serif;letter-spacing:.25em;font-size:14px}.gift-side{position:absolute;right:0;bottom:0;width:60px;height:135px;background:linear-gradient(90deg,#160c17,#33202d);transform:skewY(-28deg);border-right:1px solid #9e7120}.gift-top{position:absolute;left:2px;top:23px;width:198px;height:68px;background:linear-gradient(145deg,#382033,#120912);border:1px solid #a47724;transform:skewY(-12deg)}.gift-ribbon-v{position:absolute;left:82px;top:24px;width:27px;height:160px;background:linear-gradient(90deg,#5b123f,#bd347e,#4c0d37);opacity:.9}.gift-ribbon-h{position:absolute;left:0;top:76px;width:198px;height:23px;background:linear-gradient(#6e164a,#c13a82,#4f0c38)}.gift-bow{position:absolute;left:75px;top:0;width:80px;height:65px}.gift-bow i{position:absolute;width:46px;height:33px;border:3px solid #b93279;border-radius:70% 30% 70% 30%;top:9px}.gift-bow i:first-child{left:0;transform:rotate(25deg)}.gift-bow i:nth-child(2){right:0;transform:scaleX(-1) rotate(25deg)}.gift-bow b{position:absolute;width:22px;height:22px;background:#d04b8c;border-radius:50%;left:29px;top:24px}.gift-flowers{position:absolute;right:-8px;top:13%;font-size:34px;color:#d7b34d;letter-spacing:10px;transform:rotate(-15deg)}
+.floating-petals{position:absolute;inset:0;pointer-events:none;opacity:.65}.floating-petals span{position:absolute;color:#dca63a;animation:petalDrift 7s ease-in-out infinite}.floating-petals span:nth-child(1){left:8%;top:35%;font-size:25px}.floating-petals span:nth-child(2){left:29%;top:12%;font-size:28px}.floating-petals span:nth-child(3){left:60%;top:20%;font-size:20px}.floating-petals span:nth-child(4){right:22%;top:63%;font-size:27px}.floating-petals span:nth-child(5){right:7%;top:18%;font-size:24px}
+@keyframes emblemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes petalDrift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(15deg)}}@keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@media(max-width:1023px){.miraj-hero{min-height:auto}.hero-emblem-wrap{max-width:440px;margin:auto}.hero-copy{order:2}.hero-title{font-size:48px}.hero-description{margin-left:auto;margin-right:auto}.hero-mini-stats{justify-content:center}}
+@media(max-width:640px){.miraj-nav-logo{width:50px;height:50px}.hero-kicker{font-size:9px;letter-spacing:.18em}.hero-title{font-size:41px}.hero-emblem-wrap{width:92vw}.hero-cta,.hero-ghost{padding:13px 17px}.hero-mini-stats{gap:11px;font-size:9px}}
+
+  
+/* ===== EXACT LUXURY REFERENCE POLISH ===== */
+.miraj-promo-bar{display:none!important}
+body{background:#050008!important}
+.miraj-nav-logo{cursor:pointer}
+.rose-core-button{border:0;padding:0;margin:0;cursor:pointer;appearance:none;-webkit-appearance:none;background:transparent;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44%;height:44%;border-radius:50%;z-index:8;overflow:hidden;box-shadow:0 0 0 1px rgba(245,196,67,.75),0 0 25px rgba(245,196,67,.35),inset 0 0 18px rgba(255,235,150,.18);transition:transform .25s ease,filter .25s ease,box-shadow .25s ease}
+.rose-core-button img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.12) contrast(1.05);transition:transform .5s ease;}
+.rose-core-button:hover{transform:translate(-50%,-50%) scale(1.055);box-shadow:0 0 0 2px #ffd85a,0 0 42px rgba(255,195,38,.8),0 0 90px rgba(255,173,20,.28),inset 0 0 22px rgba(255,245,180,.22)}
+.rose-core-button:hover img{transform:scale(1.08)}
+.hero-emblem{cursor:default}
+.golden-awakening{position:fixed;inset:-20%;z-index:9990;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,rgba(255,250,190,.78) 0%,rgba(255,220,74,.36) 9%,rgba(245,177,18,.16) 23%,rgba(255,193,7,.07) 42%,transparent 68%);mix-blend-mode:screen;filter:blur(2px);transform:scale(.72);}
+.golden-awakening::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 0 16%,rgba(255,222,91,.14) 18%,transparent 34%),repeating-conic-gradient(from 0deg,transparent 0 10deg,rgba(255,221,83,.08) 10.5deg 11deg,transparent 11.5deg 22deg);mask-image:radial-gradient(circle at center,#000 0 44%,transparent 74%);-webkit-mask-image:radial-gradient(circle at center,#000 0 44%,transparent 74%)}
+body.golden-awakened .golden-awakening{animation:goldenAwaken 1.55s cubic-bezier(.16,1,.3,1) forwards}
+body.golden-awakened .hero-emblem{animation:goldenEmblem 1.55s cubic-bezier(.16,1,.3,1) both}
+body.golden-awakened .miraj-hero{box-shadow:inset 0 0 180px rgba(255,195,35,.16)}
+body.golden-awakened .miraj-nav-logo,body.golden-awakened nav,body.golden-awakened section,body.golden-awakened footer{filter:drop-shadow(0 0 18px rgba(255,202,58,.16))}
+body.golden-awakened .hero-title em,body.golden-awakened .hero-kicker{filter:drop-shadow(0 0 12px rgba(255,210,62,.75))}
+@keyframes goldenAwaken{0%{opacity:0;transform:scale(.72)}16%{opacity:1;transform:scale(1)}45%{opacity:.9}100%{opacity:0;transform:scale(1.18)}}
+@keyframes goldenEmblem{0%{filter:drop-shadow(0 24px 30px rgba(0,0,0,.85))}20%{filter:drop-shadow(0 0 45px rgba(255,203,57,.95)) drop-shadow(0 0 90px rgba(255,177,20,.48))}100%{filter:drop-shadow(0 24px 30px rgba(0,0,0,.85))}}
+.golden-spark{position:fixed;z-index:9998;pointer-events:none;width:6px;height:6px;border-radius:50%;background:#ffe27a;box-shadow:0 0 8px #fff1a3,0 0 22px #f4b51f;animation:sparkFly var(--dur) ease-out forwards;left:50%;top:50%}
+@keyframes sparkFly{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+@media(max-width:640px){.rose-core-button{width:47%;height:47%}.golden-awakening{inset:-40%}}
+
+  </style>
+
+<style id="miraj-final-reference-polish">
+/* FINAL REFERENCE-MATCH PASS */
+.miraj-nav-logo{width:58px!important;height:58px!important}
+nav{height:70px!important;padding-top:6px!important;padding-bottom:6px!important;padding-left:18px!important;padding-right:18px!important;background:rgba(4,1,9,.94)!important;border-bottom:1px solid rgba(245,196,67,.30)!important}
+nav .text-lg{font-size:18px!important}
+.miraj-hero{height:350px!important;min-height:350px!important;background:radial-gradient(ellipse at 51% 50%,rgba(118,12,91,.34) 0%,rgba(43,4,43,.16) 28%,transparent 52%),radial-gradient(ellipse at 92% 50%,rgba(95,9,77,.28),transparent 38%),linear-gradient(110deg,#050008 0%,#0c0115 46%,#050008 100%)!important}
+.miraj-hero>.max-w-7xl{min-height:350px!important;height:350px!important;padding:20px 22px!important;grid-template-columns:minmax(320px,.9fr) minmax(330px,1.05fr) minmax(250px,.78fr)!important;gap:8px!important}
+.hero-copy{padding-left:16px!important;transform:translateY(-2px)}
+.hero-kicker{font-size:9px!important;letter-spacing:.29em!important;margin-bottom:14px!important}
+.hero-title{font-size:49px!important;line-height:.91!important}
+.hero-description{font-size:11px!important;line-height:1.65!important;max-width:400px!important;margin:18px 0 18px!important}
+.hero-cta,.hero-ghost{padding:11px 18px!important;font-size:9px!important}
+.hero-mini-stats{font-size:8px!important;margin-top:14px!important;gap:14px!important}
+.hero-emblem-wrap{width:360px!important;height:360px!important;max-width:none!important;transform:translateY(0)!important}
+.hero-emblem-glow{inset:10%!important;background:rgba(236,43,166,.17)!important;filter:blur(38px)!important}
+.ring-outer{width:91%!important;height:91%!important;border-width:2px!important}
+.ring-dots{width:86%!important;height:86%!important}
+.ring-middle{width:69%!important;height:69%!important}
+.emblem-petals{inset:9%!important}
+.emblem-jewels i{transform-origin:0 150px!important;width:10px!important;height:10px!important}
+.rose-core-button{width:45%!important;height:45%!important}
+.rose-name{font-size:21px!important}
+.gift-scene{height:350px!important;transform:translateX(-5px)!important}
+.gift-box{width:225px!important;height:170px!important;right:4%!important;top:28%!important}
+.gift-flowers{right:-2px!important;top:12%!important;font-size:27px!important}
+.floating-petals span{opacity:.72!important}
+#menu{padding-top:30px!important;padding-bottom:55px!important}
+#menu>.text-center{margin-bottom:20px!important}
+#menu>.text-center h2{font-size:39px!important;margin-bottom:0!important}
+#menu>.text-center p{display:none!important}
+#search-input{display:none!important}
+#category-filters{margin-bottom:18px!important}
+.category-btn{min-width:180px!important;height:56px!important;border-radius:15px!important;background:linear-gradient(145deg,rgba(25,7,38,.94),rgba(9,2,15,.96))!important;border:1px solid rgba(214,159,36,.38)!important;box-shadow:inset 0 1px rgba(255,239,161,.07),0 8px 20px rgba(0,0,0,.4)!important}
+#menu-container{gap:14px!important}
+.product-img-box{height:180px!important}
+.luxury-card{border-radius:16px!important}
+#reviews{padding-top:55px!important}
+body.golden-awakened::after{content:"";position:fixed;inset:0;z-index:9988;pointer-events:none;background:radial-gradient(circle at 50% 38%,rgba(255,241,157,.22),transparent 24%),radial-gradient(circle at 50% 50%,rgba(255,190,25,.13),transparent 52%),linear-gradient(0deg,rgba(255,186,20,.035),rgba(255,225,120,.05));mix-blend-mode:screen;animation:siteGoldWash 1.9s ease-out forwards}
+@keyframes siteGoldWash{0%{opacity:0}14%{opacity:1}52%{opacity:.9}100%{opacity:0}}
+.golden-awakening{z-index:9990!important;background:radial-gradient(circle at 50% 38%,rgba(255,255,220,.86) 0%,rgba(255,225,84,.44) 8%,rgba(245,178,22,.18) 22%,rgba(255,193,7,.08) 43%,transparent 70%)!important;filter:blur(1px)!important}
+body.golden-awakened nav,body.golden-awakened #hero,body.golden-awakened #menu,body.golden-awakened #reviews,body.golden-awakened footer{transition:filter .2s!important;filter:drop-shadow(0 0 22px rgba(255,203,57,.25))!important}
+@media(max-width:1023px){.miraj-hero{height:auto!important;min-height:620px!important}.miraj-hero>.max-w-7xl{height:auto!important;min-height:620px!important;grid-template-columns:1fr!important}.hero-copy{padding-left:0!important;order:2}.hero-emblem-wrap{width:min(82vw,390px)!important;height:min(82vw,390px)!important;order:1}.gift-scene{display:none!important}.hero-title{font-size:46px!important}}
+@media(max-width:640px){nav{height:64px!important}.miraj-nav-logo{width:48px!important;height:48px!important}.miraj-hero{min-height:650px!important}.miraj-hero>.max-w-7xl{min-height:650px!important;padding:24px 16px!important}.hero-emblem-wrap{width:88vw!important;height:88vw!important}.hero-title{font-size:41px!important}.category-btn{min-width:145px!important}}
+</style>
+
+
+<style id="miraj-flower-final-pass">
+/* ===== NEW MIRAJ FLOWER EMBLEM ===== */
+.miraj-flower-emblem{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:mirajFloat 6s ease-in-out infinite!important;
+  filter:drop-shadow(0 20px 28px rgba(0,0,0,.82));
+  overflow:visible!important;
+}
+.miraj-flower-button{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  border-radius:50%!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  overflow:hidden!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.miraj-flower-button img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:50%;
+  transform:scale(1.01);
+  filter:saturate(1.08) contrast(1.04);
+  transition:transform .65s cubic-bezier(.16,1,.3,1),filter .5s ease;
+}
+.miraj-flower-button:hover img{
+  transform:scale(1.045);
+  filter:saturate(1.18) contrast(1.06) brightness(1.06);
+}
+.flower-click-shine{
+  position:absolute;
+  inset:-12%;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle,rgba(255,244,169,.52) 0%,rgba(255,205,43,.18) 25%,transparent 62%);
+  mix-blend-mode:screen;
+}
+.miraj-flower-button:active .flower-click-shine{
+  opacity:1;
+}
+.hero-emblem-wrap{
+  width:390px!important;
+  height:390px!important;
+  max-width:390px!important;
+}
+.hero-emblem-glow{
+  inset:7%!important;
+  background:radial-gradient(circle,rgba(244,38,171,.22),rgba(245,196,67,.08) 42%,transparent 70%)!important;
+  filter:blur(42px)!important;
+}
+@keyframes mirajFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+body.golden-awakened .miraj-flower-emblem{
+  animation:mirajGoldenFlower 1.5s cubic-bezier(.16,1,.3,1) both!important;
+}
+body.golden-awakened .miraj-flower-button img{
+  animation:mirajFlowerFlash 1.55s ease-out both;
+}
+@keyframes mirajGoldenFlower{
+  0%{transform:scale(1);filter:drop-shadow(0 20px 28px rgba(0,0,0,.82))}
+  22%{transform:scale(1.075);filter:drop-shadow(0 0 28px rgba(255,226,96,.95)) drop-shadow(0 0 75px rgba(255,173,20,.7))}
+  100%{transform:scale(1);filter:drop-shadow(0 20px 28px rgba(0,0,0,.82))}
+}
+@keyframes mirajFlowerFlash{
+  0%{filter:saturate(1.08) contrast(1.04) brightness(1)}
+  18%{filter:saturate(1.25) contrast(1.08) brightness(1.3)}
+  55%{filter:saturate(1.15) contrast(1.06) brightness(1.12)}
+  100%{filter:saturate(1.08) contrast(1.04) brightness(1)}
+}
+@media(max-width:640px){
+  .hero-emblem-wrap{width:88vw!important;height:88vw!important;max-width:390px!important;max-height:390px!important}
+}
+</style>
+
+
+<style id="miraj-golden-whole-page">
+body.golden-awakened::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9989;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,240,143,.20),transparent 27%),
+    radial-gradient(circle at 18% 55%,rgba(255,197,43,.10),transparent 30%),
+    radial-gradient(circle at 82% 50%,rgba(255,197,43,.10),transparent 30%);
+  mix-blend-mode:screen;
+  animation:pageGoldWash 2.1s ease-out forwards;
+}
+@keyframes pageGoldWash{
+  0%{opacity:0}
+  18%{opacity:1}
+  55%{opacity:.78}
+  100%{opacity:0}
+}
+</style>
+
+
+<style id="miraj-video-background-final">
+/* ===== CINEMATIC LOW-LIGHT VIDEO BEHIND HERO ===== */
+#hero{
+  isolation:isolate;
+}
+#hero > .miraj-video-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#09000f url("miraj-hero-poster.jpg") center center / cover no-repeat;
+}
+#hero > .miraj-video-bg video{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100%;
+  height:100%;
+  min-width:100%;
+  min-height:100%;
+  object-fit:cover;
+  object-position:center center;
+  transform:translate(-50%,-50%) scale(1.06);
+  filter:saturate(.92) brightness(.62) contrast(1.08); opacity:.78;
+  mix-blend-mode:screen;
+}
+.miraj-video-dark{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(5,0,10,.68) 0%,rgba(12,0,20,.48) 34%,rgba(18,0,28,.32) 58%,rgba(4,0,10,.58) 100%),
+    linear-gradient(180deg,rgba(4,0,10,.34) 0%,rgba(8,0,14,.08) 48%,rgba(3,0,8,.52) 100%);
+}
+.miraj-video-vignette{
+  position:absolute;
+  inset:-5%;
+  background:radial-gradient(ellipse at center,transparent 38%,rgba(2,0,7,.50) 94%);
+  box-shadow:inset 0 0 150px 60px rgba(0,0,0,.7);
+}
+#hero > .hero-fabric,
+#hero > .hero-glow,
+#hero > .floating-petals{
+  z-index:1;
+}
+#hero > .max-w-7xl{
+  z-index:10;
+}
+body.golden-awakened #hero > .miraj-video-bg video{
+  animation:mirajVideoGold 2.2s ease-out both;
+}
+@keyframes mirajVideoGold{
+  0%{filter:saturate(.92) brightness(.62) contrast(1.08);opacity:.78}
+  18%{filter:saturate(1.15) brightness(.7) contrast(1.08);opacity:.86}
+  48%{filter:saturate(.95) brightness(.48) contrast(1.1);opacity:.72}
+  100%{filter:saturate(.92) brightness(.62) contrast(1.08);opacity:.78}
+}
+@media(max-width:700px){
+  #hero > .miraj-video-bg video{
+    object-position:center center;
+    opacity:.65; filter:saturate(.88) brightness(.52) contrast(1.06);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #hero > .miraj-video-bg video{animation:none!important}
+}
+</style>
+
+
+<style id="miraj-interactive-surprise-gift">
+/* ===== REALISTIC SURPRISE GIFT — USER REFERENCE IMAGE ===== */
+.surprise-gift-scene{height:350px!important;position:relative;display:flex;align-items:center;justify-content:center;transform:none!important;overflow:visible}
+.surprise-gift{position:relative;width:390px;height:330px;border:0;background:transparent;padding:0;cursor:pointer;perspective:1000px;filter:drop-shadow(0 28px 32px rgba(0,0,0,.75));-webkit-tap-highlight-color:transparent;overflow:visible}
+.surprise-gift:focus-visible{outline:2px solid #f5c443;outline-offset:8px;border-radius:22px}
+.surprise-reference-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;z-index:4;transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
+.surprise-gift:hover .surprise-reference-art{transform:scale(1.035) translateY(-3px);filter:brightness(1.08) saturate(1.08) drop-shadow(0 0 18px rgba(245,196,67,.28))}
+.surprise-aura{position:absolute;left:50%;top:63%;width:300px;height:150px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,212,60,.30),rgba(218,42,154,.13) 38%,transparent 72%);filter:blur(25px);animation:surprisePulse 3s ease-in-out infinite;pointer-events:none;z-index:1}
+.surprise-rays{position:absolute;left:50%;top:61%;width:285px;height:285px;transform:translate(-50%,-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,transparent 0 13deg,rgba(255,222,104,.13) 13.5deg 14deg,transparent 14.5deg 27deg);mask:radial-gradient(circle,transparent 0 42%,#000 57%,transparent 76%);-webkit-mask:radial-gradient(circle,transparent 0 42%,#000 57%,transparent 76%);opacity:.8;animation:surpriseSpin 22s linear infinite;pointer-events:none;z-index:2}
+.surprise-content{position:absolute;left:50%;top:48%;transform:translate(-50%,-30%) scale(.55);width:300px;z-index:9;opacity:0;pointer-events:none;text-align:center;transition:opacity .35s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+.surprise-sparkles{display:block;color:#fff1a1;font-size:25px;letter-spacing:13px;text-shadow:0 0 16px #f5c443;margin-bottom:7px}
+.surprise-badge{display:inline-block;font-size:8px;font-weight:900;letter-spacing:.22em;color:#1a081c;background:linear-gradient(135deg,#fff2a5,#dca82b);padding:7px 11px;border-radius:999px;box-shadow:0 0 20px rgba(245,196,67,.5)}
+.surprise-message{display:block;margin-top:12px;color:#fff8df;font-family:'Cormorant Garamond',serif;font-size:24px;line-height:.95;text-shadow:0 3px 18px #000}
+.surprise-message em{color:#ffd75c;font-size:34px}
+.surprise-icon{display:block;font-size:34px;margin-top:10px;filter:drop-shadow(0 0 12px rgba(255,215,92,.8))}
+.surprise-offers{position:absolute;left:50%;top:45%;width:410px;height:235px;transform:translate(-50%,-50%);z-index:12;pointer-events:none}
+.surprise-offer{position:absolute;left:50%;top:78%;width:126px;min-width:126px;height:58px;box-sizing:border-box;padding:8px 8px;border:1px solid rgba(255,224,101,.98);border-radius:14px;background:linear-gradient(145deg,rgba(58,8,54,.98),rgba(12,2,22,.99));box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 18px rgba(245,196,67,.28),inset 0 1px rgba(255,246,184,.25);color:#fff7d0;font-size:9px;font-weight:800;letter-spacing:.04em;text-align:center;opacity:0;transform:translate(-50%,0) scale(.25) rotate(var(--r));transition:none;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.surprise-offer strong{display:block;color:#ffd84f;font-size:15px;line-height:1.05;margin-bottom:4px;white-space:nowrap;text-shadow:0 0 10px rgba(255,213,70,.25)}
+.surprise-offer span{color:rgba(255,244,203,.82);font-size:8px;letter-spacing:.08em;white-space:nowrap}
+.surprise-gift.opened .surprise-reference-art{transform:scale(1.02) translateY(-7px);filter:brightness(1.1) saturate(1.12) drop-shadow(0 0 26px rgba(255,204,53,.42))}
+.surprise-gift.opened .surprise-rays{animation:surpriseSpin 7s linear infinite;opacity:1}
+.surprise-gift.opened .surprise-content{opacity:1;transform:translate(-50%,-85%) scale(1);animation:surpriseReveal .9s cubic-bezier(.16,1,.3,1) both}
+.surprise-gift.opened .surprise-offer{animation:offerBurst 1.15s cubic-bezier(.16,1,.3,1) forwards}
+.surprise-gift.opened .surprise-offer:nth-child(1){--x:-178px;--y:-86px;--r:-9deg;animation-delay:.03s}
+.surprise-gift.opened .surprise-offer:nth-child(2){--x:-89px;--y:-112px;--r:-5deg;animation-delay:.10s}
+.surprise-gift.opened .surprise-offer:nth-child(3){--x:0px;--y:-124px;--r:0deg;animation-delay:.17s}
+.surprise-gift.opened .surprise-offer:nth-child(4){--x:89px;--y:-112px;--r:5deg;animation-delay:.24s}
+.surprise-gift.opened .surprise-offer:nth-child(5){--x:178px;--y:-86px;--r:9deg;animation-delay:.31s}
+.surprise-gift.opened .surprise-offer:nth-child(6){--x:-178px;--y:-20px;--r:-8deg;animation-delay:.38s}
+.surprise-gift.opened .surprise-offer:nth-child(7){--x:-89px;--y:-38px;--r:-4deg;animation-delay:.45s}
+.surprise-gift.opened .surprise-offer:nth-child(8){--x:89px;--y:-38px;--r:4deg;animation-delay:.52s}
+.surprise-gift.opened .surprise-offer:nth-child(9){--x:178px;--y:-20px;--r:8deg;animation-delay:.59s}
+.surprise-gift.opened .surprise-offer:nth-child(10){--x:0px;--y:-30px;--r:0deg;animation-delay:.66s}
+@keyframes offerBurst{0%{opacity:0;transform:translate(-50%,0) scale(.25) rotate(var(--r))}45%{opacity:1;transform:translate(calc(-50% + var(--x)),calc(var(--y) - 10px)) scale(1.05) rotate(var(--r))}100%{opacity:1;transform:translate(calc(-50% + var(--x)),var(--y)) scale(1) rotate(var(--r))}}
+@keyframes surprisePulse{0%,100%{transform:translate(-50%,-50%) scale(.9);opacity:.55}50%{transform:translate(-50%,-50%) scale(1.08);opacity:1}}
+@keyframes surpriseSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes surpriseReveal{0%{opacity:0;transform:translate(-50%,-35%) scale(.35)}55%{opacity:1;transform:translate(-50%,-92%) scale(1.06)}100%{opacity:1;transform:translate(-50%,-85%) scale(1)}}
+.surprise-hint{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);white-space:nowrap;color:rgba(255,230,144,.62);font-size:8px;font-weight:800;letter-spacing:.15em;transition:color .3s ease;z-index:20}
+.surprise-hint i{margin-right:7px;color:#f5c443;animation:hintTap 1.3s ease-in-out infinite}
+.surprise-gift.opened ~ .surprise-hint{color:#f5c443}
+
+@media(max-width:1023px){.surprise-gift-scene{display:flex!important;height:310px!important;order:3;margin-top:-10px}.surprise-gift{width:350px;height:295px}.surprise-reference-art{object-fit:contain}.surprise-rays{width:240px;height:240px}.surprise-offers{transform:translate(-50%,-46%) scale(.68)}}
+@media(max-width:640px){.surprise-gift-scene{height:290px!important}.surprise-gift{width:310px;height:270px}.surprise-offers{transform:translate(-50%,-42%) scale(.50)}.surprise-content{top:42%;width:220px}.surprise-message{font-size:21px}.surprise-message em{font-size:29px}.surprise-hint{font-size:7px;letter-spacing:.08em}}
+@media(prefers-reduced-motion:reduce){.surprise-aura,.surprise-rays,.surprise-hint i{animation:none!important}}
+</style>
+
+
+<style id="miraj-layout-stability-final">
+#menu-container img,#reviews-container img{aspect-ratio:1/1;}
+.product-img-box img{height:100%;}
+</style>
+</head>
+<body class="ambient-glow relative min-h-screen selection:bg-amber-400 selection:text-black">
+
+  <div id="petal-container" class="pointer-events-none fixed inset-0 z-[9999] overflow-hidden"></div>
+
+  <div id="golden-awakening" class="golden-awakening" aria-hidden="true"></div>
+
+  <!-- TOP BAR (hidden on luxury redesign) -->
+  <div class="miraj-promo-bar bg-gradient-to-r from-[#170226] via-[#24063c] to-[#170226] border-b border-amber-400/30 text-amber-100 text-[11px] sm:text-xs py-2 px-3 text-center flex justify-center items-center gap-3 sm:gap-6 flex-wrap backdrop-blur-md shadow-lg shadow-black/80">
+    <span class="flex items-center gap-1.5 font-medium">
+      <i class="fa-solid fa-crown text-amber-300 text-[11px]"></i> 
+      <strong class="text-amber-200 tracking-wider">MIRAJ BOUTIQUE</strong> • Photo Gifting &amp; Crochet Art
+    </span>
+    <span class="hidden sm:inline text-amber-500/40">•</span>
+    <span class="text-amber-200/90 flex items-center gap-1.5">
+      <i class="fa-solid fa-location-dot text-amber-400"></i> Nadana, Taraori (Karnal - 132116)
+    </span>
+    <span class="hidden sm:inline text-amber-500/40">•</span>
+    <span>
+      Custom Gifting &amp; Negotiation: 
+      <a href="tel:+919729843519" class="underline font-extrabold text-amber-300 hover:text-white transition">9729843519</a>
+    </span>
+    <span class="hidden sm:inline text-amber-500/40">•</span>
+    <span class="bg-[#38095c] px-2.5 py-0.5 rounded-full border border-amber-400/40 text-[10px] text-amber-200 font-bold">10% OFF: MIRAJ10</span>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="flex justify-between items-center px-4 sm:px-14 py-4 border-b border-amber-500/20 bg-[#07010f]/85 sticky top-0 z-40 backdrop-blur-2xl">
+    <div class="flex items-center gap-3.5">
+      <div class="miraj-nav-logo">
+        <div class="miraj-logo-ring"></div>
+        <img width="58" height="58" loading="eager" decoding="async" alt="MIRAJ logo" src="miraj-logo.webp" alt="MIRAJ Lotus Logo" />
+      </div>
+      <div>
+        <span class="text-lg sm:text-xl font-extrabold tracking-widest text-white block leading-tight font-luxury">MIRAJ</span>
+        <span class="text-[9px] tracking-[0.2em] text-amber-300 uppercase font-bold">Handcrafted Studio • Taraori</span>
+      </div>
+    </div>
+
+    <div class="hidden md:flex gap-8 text-xs font-semibold tracking-widest text-amber-100/80">
+      <a href="#hero" class="hover:text-amber-300 transition">HOME</a>
+      <a href="#menu" class="hover:text-amber-300 transition">CREATIONS</a>
+      <a href="#reviews" class="hover:text-amber-300 transition flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-400 text-[10px]"></i> CLIENTS</a>
+      <a href="#contact" class="hover:text-amber-300 transition">STUDIO INFO</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="tel:+919729843519" class="btn-gold-royal text-xs px-4 py-2 rounded-full inline-flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-phone text-[10px]"></i> Call Store
+      </a>
+      
+      <a href="https://www.instagram.com/mirajcraft_karnal?igsi=MmV5aTg5M20xODNr" target="_blank" class="text-amber-300 hover:text-white p-2.5 rounded-full bg-[#1c052c] border border-amber-500/35 text-xs hidden sm:flex items-center justify-center hover:border-amber-400 transition shadow-md">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+
+      <button aria-label="Open shopping cart" onclick="toggleCart()" class="relative text-sm text-amber-200 bg-[#1c052c] border border-amber-500/35 p-2.5 rounded-full hover:border-amber-400 transition shadow-inner">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-r from-amber-400 to-yellow-500 text-black text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-black shadow-md">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION — LUXURY MIRAJ REDESIGN -->
+  <section id="hero" class="miraj-hero relative overflow-hidden">
+    <!-- LOW-LIGHT CINEMATIC VIDEO BACKGROUND -->
+    <div class="miraj-video-bg" aria-hidden="true">
+      <video id="miraj-hero-video" muted loop playsinline preload="none" poster="miraj-hero-poster.jpg" aria-hidden="true">
+        <source data-src="miraj-bg.mp4" type="video/mp4">
+      </video>
+      <div class="miraj-video-dark"></div>
+      <div class="miraj-video-vignette"></div>
+    </div>
+
+    <div class="hero-fabric"></div>
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+    <div class="floating-petals" aria-hidden="true">
+      <span>✦</span><span>🪷</span><span>✧</span><span>🪷</span><span>✦</span>
+    </div>
+
+    <div class="max-w-7xl mx-auto min-h-[660px] px-6 sm:px-10 lg:px-14 py-16 lg:py-20 grid lg:grid-cols-[0.9fr_1.15fr_0.75fr] gap-8 items-center relative z-10">
+      <div class="hero-copy text-center lg:text-left">
+        <div class="hero-kicker">HANDMADE <span>+</span> PERSONALIZED <span>+</span> WITH LOVE</div>
+        <h1 class="hero-title font-luxury">More Than Gifts,<br><em>It's Emotion</em></h1>
+        <p class="hero-description">Turn your special moments into timeless treasures with our luxury photo gifting and handcrafted creations.</p>
+        <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
+          <a href="#menu" class="hero-cta">EXPLORE COLLECTION <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="https://wa.me/919729843519?text=Hello%20MIRAJ%2C%20I%20want%20to%20know%20about%20your%20gifts." target="_blank" class="hero-ghost">WHATSAPP <i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+        <div class="hero-mini-stats">
+          <span><b>♡</b> Handmade</span><span><b>✦</b> Custom</span><span><b>◇</b> Premium</span>
+        </div>
+      </div>
+
+      <div class="hero-emblem-wrap flex justify-center">
+        <div class="hero-emblem-glow"></div>
+        <div class="hero-emblem miraj-flower-emblem">
+          <button type="button" class="rose-core-button miraj-flower-button" id="rose-core-button" aria-label="Awaken MIRAJ golden light">
+            <img width="390" height="390" loading="eager" fetchpriority="high" decoding="sync" alt="MIRAJ luxury flower emblem" src="miraj-hero-flower.webp" alt="MIRAJ pink lotus with golden leaf outline" />
+            <span class="flower-click-shine"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SURPRISE GIFT -->
+    </div>
+  </section>
+
+  <!-- PRODUCTS SECTION -->
+  <section id="menu" class="py-20 px-4 sm:px-12 max-w-7xl mx-auto relative">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400 block mb-2">Curated Artisanal Range</span>
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-3 tracking-tight font-luxury">Handmade Treasures</h2>
+      <p class="text-amber-100/70 text-xs sm:text-sm">Tap on any product to view details or add to cart for direct WhatsApp ordering</p>
+    </div>
+
+    <!-- Search Box -->
+    <div class="max-w-md mx-auto mb-8 px-2">
+      <div class="relative">
+        <input type="text" id="search-input" oninput="scheduleMenuRender()" placeholder="Search floral keychains, mini albums, bags..." class="w-full bg-[#18042b]/80 border border-amber-500/35 rounded-full py-3.5 pl-5 pr-12 text-xs text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-amber-400 shadow-inner" />
+        <i class="fa-solid fa-magnifying-glass absolute right-5 top-4 text-amber-400/60"></i>
+      </div>
+    </div>
+    
+    <!-- Filter Pills -->
+    <div class="flex flex-wrap justify-center gap-2 mb-12 px-2" id="category-filters"></div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7" id="menu-container"></div>
+  </section>
+
+  <!-- CUSTOMER REVIEWS -->
+  <section id="reviews" class="py-20 px-4 sm:px-12 max-w-7xl mx-auto border-t border-purple-950/80 relative overflow-hidden">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-400 block mb-1">Loved by Clients</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-luxury">Real Feedback &amp; Photos</h2>
+        <p class="text-amber-100/70 text-xs mt-1">Customer photos &amp; reviews &bull; Hover card to pause stream</p>
+        <p id="reviews-cloud-status" class="text-[10px] text-amber-200/60 mt-1">● Connecting reviews…</p>
+      </div>
+      <button onclick="openReviewModal()" class="btn-gold-royal text-xs px-6 py-3 rounded-xl inline-flex items-center justify-center gap-2 self-start md:self-auto shadow-lg">
+        <i class="fa-solid fa-camera"></i> Post Your Review &amp; Photo
+      </button>
+    </div>
+
+    <div class="relative w-full overflow-hidden py-4">
+      <div class="absolute left-0 top-0 bottom-0 w-20 marquee-fade-left z-20 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-20 marquee-fade-right z-20 pointer-events-none"></div>
+      <div class="marquee-wrapper gap-6" id="marquee-track"></div>
+    </div>
+  </section>
+
+  <!-- WRITE REVIEW MODAL -->
+  <div id="review-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-[#120220] border border-amber-500/40 w-full max-w-lg p-6 rounded-3xl shadow-2xl max-h-[92vh] overflow-y-auto relative">
+      <div class="flex justify-between items-center mb-4 pb-3 border-b border-amber-500/20">
+        <div>
+          <h3 class="text-lg font-bold text-white flex items-center gap-2 font-luxury text-xl">
+            <i class="fa-solid fa-pen-nib text-amber-400"></i> Share Client Story
+          </h3>
+          <p class="text-[11px] text-amber-200/70">Review will be highlighted live on our website</p>
+        </div>
+        <button aria-label="Close review form" onclick="closeReviewModal()" class="text-amber-300 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+
+      <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Your Name *</label>
+          <input type="text" id="rev-name" required class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-xs focus:outline-none focus:border-amber-400" placeholder="e.g. Anjali Sharma" />
+        </div>
+
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Location</label>
+          <input type="text" id="rev-location" class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-xs focus:outline-none focus:border-amber-400" placeholder="e.g. Taraori / Karnal" />
+        </div>
+
+        <div>
+          <label class="text-xs text-amber-200 block mb-1.5 font-medium">Your Rating *</label>
+          <div class="flex items-center gap-2 star-rating text-amber-400 text-xl" id="star-selector">
+            <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+            <span class="text-xs text-amber-200 ml-2 font-bold" id="rating-label">5 Stars</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Experience &amp; Craft Quality *</label>
+          <textarea id="rev-comment" required rows="3" class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-xs focus:outline-none focus:border-amber-400" placeholder="Product quality aur delivery experience kaisa raha?"></textarea>
+        </div>
+
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Upload Product Photo (Optional)</label>
+          <input type="file" id="rev-file" accept="image/*" class="w-full text-xs text-amber-200 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500/20 file:text-amber-300 hover:file:bg-amber-500/30 cursor-pointer" />
+        </div>
+
+        <button type="submit" class="w-full btn-gold-royal py-3.5 rounded-xl text-xs transition">
+          Publish Review
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden z-50 flex justify-end">
+    <div class="w-full max-w-md bg-[#10011c] border-l border-amber-500/30 h-full p-6 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex justify-between items-center pb-4 border-b border-amber-500/20">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2 font-luxury text-xl">
+            <i class="fa-solid fa-bag-shopping text-amber-400"></i> Your Shopping Bag
+          </h3>
+          <button aria-label="Close shopping cart" onclick="toggleCart()" class="text-amber-300 text-2xl hover:text-white leading-none">&times;</button>
+        </div>
+        <div id="cart-items" class="py-4 space-y-4 max-h-[50vh] overflow-y-auto pr-1"></div>
+      </div>
+      <div class="border-t border-amber-500/20 pt-4 space-y-3">
+        <div class="flex gap-2">
+          <input type="text" id="coupon-code" placeholder="Discount code (MIRAJ10)" class="w-full bg-[#1e0530] text-white text-xs px-3.5 py-2.5 rounded-xl border border-amber-500/30 focus:outline-none focus:border-amber-400" />
+          <button onclick="applyCoupon()" class="bg-[#3b0859] text-amber-200 text-xs px-4 py-2.5 rounded-xl hover:bg-amber-400 hover:text-black font-bold border border-amber-400/40 transition">Apply</button>
+        </div>
+        <div id="discount-row" class="hidden flex justify-between text-xs text-emerald-400 font-semibold">
+          <span>Special Discount (10%):</span>
+          <span id="discount-amount">-₹0</span>
+        </div>
+        <div class="flex justify-between text-base font-extrabold">
+          <span>Bag Total:</span>
+          <span class="text-amber-300 text-xl font-black" id="cart-total">₹0</span>
+        </div>
+        <button onclick="openCheckout()" class="w-full btn-gold-royal py-3.5 rounded-xl text-xs tracking-wider">
+          PROCEED TO CHECKOUT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-[#11021f] border border-amber-500/40 w-full max-w-lg p-6 rounded-3xl shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b border-purple-900/60">
+        <div>
+          <h3 class="text-xl font-bold text-white font-luxury">Order &amp; Delivery Details</h3>
+          <p class="text-[11px] text-amber-200/70">Nadana, Taraori Store: +91 9729843519</p>
+        </div>
+        <button aria-label="Close checkout" onclick="closeCheckout()" class="text-amber-300 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+
+      <div id="checkout-order-summary" class="mb-4 rounded-2xl border border-amber-500/35 bg-gradient-to-br from-[#1b0530] to-[#12021f] p-3.5 shadow-lg">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-amber-400"></i>
+            <span class="text-sm font-bold text-white">Your Order</span>
+          </div>
+          <span id="co-item-count" class="text-[11px] text-amber-200/70">0 items</span>
+        </div>
+        <div id="checkout-items-list" class="space-y-2.5"></div>
+      </div>
+
+      <div class="bg-[#210533] border border-amber-400/35 rounded-xl p-3 mb-4 text-xs text-amber-200 flex items-center gap-2.5">
+        <i class="fa-solid fa-handshake text-amber-400 text-base shrink-0"></i>
+        <span>Prices are <strong>Negotiable</strong>! Final rates can be adjusted directly on WhatsApp discussion.</span>
+      </div>
+
+      <div class="mb-4 p-3.5 rounded-xl border border-amber-500/30 bg-[#170326] text-xs">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-bold text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-location-crosshairs text-amber-400"></i> Auto Delivery Distance
+          </span>
+          <button type="button" onclick="detectUserLocation()" class="text-[11px] bg-amber-400 text-black px-3 py-1 rounded-md hover:bg-amber-300 font-bold flex items-center gap-1 transition">
+            <i class="fa-solid fa-arrows-rotate"></i> Refresh GPS
+          </button>
+        </div>
+        <p id="geo-status" class="text-amber-100/70 text-[11px]">Detecting your live distance from Taraori Karnal Store...</p>
+        <div id="geo-alert-box" class="hidden mt-2 p-2 rounded-lg text-[11px] leading-snug"></div>
+      </div>
+
+      <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Your Name *</label>
+          <input type="text" id="cust-name" required class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-sm focus:outline-none focus:border-amber-400" placeholder="e.g. Rahul" />
+        </div>
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Phone Number (WhatsApp Active) *</label>
+          <input type="tel" id="cust-phone" required class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-sm focus:outline-none focus:border-amber-400" placeholder="10-digit mobile number" />
+        </div>
+        <div>
+          <label class="text-xs text-amber-200 block mb-1 font-medium">Delivery Address &amp; Pincode *</label>
+          <textarea id="cust-address" required class="w-full bg-[#1b0530] text-white p-2.5 rounded-xl border border-amber-500/30 text-sm focus:outline-none focus:border-amber-400 h-16" placeholder="House/Shop no., Street, Colony, Taraori / Karnal..."></textarea>
+        </div>
+
+        <div>
+          <label class="text-xs text-amber-200 block mb-1.5 font-medium">Payment Option *</label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-amber-500/30 bg-[#1d0633] cursor-pointer hover:border-amber-400 transition">
+              <input type="radio" name="paymethod" value="COD" checked onchange="togglePaymentUI()" class="accent-amber-400" />
+              <span class="text-white font-bold"><i class="fa-solid fa-hand-holding-dollar text-amber-400 me-1"></i> Cash on Delivery</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-amber-500/30 bg-[#1d0633] cursor-pointer hover:border-amber-400 transition">
+              <input type="radio" name="paymethod" value="ONLINE" onchange="togglePaymentUI()" class="accent-amber-400" />
+              <span class="text-white font-bold"><i class="fa-solid fa-qrcode text-amber-400 me-1"></i> Online / QR Scanner</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="qr-payment-box" class="hidden p-4 rounded-xl border border-amber-500/40 bg-[#1a042e] text-center">
+          <p class="text-xs font-bold text-white mb-1">
+            <i class="fa-solid fa-qrcode text-amber-400"></i> Scan &amp; Pay on GPay / PhonePe / Paytm
+          </p>
+          <p class="text-[11px] text-amber-200/80 mb-2">Merchant UPI ID: <b class="text-amber-300">9729843519@upi</b></p>
+          
+          <div class="inline-block p-2 bg-white rounded-xl shadow-lg border border-amber-300 my-1">
+            <img id="upi-qr-image" src="" alt="Scan & Pay QR" class="w-40 h-40 object-contain mx-auto" />
+          </div>
+          <p class="text-[10px] text-amber-300 mt-1">Payment screenshot WhatsApp par bhej dein!</p>
+        </div>
+
+        <div class="bg-[#170326] p-3 rounded-xl border border-purple-950 text-xs space-y-1.5">
+          <div class="flex justify-between text-amber-100/70">
+            <span>Items Subtotal:</span>
+            <span id="co-items-subtotal">₹0</span>
+          </div>
+          <div class="flex justify-between text-emerald-400 hidden" id="co-discount-row">
+            <span>Discount (10%):</span>
+            <span id="co-discount-amount">-₹0</span>
+          </div>
+          <div class="flex justify-between text-amber-100/70">
+            <span>Delivery Fee (<span id="delivery-tag">Calculating...</span>):</span>
+            <span id="co-delivery-fee" class="font-bold text-white">₹0</span>
+          </div>
+          <div class="flex justify-between text-white font-extrabold text-sm pt-2 border-t border-purple-900/60">
+            <span>Grand Total:</span>
+            <span class="text-amber-300 text-base" id="co-grand-total">₹0</span>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-order" class="w-full btn-gold-royal py-3.5 rounded-xl text-xs transition">
+          Confirm Order via WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ZOOM MODAL -->
+  <div id="img-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 cursor-pointer" onclick="closeImgModal()">
+    <div class="relative w-full max-w-3xl max-h-[90vh] p-3 bg-[#140324] border border-amber-500/40 rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+       <button aria-label="Close image viewer" onclick="closeImgModal()" class="absolute top-3 right-3 text-white bg-black/70 w-9 h-9 rounded-full flex items-center justify-center text-lg hover:bg-amber-600 transition z-20">&times;</button>
+       <div class="relative flex items-center justify-center bg-black/30 rounded-xl min-h-[55vh]">
+         <button aria-label="Previous image" id="gallery-prev" onclick="galleryPrev()" class="absolute left-2 z-10 w-10 h-10 rounded-full bg-black/70 border border-amber-400/40 text-amber-300">&lsaquo;</button>
+         <img id="modal-img-tag" src="" alt="Product image preview" class="w-full h-[62vh] object-contain rounded-xl" />
+         <button aria-label="Next image" id="gallery-next" onclick="galleryNext()" class="absolute right-2 z-10 w-10 h-10 rounded-full bg-black/70 border border-amber-400/40 text-amber-300">&rsaquo;</button>
+       </div>
+       <div id="modal-gallery-thumbs" class="flex gap-2 overflow-x-auto mt-3 pb-1"></div>
+       <p id="modal-img-title" class="text-center text-xs text-amber-200 font-bold mt-2 pb-1"></p>
+     </div>
+   </div>
+
+   <!-- ADMIN PANEL MODAL -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-[#120220] border border-amber-500/50 w-full max-w-lg p-6 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto relative">
+      <button aria-label="Close owner panel" onclick="closeAdminModal()" class="absolute top-4 right-4 text-amber-300 hover:text-white text-2xl leading-none">&times;</button>
+      
+      <div id="admin-auth-box" class="text-center py-6">
+         <div class="w-14 h-14 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl border border-amber-500/25"><i class="fa-solid fa-shield-halved"></i></div>
+         <h3 class="text-xl font-bold text-white mb-1 font-luxury">Secure Owner Login</h3>
+         <p class="text-xs text-amber-200/70 mb-5">Supabase authentication — PIN code website mein store nahi hai</p>
+         <div class="max-w-sm mx-auto space-y-3">
+           <input type="email" id="admin-email" autocomplete="username" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Owner email" />
+           <input type="password" id="admin-password" autocomplete="current-password" class="w-full bg-[#1e0733] border border-amber-500/40 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Owner password" />
+           <button onclick="loginOwner()" class="w-full btn-gold-royal py-3 rounded-xl text-xs transition mt-2"><i class="fa-solid fa-right-to-bracket mr-1"></i> Owner Login</button>
+           <p class="text-[9px] text-amber-200/45 mt-3">Only the Supabase Auth account you create as owner can manage the catalog.</p>
+         </div>
+       </div>
+
+       <div id="admin-dashboard-box" class="hidden">
+        <div class="flex justify-between items-center pb-3 border-b border-purple-900/60 mb-4">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-boxes-packing text-amber-400"></i> Manage Catalog
+          </h3>
+          <button onclick="lockAdmin()" class="text-xs text-rose-400 hover:underline">Exit</button>
+        </div>
+
+        <form id="add-product-form" onsubmit="handleAddNewProduct(event)" class="space-y-3 bg-[#19052e] p-4 rounded-xl border border-purple-900/50">
+          <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">+ Add New Creation</h4>
+          <div>
+            <label class="text-[11px] text-amber-200 block mb-1">Product Title *</label>
+            <input type="text" id="adm-name" required class="w-full bg-[#0c0117] text-white p-2.5 rounded-lg border border-purple-800 text-xs focus:outline-none focus:border-amber-400" placeholder="e.g. Handmade Velvet Rose Bouquet" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] text-amber-200 block mb-1">Category *</label>
+              <input type="text" id="adm-category" list="category-suggestions" required class="w-full bg-[#0c0117] text-white p-2.5 rounded-lg border border-purple-800 text-xs focus:outline-none focus:border-amber-400" placeholder="Select or type new" />
+              <datalist id="category-suggestions">
+                <option value="Crochet Accessories"></option>
+                <option value="Crochet Bags"></option>
+                <option value="Embroidered Hankies"></option>
+                <option value="Photo Albums & Magazines"></option>
+                <option value="PVC Keepsake Cards"></option>
+                <option value="Personal Care"></option>
+              </datalist>
+            </div>
+            <div>
+              <label class="text-[11px] text-amber-200 block mb-1">Price (₹) *</label>
+              <input type="number" id="adm-price" min="1" required class="w-full bg-[#0c0117] text-white p-2.5 rounded-lg border border-purple-800 text-xs focus:outline-none focus:border-amber-400" placeholder="e.g. 199" />
+            </div>
+          </div>
+          <div>
+            <label class="text-[11px] text-amber-200 block mb-1">Description</label>
+            <textarea id="adm-desc" rows="2" class="w-full bg-[#0c0117] text-white p-2.5 rounded-lg border border-purple-800 text-xs focus:outline-none focus:border-amber-400" placeholder="Handcrafted details..."></textarea>
+          </div>
+          <div>
+             <label class="text-[11px] text-amber-200 block mb-1">Product Photos <span class="text-amber-400">(up to 5)</span></label>
+             <div class="grid grid-cols-2 gap-2">
+               <label class="flex items-center justify-center gap-2 p-3 rounded-xl border border-amber-500/35 bg-[#0c0117] text-amber-200 text-xs cursor-pointer hover:border-amber-400 transition">
+                 <i class="fa-solid fa-images text-amber-400"></i> Choose Photos
+                 <input type="file" id="adm-files" accept="image/*" multiple class="hidden" onchange="previewProductPhotos(this)" />
+               </label>
+               <label class="flex items-center justify-center gap-2 p-3 rounded-xl border border-purple-700 bg-[#0c0117] text-amber-200 text-xs cursor-pointer hover:border-amber-400 transition">
+                 <i class="fa-solid fa-camera text-amber-400"></i> Camera
+                 <input type="file" id="adm-camera" accept="image/*" capture="environment" class="hidden" onchange="addCameraPhoto(this)" />
+               </label>
+             </div>
+             <p class="text-[10px] text-amber-200/55 mt-1.5">1–5 photos • First photo = main product image</p>
+             <div id="adm-photo-preview" class="grid grid-cols-5 gap-2 mt-2"></div>
+             <input type="url" id="adm-url" class="w-full bg-[#0c0117] text-white p-2 rounded-lg border border-purple-800 text-xs mt-2" placeholder="Or paste one image URL: https://..." />
+           </div>
+           <button type="submit" class="w-full btn-gold-royal py-3 rounded-xl text-xs hover:opacity-95 transition">
+            Publish to Live Store
+          </button>
+        </form>
+
+        <div class="mt-6">
+          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-2">Live Products (<span id="adm-count">0</span>)</h4>
+          <div id="admin-product-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="bg-[#05000a] border-t border-amber-500/20 py-14 px-4 text-center text-xs text-amber-400/60">
+    <div class="flex justify-center items-center gap-2 mb-2">
+      <span class="text-white font-extrabold tracking-widest text-lg font-luxury">MIRAJ CRAFTS</span>
+      <span class="text-amber-400 font-bold">• TARAORI KARNAL</span>
+    </div>
+    
+    <p class="max-w-md mx-auto mb-4 text-amber-100/75 leading-relaxed">
+      Nadana, Taraori, Karnal, Haryana 132116 &bull; Direct WhatsApp / Phone: <a href="tel:+919729843519" class="text-amber-300 font-bold hover:underline">+91 9729843519</a>
+    </p>
+
+    <div class="flex justify-center items-center gap-4 mb-6">
+      <a href="https://www.instagram.com/mirajcraft_karnal?igsi=MmV5aTg5M20xODNr" target="_blank" class="flex items-center gap-2 bg-[#19042a] border border-amber-500/30 px-4 py-2 rounded-full text-amber-200 hover:text-black hover:bg-amber-400 transition text-xs font-semibold">
+        <i class="fa-brands fa-instagram text-base"></i> @mirajcraft_karnal
+      </a>
+      <a href="https://youtube.com/@mirajcraft_karnal?si=Wy8QleSVVjWjbdwb" target="_blank" class="flex items-center gap-2 bg-[#19042a] border border-rose-500/30 px-4 py-2 rounded-full text-rose-200 hover:text-white hover:bg-rose-600 transition text-xs font-semibold">
+        <i class="fa-brands fa-youtube text-base"></i> YouTube Channel
+      </a>
+    </div>
+
+    <div class="flex justify-center items-center gap-4 text-amber-400/40">
+      <span>&copy; 2026 MIRAJ Handcrafted Gifting Studio. All rights reserved.</span>
+      <button onclick="openAdminModal()" title="Owner Login" class="hover:text-amber-400 text-xs transition">
+        <i class="fa-solid fa-lock"></i>
+      </button>
+    </div>
+  </footer>
+
+  <script id="miraj-supabase-loader">
+    /* Load Supabase after the first page render so it cannot block the initial paint. */
+    (function(){
+      function loadSupabase(){
+        if(window.supabase || document.getElementById("miraj-supabase-script")) return;
+        var s=document.createElement("script");
+        s.id="miraj-supabase-script";
+        s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+        s.async=true;
+        s.onload=function(){
+          if(typeof initMirajSharedCatalog === "function") initMirajSharedCatalog();
+        };
+        document.head.appendChild(s);
+      }
+      if(document.readyState === "complete") loadSupabase();
+      else window.addEventListener("load",loadSupabase,{once:true});
+    })();
+  </script>
+  <script>
+    /* Serve resized WebP copies of Supabase images through a caching image CDN.
+       This cuts Supabase egress (5 GB free limit) and mobile page weight.
+       Set MIRAJ_IMG_PROXY=false to go back to direct Supabase URLs. */
+    const MIRAJ_IMG_PROXY = true;
+    function mirajThumb(url, w){
+      try{
+        if(!MIRAJ_IMG_PROXY || typeof url!=="string" || url.indexOf(".supabase.co/storage/")===-1) return url;
+        return "https://wsrv.nl/?url="+encodeURIComponent(url)+"&w="+(w||640)+"&output=webp&q=75";
+      }catch(_){ return url; }
+    }
+  </script>
+  <script>
+    /* MIRAJ SHARED CATALOG — Supabase Free */
+    const MIRAJ_SUPABASE_URL = "https://pmhodsbcvpwvzhchrfvb.supabase.co";
+    const MIRAJ_SUPABASE_KEY = "sb_publishable_PeZZY4u-f2-K5qgFNjESog_JRxJcE0K";
+    const MIRAJ_SUPABASE_BUCKET = "product-images";
+    let mirajSupabase = null;
+    let mirajSharedCatalogEnabled = false;
+    let mirajCatalogRequest = null;
+    let mirajReviewsRequest = null;
+    const MIRAJ_CLOUD_CACHE_MS = 60000;
+    const MIRAJ_CATALOG_TS_KEY = "miraz_catalog_cloud_ts";
+    const MIRAJ_REVIEWS_TS_KEY = "miraz_reviews_cloud_ts";
+
+    function initMirajSharedCatalog(){
+      try{
+        if(!window.supabase || !MIRAJ_SUPABASE_URL || !MIRAJ_SUPABASE_KEY){
+          console.warn("MIRAJ Supabase is not configured. Using local catalog.");
+          return;
+        }
+        mirajSupabase = window.supabase.createClient(MIRAJ_SUPABASE_URL, MIRAJ_SUPABASE_KEY, {
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+        });
+        mirajSharedCatalogEnabled = true;
+        // One cloud read per cache window. LocalStorage renders immediately; cloud only
+        // refreshes when stale, on tab return, or after an explicit admin change.
+        loadMirajCloudCatalog({force:false});
+        loadLiveReviews({force:false});
+      }catch(err){
+        console.error("MIRAJ Supabase initialization failed:", err);
+      }
+    }
+
+    function mirajRowsToItems(rows){
+      return (rows || []).filter(r => r && r.id !== "_meta").map(r => ({
+        id: String(r.id),
+        name: r.name || "",
+        category: r.category || "",
+        price: Number(r.price || 0),
+        desc: r.description || "",
+        img: Array.isArray(r.images) && r.images.length ? r.images[0] : (r.image || "images/mini-album.jpg"),
+        images: Array.isArray(r.images) ? r.images : (r.image ? [r.image] : []),
+        fallback: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80"
+      }));
+    }
+
+    async function loadMirajCloudCatalog(options={}){
+      if(!mirajSharedCatalogEnabled || !mirajSupabase) return;
+      const force = !!options.force;
+      const now = Date.now();
+      let cachedAt = 0;
+      try { cachedAt = Number(localStorage.getItem(MIRAJ_CATALOG_TS_KEY) || 0); } catch(_) {}
+      if(!force && cachedAt && (now - cachedAt) < MIRAJ_CLOUD_CACHE_MS) return;
+      if(mirajCatalogRequest) return mirajCatalogRequest;
+      mirajCatalogRequest = (async()=>{
+      try{
+        const { data, error } = await mirajSupabase.from("products").select("id,name,price,description,category,images,created_at").order("created_at", {ascending:false});
+        if(error) throw error;
+        const meta = (data || []).some(r => String(r.id) === "_meta");
+        const rows = (data || []).filter(r => String(r.id) !== "_meta");
+        if(!rows.length && !meta){
+          // First setup: publish the catalog that already exists in this browser once.
+          const seed = (menuItems || []).map(item => mirajItemToRow(item));
+          if(seed.length){
+            const {error: seedError} = await mirajSupabase.from("products").upsert(seed, {onConflict:"id"});
+            if(seedError) throw seedError;
+          }
+          await mirajSupabase.from("products").upsert([{id:"_meta", name:"MIRAJ_CATALOG_META", price:0, description:"initialized", category:"_meta", images:[]}], {onConflict:"id"});
+          return;
+        }
+        menuItems = mirajRowsToItems(rows);
+        // Cloud is the source of truth. Do not copy the full catalog (which may
+        // contain large image data) into localStorage; browsers have small quotas.
+        // Keep only a lightweight offline fallback when it fits.
+        try {
+          const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
+          localStorage.setItem("miraz_products", JSON.stringify(slim));
+        } catch(storageErr) {
+          console.warn("MIRAJ local fallback storage skipped:", storageErr);
+          try { localStorage.removeItem("miraz_products"); } catch(_) {}
+        }
+        refreshCategoryFilters(); renderMenu();
+        if(typeof renderAdminList === "function") renderAdminList();
+        try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY, String(Date.now())); } catch(_) {}
+      }catch(err){
+        console.error("MIRAJ Supabase catalog sync error:", err);
+        mirajCloudStatus("⚠ Online catalog unavailable — using this device's saved catalog.", false);
+      } finally {
+        mirajCatalogRequest = null;
+      }
+      })();
+      return mirajCatalogRequest;
+    }
+
+    function mirajItemToRow(item){
+      const imgs = Array.isArray(item.images) && item.images.length ? item.images : (item.img ? [item.img] : []);
+      return {id:String(item.id), name:item.name || "", price:Number(item.price || 0), description:item.desc || item.description || "", category:item.category || "", images:imgs};
+    }
+
+    async function pushMirajCatalogToCloud(){
+      if(!mirajSharedCatalogEnabled || !mirajSupabase) return false;
+      const rows = menuItems.map(mirajItemToRow);
+      const {error} = await mirajSupabase.from("products").upsert(rows, {onConflict:"id"});
+      if(error){ console.error("MIRAJ catalog save failed:", error); mirajCloudStatus("⚠ Product save failed: "+error.message, false); return false; }
+      return true;
+    }
+
+    async function mirajOptimizeImageFile(file, maxSide=1600, quality=.80){
+      if(!file || !/^image\//i.test(file.type) || /image\/(svg|gif)/i.test(file.type)) return file;
+      // Avoid CPU work for already-small images.
+      if(file.size <= 120*1024) return file;
+      return new Promise(resolve=>{
+        const img=new Image();
+        const url=URL.createObjectURL(file);
+        img.onload=()=>{
+          try{
+            const scale=Math.min(1, maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+            const w=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+            const h=Math.max(1,Math.round((img.naturalHeight||1)*scale));
+            const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+            const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+            if(!ctx) throw new Error('canvas unavailable');
+            ctx.drawImage(img,0,0,w,h);
+            canvas.toBlob(blob=>{
+              URL.revokeObjectURL(url);
+              if(!blob || blob.size >= file.size) return resolve(file);
+              resolve(new File([blob], (file.name||'image').replace(/\.[^.]+$/,'')+'.webp', {type:'image/webp',lastModified:Date.now()}));
+            },'image/webp',quality);
+          }catch(_){ URL.revokeObjectURL(url); resolve(file); }
+        };
+        img.onerror=()=>{URL.revokeObjectURL(url);resolve(file)};
+        img.src=url;
+      });
+    }
+
+    async function uploadMirajProductPhotos(files, productId){
+      if(!mirajSharedCatalogEnabled || !mirajSupabase) throw new Error("Supabase is not connected.");
+      const urls=[];
+      for(let i=0;i<files.length && i<5;i++){
+        const file=await mirajOptimizeImageFile(files[i],1100,.78);
+        const safeName=(file.name || "photo.webp").replace(/[^a-zA-Z0-9._-]/g,"-");
+        const path=`${productId}/${Date.now()}-${i}-${safeName}`;
+        const {error}=await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,file,{contentType:file.type || "image/webp",cacheControl:"31536000",upsert:false});
+        if(error) throw error;
+        urls.push(mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path).data.publicUrl);
+      }
+      return urls;
+    }
+
+    function mirajCloudStatus(message, ok=true){
+      let el=document.getElementById("miraj-cloud-status");
+      if(!el){
+        el=document.createElement("div"); el.id="miraj-cloud-status";
+        el.style.cssText="position:fixed;bottom:18px;right:18px;z-index:999999;padding:10px 14px;border-radius:12px;font:600 12px Arial;background:#160b22;color:#f7d774;border:1px solid rgba(247,215,116,.35);box-shadow:0 8px 30px rgba(0,0,0,.35);max-width:320px";
+        document.body.appendChild(el);
+      }
+      el.textContent=message; el.style.color=ok?"#f7d774":"#ff8f8f";
+      setTimeout(()=>{if(el)el.remove()},5000);
+    }
+  </script>
+
+  <script>
+    const OWNER_EMAIL = ""; // Set this only if you want to prefill the owner email.
+    let selectedProductPhotos = [];
+    let mirajOwnerSession = null;
+
+    const STORE_LAT = 29.8020;
+    const STORE_LON = 76.9280;
+
+    let detectedDistanceKm = null;
+    let customerLatitude = null;
+    let customerLongitude = null;
+    let deliveryCharges = 0;
+    let isDistanceChecked = false;
+
+    function playLotusChimeSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        const chimeNotes = [587.33, 739.99, 880.00, 1174.66, 1479.98];
+
+        chimeNotes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.07);
+
+          gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.07);
+          gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + idx * 0.07 + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.07 + 1.4);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(ctx.currentTime + idx * 0.07);
+          osc.stop(ctx.currentTime + idx * 0.07 + 1.4);
+        });
+      } catch (err) {
+        console.warn("Audio Context:", err);
+      }
+    }
+
+    function triggerLotusPetalShower() {
+      const container = document.getElementById('petal-container');
+      container.innerHTML = '';
+
+      const lotusIcons = ['🪷', '🌸', '🪷', '🌺', '✨', '🪷'];
+      const totalPetals = 36;
+
+      for (let i = 0; i < totalPetals; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'lotus-petal';
+        petal.innerHTML = lotusIcons[Math.floor(Math.random() * lotusIcons.length)];
+
+        const startX = Math.random() * 100;
+        const fontSize = Math.floor(Math.random() * 16) + 20;
+        const duration = (Math.random() * 2.0 + 2.5).toFixed(2);
+        const delay = (Math.random() * 0.6).toFixed(2);
+
+        petal.style.left = startX + 'vw';
+        petal.style.fontSize = fontSize + 'px';
+        petal.style.animationDuration = duration + 's';
+        petal.style.animationDelay = delay + 's';
+        petal.style.filter = 'drop-shadow(0 6px 10px rgba(245, 196, 67, 0.4))';
+
+        container.appendChild(petal);
+      }
+
+      setTimeout(() => { container.innerHTML = ''; }, 5200);
+    }
+
+    const defaultProducts = [
+      { id: 1, category: "Crochet Accessories", name: "Sunflower Crochet Keychain", price: 89, desc: "Hand-knitted bright sunflower pendant keychain with gold-toned key ring.", img: "images/sunflower-keychain-book.jpg", fallback: "https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?auto=format&fit=crop&w=500&q=80" },
+      { id: 2, category: "Crochet Accessories", name: "Handmade Crochet Rose Hair Clip for Women & Girls", price: 199, desc: "Intricate red crochet rose blossom with dangling floral vines on alligator clip.", img: "images/crochet-rose-hairclip.jpg", fallback: "https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?auto=format&fit=crop&w=500&q=80" },
+      { id: 3, category: "Crochet Bags", name: "Crochet Mobile Cover & Crossbody Pouch", price: 199, desc: "Hand-knitted phone pouch with floral motif square, wooden button & hanging shoulder strap.", img: "images/crochet-phone-pouch.jpg", fallback: "https://images.unsplash.com/photo-1584006682522-dc17d6c0d963?auto=format&fit=crop&w=500&q=80" },
+      { id: 4, category: "Crochet Bags", name: "Sunflower Crochet Backpack, Handmade Boho", price: 319, desc: "Artisanal bohemian sunflower drawstring backpack with woven flap & adjustable straps.", img: "images/sunflower-crochet-backpack.jpg", fallback: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=500&q=80" },
+      { id: 5, category: "Crochet Bags", name: "Rose Crochet Flower Handbag / Crossbody", price: 449, desc: "Sculpted 3D red blooming rose designer purse with metallic chain strap and ring handle.", img: "images/rose-crochet-crossbody.jpg", fallback: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=500&q=80" },
+      { id: 6, category: "Crochet Accessories", name: "Handmade Crochet Flower Bouquet (Mini Bunch)", price: 158, desc: "Forever knitted colorful yarn flower arrangement wrapped in delicate Korean craft paper.", img: "images/crochet-flower-bouquet.jpg", fallback: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=500&q=80" },
+      { id: 7, category: "Embroidered Hankies", name: "Custom Embroidered Handkerchief (Couple Designs)", price: 149, desc: "Pure cotton handkerchief hand-stitched with romantic couple silhouettes, wedding dates, and names.", img: "images/embroidered-couple-hankies.jpg", fallback: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=500&q=80" },
+      { id: 8, category: "Photo Albums & Magazines", name: "Customized A5 Magazine Size Photo Book", price: 199, desc: "Glossy editorial A5 photo magazine layout with high-resolution photo collages and journal notes.", img: "images/a5-magazine-size.jpg", fallback: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" },
+      { id: 9, category: "Photo Albums & Magazines", name: "Mini Photo Album (16 - 70 Photos)", price: 199, desc: "Collect moments, cherish forever. Spiral mini photo album customized with your memories.", img: "images/mini-album.jpg", fallback: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80" },
+      { id: 10, category: "PVC Keepsake Cards", name: "PVC Friendship License", price: 99, desc: "Glossy durable PVC friendship license driving permit card customized with bestie's photo.", img: "images/pvc-friendship.jpg", fallback: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=500&q=80" },
+      { id: 11, category: "PVC Keepsake Cards", name: "PVC Relationship License", price: 99, desc: "Couple relationship license card with couple photo, anniversary date & fun permit conditions.", img: "images/pvc-relationship.jpg", fallback: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" },
+      { id: 12, category: "PVC Keepsake Cards", name: "PVC Couple Card (Pocket Size)", price: 99, desc: "Wallet size waterproof keepsake card with scannable Spotify song code & photo.", img: "images/pvc-couple-card.jpg", fallback: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
+      { id: 13, category: "Personal Care", name: "Clensta Brand Deodorant (150ml)", price: 199, desc: "Long-lasting premium all-day fragrance body spray (Black / Blue Edition).", img: "images/clensta-deodorant.jpg", fallback: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=500&q=80" }
+    ];
+
+    // Real customer reviews only. No demo/fake reviews are seeded.
+    let menuItems = [];
+    let customerReviews = [];
+    let categories = ["All"];
+    let currentCategory = "All";
+    let cart = [];
+    let isDiscountApplied = false;
+    let selectedRating = 5;
+
+    function loadLiveProducts() {
+      const saved = localStorage.getItem('miraz_products');
+      if (saved) {
+        try { menuItems = JSON.parse(saved); } catch(e) { menuItems = [...defaultProducts]; }
+      } else {
+        menuItems = [...defaultProducts];
+      }
+      refreshCategoryFilters();
+      renderMenu();
+    }
+
+    async function saveProducts() {
+      // Supabase is the shared source of truth. Avoid localStorage quota errors
+      // when products contain large/base64 images.
+      try {
+        const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
+        localStorage.setItem('miraz_products', JSON.stringify(slim));
+      } catch(storageErr) {
+        console.warn("MIRAJ local catalog storage skipped:", storageErr);
+        try { localStorage.removeItem('miraz_products'); } catch(_) {}
+      }
+      refreshCategoryFilters();
+      renderMenu();
+      const ok=await pushMirajCatalogToCloud();
+      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} }
+      return ok;
+    }
+
+    async function loadLiveReviews(options={}) {
+      if (mirajSharedCatalogEnabled && mirajSupabase) {
+        const force=!!options.force;
+        const now=Date.now();
+        let cachedAt=0;
+        try { cachedAt=Number(localStorage.getItem(MIRAJ_REVIEWS_TS_KEY)||0); } catch(_) {}
+        if(!force && cachedAt && (now-cachedAt)<MIRAJ_CLOUD_CACHE_MS) return;
+        if(mirajReviewsRequest) return mirajReviewsRequest;
+        mirajReviewsRequest=(async()=>{
+        try {
+          const { data, error } = await mirajSupabase
+            .from("reviews")
+            .select("id,name,location,rating,review,image,created_at")
+            .order("created_at", { ascending: false });
+          if (error) throw error;
+          customerReviews = (data || []).map(r => ({
+            id: String(r.id),
+            name: r.name || "Customer",
+            location: r.location || "",
+            rating: Math.max(1, Math.min(5, Number(r.rating || 5))),
+            date: r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {day:"numeric", month:"short", year:"numeric"}) : "Recent",
+            comment: r.review || "",
+            photo: r.image || null,
+            fallbackPhoto: null
+          }));
+          renderMarqueeReviews();
+          mirajReviewsCloudStatus(true);
+          try { localStorage.setItem(MIRAJ_REVIEWS_TS_KEY,String(Date.now())); } catch(_) {}
+          return;
+        } catch (err) {
+          console.error("MIRAJ reviews sync error:", err);
+          mirajReviewsCloudStatus(false);
+        } finally {
+          mirajReviewsRequest=null;
+        }
+        })();
+        return mirajReviewsRequest;
+      }
+      // Offline fallback: keep only lightweight, locally submitted reviews.
+      try {
+        const saved = localStorage.getItem('miraz_reviews');
+        customerReviews = saved ? JSON.parse(saved) : [];
+      } catch (_) {
+        customerReviews = [];
+      }
+      renderMarqueeReviews();
+    }
+
+    function saveReviewsLocalOnly() {
+      try {
+        const slim = customerReviews.map(r => ({
+          ...r,
+          photo: (typeof r.photo === 'string' && !r.photo.startsWith('data:')) ? r.photo : null
+        }));
+        localStorage.setItem('miraz_reviews', JSON.stringify(slim));
+      } catch (_) {}
+      renderMarqueeReviews();
+    }
+
+    function mirajReviewsCloudStatus(online) {
+      const el = document.getElementById('reviews-cloud-status');
+      if (!el) return;
+      el.textContent = online ? '● Reviews synced online' : '● Online review sync unavailable';
+      el.className = online ? 'text-[10px] text-emerald-300/80 mt-1' : 'text-[10px] text-rose-300/80 mt-1';
+    }
+
+    async function uploadMirajReviewPhoto(file, reviewId) {
+      if (!file || !mirajSupabase) return null;
+      file=await mirajOptimizeImageFile(file,900,.75);
+      const safeName = (file.name || 'review-photo.webp').replace(/[^a-zA-Z0-9._-]/g, '-');
+      const path = `reviews/${reviewId}/${Date.now()}-${safeName}`;
+      const { error } = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path, file, {
+        contentType: file.type || 'image/webp',
+        cacheControl: '31536000',
+        upsert: false
+      });
+      if (error) throw error;
+      return mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path).data.publicUrl;
+    }
+
+    function escReviewText(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+
+    function generateReviewCardHTML(rev) {
+      const starsHtml = Array.from({length: 5}, (_, i) => 
+        `<i class="fa-solid fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600'} text-xs"></i>`
+      ).join('');
+
+      const photoHtml = rev.photo ? `
+        <div class="mt-3 rounded-xl overflow-hidden border border-amber-500/20 bg-[#0d0217] h-36 flex items-center justify-center cursor-pointer" onclick="openImgModal('${rev.photo}', '${rev.fallbackPhoto || ''}', '${encodeURIComponent(rev.name + ' Photo Review')}')">
+          <img src="${mirajThumb(rev.photo,500)}" onerror="this.onerror=null; this.src='${rev.fallbackPhoto || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" class="w-full h-full object-cover hover:scale-105 transition duration-300" alt="Review Photo" loading="lazy" decoding="async" width="600" height="360" />
+        </div>
+      ` : '';
+
+      return `
+        <div class="review-bubble luxury-card p-4 rounded-2xl flex flex-col justify-between shrink-0 shadow-lg">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-600 text-black font-extrabold flex items-center justify-center text-xs shadow-md shrink-0">
+                  ${escReviewText(rev.name).charAt(0).toUpperCase()}
+                </div>
+                <div class="truncate">
+                  <h4 class="text-xs font-bold text-white leading-tight truncate">${escReviewText(rev.name)}</h4>
+                  <p class="text-[10px] text-amber-200/70 truncate">${escReviewText(rev.location || 'Customer')}</p>
+                </div>
+              </div>
+              <span class="text-[10px] text-amber-300/50 shrink-0">${escReviewText(rev.date || 'Recent')}</span>
+            </div>
+            <div class="flex items-center gap-1 mb-2">${starsHtml}</div>
+            <p class="text-xs text-amber-100/90 leading-relaxed italic line-clamp-3">"${escReviewText(rev.comment)}"</p>
+          </div>
+          ${photoHtml}
+        </div>
+      `;
+    }
+
+    function renderMarqueeReviews() {
+      const track = document.getElementById('marquee-track');
+      if (!track) return;
+      if (!customerReviews.length) {
+        track.innerHTML = `<div class="w-full text-center py-10 px-6 text-amber-100/60 text-sm">No customer reviews yet. Be the first to share your experience.</div>`;
+        return;
+      }
+      const singleListHtml = customerReviews.map(r => generateReviewCardHTML(r)).join('');
+      track.innerHTML = singleListHtml + singleListHtml;
+    }
+
+    function setRating(r) {
+      selectedRating = r;
+      const stars = document.querySelectorAll('#star-selector i');
+      stars.forEach((star, idx) => {
+        if (idx < r) {
+          star.classList.add('text-amber-400');
+          star.classList.remove('text-gray-600');
+        } else {
+          star.classList.remove('text-amber-400');
+          star.classList.add('text-gray-600');
+        }
+      });
+      document.getElementById('rating-label').innerText = `${r} Stars`;
+    }
+
+    function openReviewModal() {
+      document.getElementById('review-modal').classList.remove('hidden');
+      setRating(5);
+    }
+
+    function closeReviewModal() {
+      document.getElementById('review-modal').classList.add('hidden');
+    }
+
+    async function handleReviewSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('rev-name').value.trim();
+      const location = document.getElementById('rev-location').value.trim();
+      const comment = document.getElementById('rev-comment').value.trim();
+      const fileInput = document.getElementById('rev-file');
+
+      if (!name || !comment) {
+        alert('Please enter your name and review.');
+        return;
+      }
+
+      const reviewId = String(Date.now());
+      const btn = document.querySelector('#review-form button[type="submit"]');
+      const originalText = btn ? btn.innerHTML : '';
+
+      try {
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…'; }
+        let imageUrl = null;
+
+        if (mirajSharedCatalogEnabled && mirajSupabase) {
+          if (fileInput.files && fileInput.files[0]) {
+            imageUrl = await uploadMirajReviewPhoto(fileInput.files[0], reviewId);
+          }
+          const { error } = await mirajSupabase.from('reviews').insert({
+            id: reviewId,
+            name,
+            location: location || null,
+            rating: selectedRating,
+            review: comment,
+            image: imageUrl
+          });
+          if (error) throw error;
+          await loadLiveReviews({force:true});
+          document.getElementById('review-form').reset();
+          closeReviewModal();
+          alert('Thank you! Your review has been published.');
+        } else {
+          const newReview = {
+            id: reviewId,
+            name,
+            location: location || '',
+            rating: selectedRating,
+            date: 'Just now',
+            comment,
+            photo: null,
+            fallbackPhoto: null
+          };
+          customerReviews.unshift(newReview);
+          saveReviewsLocalOnly();
+          document.getElementById('review-form').reset();
+          closeReviewModal();
+          alert('Review saved on this device. Online sync is not connected.');
+        }
+      } catch (err) {
+        console.error('MIRAJ review publish failed:', err);
+        alert('Review save nahi ho paya: ' + (err.message || err));
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+      }
+    }
+
+    function refreshCategoryFilters() {
+      categories = ["All", ...new Set(menuItems.map(item => item.category.trim()))];
+      renderCategories();
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('category-filters');
+      container.innerHTML = categories.map(cat => `
+        <button onclick="filterCategory('${cat}')" class="category-btn px-4 py-2 rounded-full text-xs font-semibold border border-amber-500/30 hover:border-amber-400 transition ${cat === currentCategory ? 'active' : 'text-amber-200/90 bg-[#19042b]/70' }">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      renderCategories();
+      renderMenu();
+    }
+
+    let mirajMenuRenderTimer=null;
+    function scheduleMenuRender(){
+      clearTimeout(mirajMenuRenderTimer);
+      mirajMenuRenderTimer=setTimeout(renderMenu,80);
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('menu-container');
+      const searchQuery = document.getElementById('search-input').value.toLowerCase();
+      
+      let filtered = currentCategory === "All" ? menuItems : menuItems.filter(i => i.category === currentCategory);
+      if(searchQuery) {
+        filtered = filtered.filter(i => i.name.toLowerCase().includes(searchQuery) || i.desc.toLowerCase().includes(searchQuery));
+      }
+
+      if(filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-amber-300/70 font-semibold">No products found.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between transition relative group">
+          <span class="absolute top-3 right-3 bg-black/85 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold text-amber-300 flex items-center gap-1 border border-amber-500/40 z-10 shadow-md">
+            <i class="fa-solid fa-sparkles text-amber-300"></i> HANDCRAFTED
+          </span>
+          <div class="product-img-box cursor-pointer" onclick="openImgModal('${item.img}', '${item.fallback || ''}', '${encodeURIComponent(item.name)}', '${encodeURIComponent(JSON.stringify(item.images || [item.img]))}')"
+>
+            <img src="${mirajThumb(item.img,640)}" onerror="this.onerror=null; this.src='${item.img}';" alt="${item.name}" loading="lazy" decoding="async" width="640" height="640" />\n             ${(item.images && item.images.length > 1) ? `<span class="absolute top-2 left-2 bg-black/80 text-amber-300 px-2 py-1 rounded-full text-[9px] font-bold border border-amber-500/35"><i class="fa-solid fa-images mr-1"></i>${item.images.length} PHOTOS</span>` : ''}
+            <div class="absolute bottom-2.5 right-2.5 bg-black/80 backdrop-blur-sm text-amber-200 text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 opacity-90">
+              <i class="fa-solid fa-magnifying-glass-plus text-amber-300"></i> Zoom
+            </div>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start gap-2 mb-1.5">
+                <h3 class="text-sm font-bold text-white leading-snug line-clamp-2">${item.name}</h3>
+                <span class="text-amber-300 font-black text-base shrink-0">₹${item.price}</span>
+              </div>
+              <p class="text-[11px] text-amber-100/75 mb-2.5 line-clamp-2 leading-relaxed">${item.desc || ''}</p>
+              <div class="flex items-center justify-between text-[10px] text-amber-300/90 font-semibold mb-3">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-tag"></i> Negotiable</span>
+                <span class="text-amber-200/50">Customizable</span>
+              </div>
+            </div>
+            <button onclick="addToCart(${item.id})" class="w-full bg-[#170326] text-amber-300 border border-amber-400/40 py-2.5 rounded-xl text-xs font-bold hover:btn-gold-royal hover:text-black transition flex items-center justify-center gap-2 shadow-md">
+              <i class="fa-solid fa-cart-plus"></i> ADD TO BAG
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const badgeCard = document.getElementById('badge-card');
+    if (badgeCard) {
+      window.addEventListener('mousemove', (e) => {
+        const rect = badgeCard.getBoundingClientRect();
+        const x = (e.clientX - (rect.left + rect.width / 2)) / 16;
+        const y = (e.clientY - (rect.top + rect.height / 2)) / 16;
+        badgeCard.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) scale3d(1.04, 1.04, 1.04)`;
+      });
+      window.addEventListener('mouseleave', () => {
+        badgeCard.style.transform = `rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)`;
+      });
+    }
+
+    function calculateDistanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return Math.round(R * c * 10) / 10;
+    }
+
+    function detectUserLocation() {
+      const statusEl = document.getElementById('geo-status');
+      statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-400"></i> Calculating distance to Taraori Store...`;
+
+      if (!navigator.geolocation) {
+        statusEl.innerHTML = `⚠️ Geolocation not supported by browser. Defaulting to local delivery.`;
+        applyDistanceCalculation(4);
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+          customerLatitude = userLat;
+          customerLongitude = userLon;
+          const dist = calculateDistanceKm(STORE_LAT, STORE_LON, userLat, userLon);
+          applyDistanceCalculation(dist);
+        },
+        (error) => {
+          console.warn("Location error:", error);
+          statusEl.innerHTML = `⚠️ GPS not granted. Defaulting to local delivery (Taraori/Karnal).`;
+          applyDistanceCalculation(4);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    function applyDistanceCalculation(dist) {
+      detectedDistanceKm = dist;
+      isDistanceChecked = true;
+      const statusEl = document.getElementById('geo-status');
+      const alertBox = document.getElementById('geo-alert-box');
+      const tagEl = document.getElementById('delivery-tag');
+      const feeEl = document.getElementById('co-delivery-fee');
+      const submitBtn = document.getElementById('btn-submit-order');
+
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
+      let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
+      let discountedItemsTotal = rawTotal - discount;
+
+      if (dist > 15) {
+        deliveryCharges = 100;
+        tagEl.innerText = `${dist} km (>15km)`;
+        feeEl.innerText = `+₹100`;
+        statusEl.innerHTML = `<span class="text-amber-300 font-bold">📍 Distance: ${dist} km from Taraori</span> (>15 km detected)`;
+
+        if (discountedItemsTotal < 299) {
+          alertBox.className = "mt-2 p-2.5 rounded-lg text-[11px] bg-rose-950/90 border border-rose-600 text-rose-200 block";
+          alertBox.innerHTML = `⚠️ <b>Outstation Policy:</b> Distance is <b>${dist} km</b>. Kam se kam <b>₹299</b> ka order hona zaroori hai! (Current Total: ₹${discountedItemsTotal}).`;
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          submitBtn.innerText = `Min Order ₹299 for >15km`;
+        } else {
+          alertBox.className = "mt-2 p-2 rounded-lg text-[11px] bg-purple-950 border border-amber-400/50 text-amber-200 block";
+          alertBox.innerHTML = `✓ Eligible for Delivery: ₹100 courier/delivery applied.`;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          submitBtn.innerText = `Confirm Order via WhatsApp`;
+        }
+      } else {
+        deliveryCharges = 0;
+        tagEl.innerText = `${dist} km (Free Local)`;
+        feeEl.innerText = `FREE`;
+        statusEl.innerHTML = `<span class="text-emerald-400 font-bold">📍 Distance: ${dist} km from Taraori</span> (Free Local Delivery)`;
+        alertBox.className = "mt-2 p-2 rounded-lg text-[11px] bg-emerald-950/80 border border-emerald-600 text-emerald-200 block";
+        alertBox.innerHTML = `🎉 Aap 15 km ke radius mein hain! Local Free Delivery available.`;
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        submitBtn.innerText = `Confirm Order via WhatsApp`;
+      }
+
+      updateCheckoutTotals();
+    }
+
+    function togglePaymentUI() {
+      const selected = document.querySelector('input[name="paymethod"]:checked').value;
+      const qrBox = document.getElementById('qr-payment-box');
+      const qrImg = document.getElementById('upi-qr-image');
+
+      if (selected === 'ONLINE') {
+        let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
+        let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
+        let finalGrand = (rawTotal - discount) + deliveryCharges;
+
+        const upiLink = `upi://pay?pa=9729843519@upi&pn=MiRAJ%20Handmade%20Crafts&am=${finalGrand}&cu=INR&tn=Order%20Payment`;
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
+        qrBox.classList.remove('hidden');
+      } else {
+        qrBox.classList.add('hidden');
+      }
+    }
+
+    function getNumericPrice(item) {
+      const raw = item && (item.price ?? item.amount ?? item.cost);
+      if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+      const cleaned = String(raw ?? "0").replace(/[^0-9.\-]/g, "");
+      const n = Number(cleaned);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function getNumericQty(item) {
+      const n = Number(item && item.qty);
+      return Number.isFinite(n) && n > 0 ? n : 1;
+    }
+
+    function addToCart(id) {
+      const item = menuItems.find(p => String(p.id) === String(id));
+      if (!item) return;
+      const normalized = {...item, id: String(item.id), price: getNumericPrice(item)};
+      const inCart = cart.find(c => String(c.id) === String(normalized.id));
+      if (inCart) { inCart.qty = getNumericQty(inCart) + 1; inCart.price = getNumericPrice(inCart); }
+      else { cart.push({...normalized, qty: 1}); }
+      playLotusChimeSound();
+      triggerLotusPetalShower();
+      updateCartUI();
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('coupon-code').value.trim().toUpperCase();
+      if(code === 'MIRAJ10') {
+        isDiscountApplied = true;
+        alert("Coupon Applied! 10% Discount Added.");
+      } else {
+        alert("Invalid Coupon Code! Use 'MIRAJ10'");
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      document.getElementById('cart-count').innerText = cart.reduce((acc, c) => acc + c.qty, 0);
+      const cartContainer = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total');
+      
+      let total = 0;
+      cartContainer.innerHTML = cart.map(item => {
+        total += item.price * item.qty;
+        return `
+          <div class="flex justify-between items-center border-b border-amber-500/15 pb-3">
+            <div>
+              <h4 class="text-white text-xs font-semibold mb-1">${item.name}</h4>
+              <p class="text-xs text-amber-300 font-bold">₹${item.price} x ${item.qty}</p>
+            </div>
+            <div class="flex items-center gap-2 bg-[#1e0631] p-1 rounded-lg border border-amber-500/30">
+              <button aria-label="Decrease quantity" onclick="changeQty('${item.name}', -1)" class="px-2 py-0.5 rounded text-xs text-white hover:bg-amber-400 hover:text-black transition">-</button>
+              <span class="text-xs text-white font-bold px-1">${item.qty}</span>
+              <button aria-label="Increase quantity" onclick="changeQty('${item.name}', 1)" class="px-2 py-0.5 rounded text-xs text-white hover:bg-amber-400 hover:text-black transition">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if(isDiscountApplied) {
+        const discount = Math.round(total * 0.1);
+        document.getElementById('discount-row').classList.remove('hidden');
+        document.getElementById('discount-amount').innerText = `-₹${discount}`;
+        total = total - discount;
+      } else {
+        document.getElementById('discount-row').classList.add('hidden');
+      }
+
+      totalEl.innerText = `₹${total}`;
+    }
+
+    function changeQty(name, delta) {
+      const item = cart.find(c => c.name === name);
+      if(item) {
+        item.qty += delta;
+        if(item.qty <= 0) { cart = cart.filter(c => c.name !== name); }
+      }
+      updateCartUI();
+    }
+
+    function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
+    
+    function openCheckout() {
+      if(cart.length === 0) return alert("Your cart is empty!");
+      toggleCart();
+      document.getElementById('checkout-modal').classList.remove('hidden');
+      renderCheckoutItems();
+      detectUserLocation();
+      updateCheckoutTotals();
+    }
+
+    function renderCheckoutItems() {
+      const list = document.getElementById('checkout-items-list');
+      const count = document.getElementById('co-item-count');
+      if (!list) return;
+      const totalQty = cart.reduce((sum, item) => sum + getNumericQty(item), 0);
+      if (count) count.textContent = `${totalQty} ${totalQty === 1 ? 'item' : 'items'}`;
+      if (!cart.length) {
+        list.innerHTML = '<div class="text-center text-amber-200/70 text-xs py-3">Your cart is empty.</div>';
+        return;
+      }
+      list.innerHTML = cart.map((item) => {
+        const qty = getNumericQty(item);
+        const price = getNumericPrice(item);
+        const lineTotal = price * qty;
+        const img = (item.images && item.images[0]) || item.image || item.img || item.fallback || '';
+        const safeName = String(item.name || 'Product').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+        return `<div class="flex items-center gap-3 rounded-xl border border-purple-900/70 bg-[#170326] p-2.5">
+          <div class="w-16 h-16 rounded-lg overflow-hidden bg-black/30 border border-amber-500/20 shrink-0">
+            ${img ? `<img src="${mirajThumb(img,160)}" alt="${safeName}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : '<div class="w-full h-full flex items-center justify-center text-amber-400"><i class="fa-solid fa-gift"></i></div>'}
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-white text-sm font-bold leading-tight">${safeName}</div>
+            <div class="text-amber-300 text-xs font-semibold mt-1">₹${price.toLocaleString('en-IN')} × ${qty}</div>
+          </div>
+          <div class="text-amber-300 font-extrabold text-base whitespace-nowrap">₹${lineTotal.toLocaleString('en-IN')}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
+
+    function updateCheckoutTotals() {
+      renderCheckoutItems();
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
+      let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
+      let discountedItemsTotal = rawTotal - discount;
+      let grandTotal = discountedItemsTotal + deliveryCharges;
+
+      document.getElementById('co-items-subtotal').innerText = `₹${rawTotal}`;
+      if (isDiscountApplied) {
+        document.getElementById('co-discount-row').classList.remove('hidden');
+        document.getElementById('co-discount-amount').innerText = `-₹${discount}`;
+      } else {
+        document.getElementById('co-discount-row').classList.add('hidden');
+      }
+
+      document.getElementById('co-grand-total').innerText = `₹${grandTotal}`;
+      togglePaymentUI();
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      const custName = document.getElementById('cust-name').value;
+      const custPhone = document.getElementById('cust-phone').value;
+      const custAddress = document.getElementById('cust-address').value;
+      const payMethod = document.querySelector('input[name="paymethod"]:checked').value;
+
+      let rawTotal = cart.reduce((acc, c) => acc + (getNumericPrice(c) * getNumericQty(c)), 0);
+      let discount = isDiscountApplied ? Math.round(rawTotal * 0.1) : 0;
+      let itemsTotal = rawTotal - discount;
+
+      if (detectedDistanceKm && detectedDistanceKm > 15 && itemsTotal < 299) {
+        alert("Aapka location 15 KM ke bahar hai. Order confirm karne ke liye items total kam se kam ₹299 hona chahiye!");
+        return;
+      }
+
+      let grandTotal = itemsTotal + deliveryCharges;
+
+      let msg = `✨ *NEW ORDER - MIRAJ HANDMADE CRAFTS* ✨\n\n`;
+      msg += `👤 *Client:* ${custName}\n`;
+      msg += `📞 *Phone:* ${custPhone}\n`;
+      msg += `🏠 *Delivery Address:* ${custAddress}\n`;
+      msg += `📍 *Distance:* ${detectedDistanceKm ? detectedDistanceKm + ' km' : 'Not detected'}\n`;
+
+      if (customerLatitude && customerLongitude) {
+        msg += `🗺️ *CUSTOMER LOCATION:*\n`;
+        msg += `https://www.google.com/maps?q=${customerLatitude},${customerLongitude}\n\n`;
+      } else {
+        msg += `🗺️ *CUSTOMER LOCATION:* GPS location not available / permission denied\n\n`;
+      }
+
+      msg += `🛒 *ORDER DETAILS:*\n`;
+      msg += `${cart.map(i => `• ${i.name} x ${i.qty} = ₹${getNumericPrice(i) * getNumericQty(i)}`).join('\n')}\n\n`;
+      if(isDiscountApplied) msg += `🏷️ *Coupon (MIRAJ10):* -₹${discount}\n`;
+      msg += `🚚 *Delivery:* ${deliveryCharges > 0 ? '₹' + deliveryCharges + ' (>15km)' : 'FREE (Local)'}\n`;
+      msg += `💳 *Grand Total:* ₹${grandTotal}\n`;
+      msg += `💰 *Payment Method:* ${payMethod === 'ONLINE' ? 'UPI QR (9729843519@upi)' : 'Cash on Delivery (COD)'}\n\n`;
+      msg += `📲 *WhatsApp Order Number:* 9729843519\n`;
+      msg += `💬 *Note:* Open WhatsApp chat for custom embroidery / photo customization details.`;
+
+      const whatsappNumber = "9729843519";
+      const whatsappUrl = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+      window.location.href = whatsappUrl;
+      closeCheckout();
+    }
+    let activeGallery=[],activeGalleryIndex=0;
+    function openImgModal(src,fallback,name,galleryJson){
+      const modal=document.getElementById('img-modal'),img=document.getElementById('modal-img-tag');
+      try{activeGallery=galleryJson?JSON.parse(decodeURIComponent(galleryJson)):[src];}catch(e){activeGallery=[src];}
+      if(!activeGallery.length)activeGallery=[src];activeGalleryIndex=Math.max(0,activeGallery.indexOf(src));
+      img.onerror=()=>{img.onerror=null;img.src=fallback||src};document.getElementById('modal-img-title').innerText=decodeURIComponent(name);renderGalleryImage();modal.classList.remove('hidden');
+    }
+    function renderGalleryImage(){
+      document.getElementById('modal-img-tag').src=mirajThumb(activeGallery[activeGalleryIndex],1100);const multi=activeGallery.length>1;
+      document.getElementById('gallery-prev').style.display=multi?'flex':'none';document.getElementById('gallery-next').style.display=multi?'flex':'none';
+      document.getElementById('modal-gallery-thumbs').innerHTML=activeGallery.map((src,i)=>`<button aria-label="View image ${i+1}" onclick="activeGalleryIndex=${i};renderGalleryImage()" class="shrink-0 rounded-lg overflow-hidden border-2 ${i===activeGalleryIndex?'border-amber-400':'border-transparent'}"><img src="${mirajThumb(src,120)}" class="w-14 h-14 object-cover" loading="lazy" decoding="async" width="56" height="56"></button>`).join('');
+    }
+    function galleryPrev(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderGalleryImage();}}
+    function galleryNext(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderGalleryImage();}}
+    function closeImgModal(){document.getElementById('img-modal').classList.add('hidden');}
+    async function openAdminModal(){
+      document.getElementById('admin-modal').classList.remove('hidden');
+      document.getElementById('admin-auth-box').classList.remove('hidden');
+      document.getElementById('admin-dashboard-box').classList.add('hidden');
+      const emailEl=document.getElementById('admin-email');
+      if(emailEl && OWNER_EMAIL) emailEl.value=OWNER_EMAIL;
+      if(window.mirajSupabase){
+        const {data}=await mirajSupabase.auth.getSession();
+        if(data && data.session){ showOwnerDashboard(data.session); }
+      }
+    }
+    function closeAdminModal(){document.getElementById('admin-modal').classList.add('hidden');}
+    function showOwnerDashboard(session){
+      mirajOwnerSession=session;
+      document.getElementById('admin-auth-box').classList.add('hidden');
+      document.getElementById('admin-dashboard-box').classList.remove('hidden');
+      renderAdminList();
+    }
+    async function loginOwner(){
+      if(!mirajSupabase) return alert('Supabase is not connected.');
+      const email=(document.getElementById('admin-email').value||'').trim();
+      const password=document.getElementById('admin-password').value;
+      if(!email || !password) return alert('Email aur password dono enter karo.');
+      const {data,error}=await mirajSupabase.auth.signInWithPassword({email,password});
+      if(error){ console.error(error); return alert('Owner login failed: '+error.message); }
+      showOwnerDashboard(data.session);
+    }
+    async function lockAdmin(){
+      try{ if(mirajSupabase) await mirajSupabase.auth.signOut(); }catch(e){}
+      mirajOwnerSession=null;
+      document.getElementById('admin-dashboard-box').classList.add('hidden');
+      document.getElementById('admin-auth-box').classList.remove('hidden');
+      const pass=document.getElementById('admin-password'); if(pass) pass.value='';
+      closeAdminModal();
+    }
+
+    function renderAdminList() {
+      document.getElementById('adm-count').innerText = menuItems.length;
+      const list = document.getElementById('admin-product-list');
+      list.innerHTML = menuItems.map(item => `
+        <div class="flex items-center justify-between p-2 rounded-xl bg-[#0b0114] border border-purple-900/80 text-xs">
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <img src="${mirajThumb(item.img,80)}" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=100&q=80';" class="w-8 h-8 rounded-lg object-cover shrink-0" />
+            <div class="truncate">
+              <p class="text-white font-bold truncate">${item.name}</p>
+              <p class="text-amber-300 text-[10px]">₹${item.price} &bull; ${item.category}</p>
+            </div>
+          </div>
+          <button onclick="deleteProduct(${item.id})" class="text-rose-400 hover:text-rose-300 p-1.5 ml-2 transition">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+    function previewProductPhotos(input){
+      const files=Array.from(input.files||[]);
+      if(selectedProductPhotos.length+files.length>5){alert("Maximum 5 photos allowed.");input.value='';return;}
+      files.forEach(file=>{if(!file.type.startsWith('image/'))return;const r=new FileReader();r.onload=e=>{selectedProductPhotos.push(e.target.result);renderProductPhotoPreview();};r.readAsDataURL(file);});
+      input.value='';
+    }
+    function addCameraPhoto(input){
+      if(selectedProductPhotos.length>=5){alert("Maximum 5 photos allowed.");input.value='';return;}
+      const file=input.files&&input.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{selectedProductPhotos.push(e.target.result);renderProductPhotoPreview();};r.readAsDataURL(file);input.value='';
+    }
+    function removeProductPhoto(i){selectedProductPhotos.splice(i,1);renderProductPhotoPreview();}
+    function renderProductPhotoPreview(){
+      const box=document.getElementById('adm-photo-preview');if(!box)return;
+      box.innerHTML=selectedProductPhotos.map((src,i)=>`<div class="relative aspect-square rounded-lg overflow-hidden border ${i===0?'border-amber-400':'border-purple-800'}"><img src="${src}" class="w-full h-full object-cover">${i===0?'<span class="absolute bottom-0 left-0 right-0 bg-amber-500 text-black text-[8px] text-center font-black">MAIN</span>':''}<button type="button" onclick="removeProductPhoto(${i})" class="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/80 text-white text-xs">×</button></div>`).join('');
+    }
+    async function handleAddNewProduct(e){
+      e.preventDefault();
+      const name=document.getElementById('adm-name').value.trim(),category=document.getElementById('adm-category').value.trim(),price=parseFloat(document.getElementById('adm-price').value),desc=document.getElementById('adm-desc').value.trim(),urlInput=document.getElementById('adm-url').value.trim();
+      if(!selectedProductPhotos.length&&!urlInput){alert("Please add at least 1 product photo.");return;}
+      const newId=String(Date.now());
+      let gallery=[];
+      try{
+        if(selectedProductPhotos.length){
+          // selectedProductPhotos stores data URLs for previews; convert them back to Files for Supabase upload.
+          const files=[];
+          for(let i=0;i<selectedProductPhotos.length && i<5;i++){
+            const src=selectedProductPhotos[i];
+            if(src.startsWith('data:')){
+              const res=await fetch(src);
+              const blob=await res.blob();
+              files.push(new File([blob], `product-${newId}-${i}.jpg`, {type:blob.type || 'image/jpeg'}));
+            }
+          }
+          if(mirajSharedCatalogEnabled){
+            mirajCloudStatus("Uploading product photos to Supabase…");
+            gallery=await uploadMirajProductPhotos(files,newId);
+          }else{ gallery=[...selectedProductPhotos].slice(0,5); }
+        }else if(urlInput){
+          gallery=[urlInput];
+        }
+        const newProduct={id:newId,name,category,price,desc,img:gallery[0]||"images/mini-album.jpg",images:gallery,fallback:"https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80"};
+        menuItems.unshift(newProduct);
+        const saved=await saveProducts();
+        if(mirajSharedCatalogEnabled && !saved) throw new Error("Could not save product to Supabase.");
+        renderAdminList(); renderMenu();
+        selectedProductPhotos=[];renderProductPhotoPreview();document.getElementById('add-product-form').reset();
+        mirajCloudStatus(mirajSharedCatalogEnabled?"✓ Product published online — everyone can see it.":"⚠ Saved only on this device. Supabase is not connected.",mirajSharedCatalogEnabled);
+        alert("✓ Product added with "+gallery.length+" photo"+(gallery.length>1?'s':'')+"!");
+      }catch(err){
+        console.error(err);
+        mirajCloudStatus("Photo/product upload failed.",false);
+        alert("Online upload failed: "+(err.message || err));
+      }
+    }
+
+    async function deleteProduct(id) {
+      if(!confirm("Are you sure you want to delete this creation?")) return;
+      const old = menuItems;
+      const targetId = String(id);
+
+      try {
+        // Delete from the shared Supabase catalog first. This prevents the 5-second
+        // cloud poller from bringing the product back after a local-only delete.
+        if(mirajSharedCatalogEnabled && mirajSupabase){
+          mirajCloudStatus("Deleting product online…");
+          const {error} = await mirajSupabase.from("products").delete().eq("id", targetId);
+          if(error) throw error;
+        }
+
+        menuItems = old.filter(item => String(item.id) !== targetId);
+
+        // localStorage is only an optional lightweight fallback. Never let a full
+        // browser quota block the actual Supabase delete.
+        try {
+          const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
+          localStorage.setItem('miraz_products', JSON.stringify(slim));
+        } catch(storageErr) {
+          console.warn("MIRAJ local fallback storage skipped after delete:", storageErr);
+          try { localStorage.removeItem('miraz_products'); } catch(_) {}
+        }
+
+        refreshCategoryFilters(); renderMenu(); renderAdminList();
+        mirajCloudStatus(mirajSharedCatalogEnabled ? "✓ Product deleted online." : "✓ Product deleted.", true);
+      } catch(error) {
+        console.error("MIRAJ delete failed:", error);
+        menuItems = old;
+        refreshCategoryFilters(); renderMenu(); renderAdminList();
+        mirajCloudStatus("⚠ Product delete failed: " + (error.message || error), false);
+        alert("Online delete failed: " + (error.message || error));
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+        openAdminModal();
+      }
+    });
+
+    loadLiveProducts();
+    // Render local reviews immediately. Supabase loader upgrades them once, with caching.
+    try {
+      const savedReviews=localStorage.getItem('miraz_reviews');
+      customerReviews=savedReviews?JSON.parse(savedReviews):[];
+    } catch(_) { customerReviews=[]; }
+    renderMarqueeReviews();
+  
+    // MIRAJ signature interaction: click the real flower and awaken the whole website in golden light.
+    (function(){
+      const btn=document.getElementById('rose-core-button');
+      const burst=document.getElementById('golden-awakening');
+      if(!btn) return;
+      btn.addEventListener('click',function(){
+        document.body.classList.remove('golden-awakened');
+        void document.body.offsetWidth;
+        document.body.classList.add('golden-awakened');
+        burst && burst.setAttribute('aria-hidden','false');
+        const old=document.querySelectorAll('.golden-spark'); old.forEach(x=>x.remove());
+        for(let i=0;i<42;i++){
+          const s=document.createElement('span');
+          s.className='golden-spark';
+          const a=Math.random()*Math.PI*2;
+          const r=180+Math.random()*Math.max(innerWidth,innerHeight)*.58;
+          s.style.setProperty('--x',Math.cos(a)*r+'px');
+          s.style.setProperty('--y',Math.sin(a)*r+'px');
+          s.style.setProperty('--dur',(0.7+Math.random()*1.1)+'s');
+          s.style.left='50%'; s.style.top='50%';
+          s.style.width=(3+Math.random()*5)+'px'; s.style.height=s.style.width;
+          document.body.appendChild(s);
+          setTimeout(()=>s.remove(),2300);
+        }
+        if(typeof triggerLotusPetalShower==='function') triggerLotusPetalShower();
+        setTimeout(()=>document.body.classList.remove('golden-awakened'),2200);
+      });
+    })();
+
+</script>
+
+<script>
+function sendOTPOnWhatsApp(){
+  try {
+    if (typeof adminOTP === "undefined" || !adminOTP) {
+      if (typeof generateAdminOTP === "function") generateAdminOTP();
+    }
+    const otp = (typeof adminOTP !== "undefined" && adminOTP) ? adminOTP : "";
+    const phone = (typeof OWNER_PHONE !== "undefined") ? OWNER_PHONE : "9729843519";
+    if (!otp) {
+      alert("Please generate the OTP first.");
+      return;
+    }
+    const msg = encodeURIComponent("MIRAJ Admin OTP: " + otp + "\nValid for 5 minutes.");
+    window.open("https://wa.me/91" + phone + "?text=" + msg, "_blank");
+    alert("WhatsApp open ho gaya hai. Automatic OTP delivery ke liye WhatsApp Business API/backend connect karna zaroori hai.");
+  } catch(e) {
+    alert("WhatsApp open nahi ho paya.");
+  }
+}
+</script>
+
+
+
+
+
+
+<!-- MIRAJ HIDDEN ADMIN: 5 FLOWER TAPS -->
+<style>
+#miraj-secret-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,0,12,.82);backdrop-filter:blur(14px)}
+#miraj-secret-modal.show{display:flex}
+.miraj-secret-card{width:min(360px,92vw);padding:28px 22px;border:1px solid rgba(245,196,67,.45);border-radius:24px;background:linear-gradient(145deg,#180528,#09000f);box-shadow:0 25px 80px rgba(0,0,0,.65);text-align:center}
+.miraj-secret-card input{width:100%;padding:14px;border-radius:13px;border:1px solid rgba(245,196,67,.35);background:#0d0118;color:#fff;text-align:center;font-size:22px;letter-spacing:8px;outline:none;margin:14px 0}
+.miraj-secret-card button{width:100%;padding:12px;border-radius:13px;border:0;cursor:pointer}
+#miraj-secret-error{color:#ff8caa;font-size:11px;min-height:18px;margin-bottom:5px}
+</style>
+<div id="miraj-secret-modal" aria-hidden="true">
+  <div class="miraj-secret-card">
+    <div style="font-size:28px;color:#f5c443;margin-bottom:8px">✦</div>
+    <h3 style="color:#fff;font-weight:700;font-size:18px">Owner Access</h3>
+    <p style="color:rgba(255,230,170,.65);font-size:11px;margin-top:5px">Owner login required</p>
+    <input id="miraj-secret-code" type="password" inputmode="text" autocomplete="off" placeholder="Open owner login">
+    <div id="miraj-secret-error"></div>
+    <button type="button" onclick="mirajUnlockAdmin()" class="btn-gold-royal">Open Owner Login</button>
+    <button type="button" onclick="mirajCloseSecret()" style="background:transparent;color:#d9b86c;margin-top:8px">Cancel</button>
+  </div>
+</div>
+<script>
+(function(){
+  let flowerTaps=0, flowerTimer=null;
+  const flower=document.getElementById('rose-core-button');
+  if(!flower) return;
+  flower.addEventListener('click',function(){
+    flowerTaps++;
+    clearTimeout(flowerTimer);
+    flowerTimer=setTimeout(()=>{flowerTaps=0;},1400);
+    if(flowerTaps>=5){
+      flowerTaps=0;
+      clearTimeout(flowerTimer);
+      const modal=document.getElementById('miraj-secret-modal');
+      modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+      const input=document.getElementById('miraj-secret-code');
+      input.value=''; document.getElementById('miraj-secret-error').textContent='';
+      setTimeout(()=>input.focus(),80);
+    }
+  });
+  document.getElementById('miraj-secret-code').addEventListener('keydown',function(e){if(e.key==='Enter') mirajUnlockAdmin();});
+})();
+function mirajCloseSecret(){
+  const m=document.getElementById('miraj-secret-modal');
+  m.classList.remove('show'); m.setAttribute('aria-hidden','true');
+}
+function mirajUnlockAdmin(){
+  const code=document.getElementById('miraj-secret-code').value.trim();
+  const err=document.getElementById('miraj-secret-error');
+  if(!code){ err.textContent='Enter your owner login code'; return; }
+  mirajCloseSecret();
+  openAdminModal();
+  const email=document.getElementById('admin-email');
+  const pass=document.getElementById('admin-password');
+  if(email) email.focus();
+  err.textContent='';
+}
+</script>
+
+<script id="miraj-deferred-hero-video">
+(function(){
+  var started=false;
+  function startHeroVideo(){
+    if(started) return;
+    var v=document.getElementById('miraj-hero-video');
+    if(!v) return;
+    var source=v.querySelector('source[data-src]');
+    if(!source) return;
+    var c=navigator.connection||{};
+    if(window.matchMedia('(max-width:768px)').matches || c.saveData || /(^|-)2g$/.test(c.effectiveType||'')) { cleanup(); return; }
+    started=true;
+    v.dataset.loaded='1';
+    source.src=source.dataset.src;
+    v.load();
+    var p=v.play();
+    if(p && typeof p.catch==='function') p.catch(function(){});
+    cleanup();
+  }
+  var events=['pointerdown','touchstart','keydown','scroll'];
+  function cleanup(){events.forEach(function(e){window.removeEventListener(e,startHeroVideo,{passive:true})});}
+  events.forEach(function(e){window.addEventListener(e,startHeroVideo,{passive:true,once:true})});
+  // Preserve the cinematic background for passive visitors, but keep it out of the
+  // critical Lighthouse/network window. Poster remains visible until video starts.
+  setTimeout(startHeroVideo,12000);
+})();
+</script>
+<script id="miraj-visibility-sync">
+(function(){
+  var last=Date.now();
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState!=='visible') return;
+    if(Date.now()-last < MIRAJ_CLOUD_CACHE_MS) return;
+    last=Date.now();
+    if(typeof loadMirajCloudCatalog==='function') loadMirajCloudCatalog({force:true});
+    if(typeof loadLiveReviews==='function') loadLiveReviews({force:true});
+  });
+})();
+</script>
+</body>
+</html>
+<style id="miraj-video-visibility-boost">
+/* Video is intentionally visible to visitors, not buried under the dark overlay. */
+.miraj-video-bg video{opacity:.78!important}
+.miraj-video-dark{opacity:.72}
+.miraj-video-vignette{opacity:.72}
+</style>
+<style id="miraj-professional-2026">
+:root{--pro-gold:#e7bd57;--pro-ink:#08030d;--pro-panel:rgba(18,6,27,.78);--pro-line:rgba(231,189,87,.20)}
+html{scroll-behavior:smooth} body{letter-spacing:.005em}
+nav{background:rgba(8,2,13,.82)!important;backdrop-filter:blur(20px) saturate(140%)!important;border-bottom:1px solid var(--pro-line)!important;box-shadow:0 10px 35px rgba(0,0,0,.22)!important}
+.miraj-nav-logo{filter:drop-shadow(0 7px 18px rgba(0,0,0,.45))}
+.hero-title{letter-spacing:-.035em!important;text-wrap:balance}.hero-description{max-width:520px!important}.hero-cta,.hero-ghost{box-shadow:0 12px 30px rgba(0,0,0,.22)}
+#menu,#reviews{position:relative}#menu:before,#reviews:before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:min(1120px,88%);height:1px;background:linear-gradient(90deg,transparent,var(--pro-line),transparent)}
+#menu-container>*,#reviews-container>*{border:1px solid var(--pro-line)!important;box-shadow:0 18px 50px rgba(0,0,0,.22)!important;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease!important;overflow:hidden}
+#menu-container>*:hover,#reviews-container>*:hover{transform:translateY(-6px)!important;border-color:rgba(231,189,87,.42)!important;box-shadow:0 26px 65px rgba(0,0,0,.32)!important}
+#menu-container img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s ease!important}#menu-container>*:hover img{transform:scale(1.045)!important;filter:saturate(1.05) contrast(1.03)}
+.category-btn{backdrop-filter:blur(12px);border:1px solid rgba(231,189,87,.18)!important;transition:.25s ease!important}.category-btn:hover{transform:translateY(-2px);border-color:rgba(231,189,87,.42)!important}
+button,a{outline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid rgba(231,189,87,.72)!important}
+footer{border-top:1px solid var(--pro-line)!important;background:linear-gradient(180deg,rgba(7,1,12,.96),#050108)!important}
+#admin-modal .bg-\[\#12021f\],#review-modal .bg-\[\#12021f\]{box-shadow:0 28px 90px rgba(0,0,0,.6)!important;border-color:rgba(231,189,87,.26)!important}
+@media(max-width:640px){.hero-description{font-size:12px!important}.hero-cta,.hero-ghost{min-height:44px;justify-content:center}.category-btn{min-height:44px!important}#menu-container{gap:18px!important}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+<script id="miraj-professional-enhancements">
+(function(){
+  /* Product/review renderers already mark their off-screen images lazy. Keep above-the-fold hero assets eager for LCP. */
+  document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.rel='noopener noreferrer';});
+  document.querySelectorAll('button').forEach(function(b){if(!b.getAttribute('aria-label') && b.title) b.setAttribute('aria-label',b.title);});
+})();
+</script>
+
+<style id="miraj-performance-safe">
+/* Rendering containment reduces main-thread layout/paint work without changing layout. */
+#menu-container{contain:layout style;}
+#marquee-track{contain:layout paint;}
+.product-img-box img,.review-bubble img{content-visibility:auto;}
+</style>
