@@ -1045,12 +1045,9 @@ body.golden-awakened #hero > .miraj-video-bg video{
     const MIRAJ_SUPABASE_BUCKET = "product-images";
     let mirajSupabase = null;
     let mirajSharedCatalogEnabled = false;
-    let mirajCatalogPoller = null;
-    let mirajLastCatalogSignature = "";
-    let mirajLastReviewSignature = "";
-    const MIRAJ_CATALOG_POLL_MS = 300000; // 5 minutes; never re-render unchanged products
-    const MIRAJ_IMAGE_MAX_SIDE = 1600;
-    const MIRAJ_IMAGE_QUALITY = 0.78;
+    let mirajRefreshInFlight = false;
+    let mirajLastCloudRefresh = 0;
+    let mirajLastHiddenAt = 0;
 
     function initMirajSharedCatalog(){
       try{
@@ -1060,12 +1057,23 @@ body.golden-awakened #hero > .miraj-video-bg video{
         }
         mirajSupabase = window.supabase.createClient(MIRAJ_SUPABASE_URL, MIRAJ_SUPABASE_KEY);
         mirajSharedCatalogEnabled = true;
-        // Egress protection: catalog polling is slow and unchanged catalogs are never re-rendered.
         loadMirajCloudCatalog();
         loadLiveReviews();
-        // Lightweight polling keeps the catalog shared even if Realtime is not enabled on the table.
-        clearInterval(mirajCatalogPoller);
-        mirajCatalogPoller = setInterval(() => { loadMirajCloudCatalog(); loadLiveReviews(); }, MIRAJ_CATALOG_POLL_MS);
+        // No continuous polling: it wastes requests and can cause unnecessary re-renders/image reloads.
+        // Refresh only when the tab returns after being hidden for a while.
+        document.addEventListener('visibilitychange', () => {
+          if(document.hidden){ mirajLastHiddenAt = Date.now(); return; }
+          if(Date.now() - mirajLastHiddenAt > 120000){
+            loadMirajCloudCatalog({force:true});
+            loadLiveReviews({force:true});
+          }
+        }, {passive:true});
+        window.addEventListener('focus', () => {
+          if(Date.now() - mirajLastCloudRefresh > 300000){
+            loadMirajCloudCatalog({force:true});
+            loadLiveReviews({force:true});
+          }
+        }, {passive:true});
       }catch(err){
         console.error("MIRAJ Supabase initialization failed:", err);
       }
@@ -1084,14 +1092,17 @@ body.golden-awakened #hero > .miraj-video-bg video{
       }));
     }
 
-    async function loadMirajCloudCatalog(){
-      if(!mirajSharedCatalogEnabled || !mirajSupabase) return;
+    async function loadMirajCloudCatalog(options={}){
+      if(!mirajSharedCatalogEnabled || !mirajSupabase || mirajRefreshInFlight) return;
+      if(!options.force && Date.now() - mirajLastCloudRefresh < 15000) return;
+      mirajRefreshInFlight = true;
       try{
         const { data, error } = await mirajSupabase.from("products").select("id,name,price,description,category,images,created_at").order("created_at", {ascending:false});
         if(error) throw error;
         const meta = (data || []).some(r => String(r.id) === "_meta");
         const rows = (data || []).filter(r => String(r.id) !== "_meta");
         if(!rows.length && !meta){
+          // First setup: publish the catalog that already exists in this browser once.
           const seed = (menuItems || []).map(item => mirajItemToRow(item));
           if(seed.length){
             const {error: seedError} = await mirajSupabase.from("products").upsert(seed, {onConflict:"id"});
@@ -1100,22 +1111,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
           await mirajSupabase.from("products").upsert([{id:"_meta", name:"MIRAJ_CATALOG_META", price:0, description:"initialized", category:"_meta", images:[]}], {onConflict:"id"});
           return;
         }
-
-        // Critical egress fix: do not rebuild the product grid every polling cycle.
-        // Re-rendering <img src="..."> repeatedly can cause unnecessary Storage requests.
-        const signature = JSON.stringify(rows.map(r => [
-          String(r.id), r.name || "", Number(r.price || 0), r.description || "", r.category || "",
-          Array.isArray(r.images) ? r.images : []
-        ]));
-        if(signature === mirajLastCatalogSignature) return;
-        mirajLastCatalogSignature = signature;
-
         menuItems = mirajRowsToItems(rows);
+        // Cloud is the source of truth. Do not copy the full catalog (which may
+        // contain large image data) into localStorage; browsers have small quotas.
+        // Keep only a lightweight offline fallback when it fits.
         try {
-          const slim = menuItems.map(item => ({...item,
-            images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [],
-            img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"
-          }));
+          const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
           localStorage.setItem("miraz_products", JSON.stringify(slim));
         } catch(storageErr) {
           console.warn("MIRAJ local fallback storage skipped:", storageErr);
@@ -1123,9 +1124,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
         }
         refreshCategoryFilters(); renderMenu();
         if(typeof renderAdminList === "function") renderAdminList();
+        mirajLastCloudRefresh = Date.now();
       }catch(err){
         console.error("MIRAJ Supabase catalog sync error:", err);
         mirajCloudStatus("⚠ Online catalog unavailable — using this device's saved catalog.", false);
+      }finally{
+        mirajRefreshInFlight = false;
       }
     }
 
@@ -1142,22 +1146,29 @@ body.golden-awakened #hero > .miraj-video-bg video{
       return true;
     }
 
-    async function compressMirajImageFile(file, maxSide=MIRAJ_IMAGE_MAX_SIDE, quality=MIRAJ_IMAGE_QUALITY){
-      if(!file || !file.type || !file.type.startsWith("image/")) return file;
-      // Keep already-small WebP files untouched.
-      if(file.type === "image/webp" && file.size <= 350 * 1024) return file;
-      const bitmap = await createImageBitmap(file);
-      const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
-      const width = Math.max(1, Math.round(bitmap.width * scale));
-      const height = Math.max(1, Math.round(bitmap.height * scale));
-      const canvas = document.createElement("canvas");
-      canvas.width = width; canvas.height = height;
-      const ctx = canvas.getContext("2d", {alpha:false});
-      ctx.drawImage(bitmap, 0, 0, width, height);
-      bitmap.close();
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/webp", quality));
-      if(!blob) return file;
-      return new File([blob], (file.name || "photo").replace(/\.[^.]+$/i, ".webp"), {type:"image/webp", lastModified:Date.now()});
+    async function mirajOptimizeImageFile(file, maxSide=1800, quality=0.82){
+      if(!file || !file.type || !file.type.startsWith('image/')) return file;
+      // Do not spend CPU on already-small images. This keeps admin uploads responsive.
+      if(file.size <= 900*1024 && !/image\/(bmp|tiff|gif)/i.test(file.type)) return file;
+      try{
+        const bitmap = await createImageBitmap(file);
+        const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+        const w = Math.max(1, Math.round(bitmap.width * scale));
+        const h = Math.max(1, Math.round(bitmap.height * scale));
+        if(scale === 1 && file.size <= 1400*1024 && /image\/(webp|jpeg|jpg)/i.test(file.type)) { bitmap.close(); return file; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d', {alpha:true});
+        ctx.drawImage(bitmap, 0, 0, w, h);
+        bitmap.close();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
+        if(!blob || blob.size >= file.size * 0.95) return file;
+        const base = (file.name || 'image').replace(/\.[^.]+$/, '') || 'image';
+        return new File([blob], `${base}.webp`, {type:'image/webp', lastModified:Date.now()});
+      }catch(e){
+        console.warn('MIRAJ image optimization skipped:', e);
+        return file;
+      }
     }
 
     async function uploadMirajProductPhotos(files, productId){
@@ -1165,14 +1176,10 @@ body.golden-awakened #hero > .miraj-video-bg video{
       const urls=[];
       for(let i=0;i<files.length && i<5;i++){
         const original=files[i];
-        const file=await compressMirajImageFile(original);
+        const file=await mirajOptimizeImageFile(original,1800,0.82);
         const safeName=(file.name || "photo.webp").replace(/[^a-zA-Z0-9._-]/g,"-");
         const path=`${productId}/${Date.now()}-${i}-${safeName}`;
-        const {error}=await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,file,{
-          contentType:file.type || "image/webp",
-          cacheControl:"31536000",
-          upsert:false
-        });
+        const {error}=await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,file,{contentType:file.type || "image/jpeg",cacheControl:'31536000',upsert:false});
         if(error) throw error;
         const {data}=mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path);
         urls.push(data.publicUrl);
@@ -1324,9 +1331,6 @@ body.golden-awakened #hero > .miraj-video-bg video{
             .select("id,name,location,rating,review,image,created_at")
             .order("created_at", { ascending: false });
           if (error) throw error;
-          const signature = JSON.stringify((data || []).map(r => [r.id,r.name,r.location,r.rating,r.review,r.image,r.created_at]));
-          if(signature === mirajLastReviewSignature) return;
-          mirajLastReviewSignature = signature;
           customerReviews = (data || []).map(r => ({
             id: String(r.id),
             name: r.name || "Customer",
@@ -1345,6 +1349,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           mirajReviewsCloudStatus(false);
         }
       }
+      // Offline fallback: keep only lightweight, locally submitted reviews.
       try {
         const saved = localStorage.getItem('miraz_reviews');
         customerReviews = saved ? JSON.parse(saved) : [];
@@ -1375,9 +1380,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
     async function uploadMirajReviewPhoto(file, reviewId) {
       if (!file || !mirajSupabase) return null;
       const safeName = (file.name || 'review-photo.jpg').replace(/[^a-zA-Z0-9._-]/g, '-');
-      const path = `reviews/${reviewId}/${Date.now()}-${safeName}`;
-      const { error } = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path, file, {
-        contentType: file.type || 'image/jpeg',
+      const optimized = await mirajOptimizeImageFile(file,1400,0.78);
+      const safeOptimizedName = (optimized.name || safeName).replace(/[^a-zA-Z0-9._-]/g, '-');
+      const path = `reviews/${reviewId}/${Date.now()}-${safeOptimizedName}`;
+      const { error } = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path, optimized, {
+        contentType: optimized.type || 'image/jpeg',
+        cacheControl: '31536000',
         upsert: false
       });
       if (error) throw error;
@@ -1899,7 +1907,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
     function renderGalleryImage(){
       document.getElementById('modal-img-tag').src=activeGallery[activeGalleryIndex];const multi=activeGallery.length>1;
       document.getElementById('gallery-prev').style.display=multi?'flex':'none';document.getElementById('gallery-next').style.display=multi?'flex':'none';
-      document.getElementById('modal-gallery-thumbs').innerHTML=activeGallery.map((src,i)=>`<button aria-label="View image ${i+1}" onclick="activeGalleryIndex=${i};renderGalleryImage()" class="shrink-0 rounded-lg overflow-hidden border-2 ${i===activeGalleryIndex?'border-amber-400':'border-transparent'}"><img src="${src}" loading="lazy" decoding="async" class="w-14 h-14 object-cover"></button>`).join('');
+      document.getElementById('modal-gallery-thumbs').innerHTML=activeGallery.map((src,i)=>`<button aria-label="View image ${i+1}" onclick="activeGalleryIndex=${i};renderGalleryImage()" class="shrink-0 rounded-lg overflow-hidden border-2 ${i===activeGalleryIndex?'border-amber-400':'border-transparent'}"><img src="${src}" loading="lazy" decoding="async" width="56" height="56" class="w-14 h-14 object-cover"></button>`).join('');
     }
     function galleryPrev(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderGalleryImage();}}
     function galleryNext(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderGalleryImage();}}
