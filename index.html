@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- MIRAJ PERFORMANCE/EGRESS FIX v2: no polling, idle Supabase init, async icons/fonts, render containment -->
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
@@ -57,7 +56,7 @@
   </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
@@ -434,7 +433,6 @@ body.golden-awakened::after{
 </style>
 
 
-<style id="miraj-performance-containment">@media (min-width: 768px){#reviews,footer{content-visibility:auto;contain-intrinsic-size:700px;}}</style>
 <style id="miraj-video-background-final">
 /* ===== CINEMATIC LOW-LIGHT VIDEO BEHIND HERO ===== */
 #hero{
@@ -674,7 +672,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
     <!-- Search Box -->
     <div class="max-w-md mx-auto mb-8 px-2">
       <div class="relative">
-        <input type="text" id="search-input" oninput="renderMenu()" placeholder="Search floral keychains, mini albums, bags..." class="w-full bg-[#18042b]/80 border border-amber-500/35 rounded-full py-3.5 pl-5 pr-12 text-xs text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-amber-400 shadow-inner" />
+        <input type="text" id="search-input" oninput="scheduleMenuRender()" placeholder="Search floral keychains, mini albums, bags..." class="w-full bg-[#18042b]/80 border border-amber-500/35 rounded-full py-3.5 pl-5 pr-12 text-xs text-amber-100 placeholder-amber-200/40 focus:outline-none focus:border-amber-400 shadow-inner" />
         <i class="fa-solid fa-magnifying-glass absolute right-5 top-4 text-amber-400/60"></i>
       </div>
     </div>
@@ -1036,15 +1034,8 @@ body.golden-awakened #hero > .miraj-video-bg video{
         };
         document.head.appendChild(s);
       }
-      function scheduleSupabase(){
-        var run=function(){
-          if("requestIdleCallback" in window) requestIdleCallback(loadSupabase,{timeout:2500});
-          else setTimeout(loadSupabase,1200);
-        };
-        if(document.readyState === "loading") document.addEventListener("DOMContentLoaded",run,{once:true});
-        else run();
-      }
-      scheduleSupabase();
+      if(document.readyState === "complete") loadSupabase();
+      else window.addEventListener("load",loadSupabase,{once:true});
     })();
   </script>
   <script>
@@ -1054,9 +1045,11 @@ body.golden-awakened #hero > .miraj-video-bg video{
     const MIRAJ_SUPABASE_BUCKET = "product-images";
     let mirajSupabase = null;
     let mirajSharedCatalogEnabled = false;
-    let mirajRefreshInFlight = false;
-    let mirajLastCloudRefresh = 0;
-    let mirajLastHiddenAt = 0;
+    let mirajCatalogRequest = null;
+    let mirajReviewsRequest = null;
+    const MIRAJ_CLOUD_CACHE_MS = 60000;
+    const MIRAJ_CATALOG_TS_KEY = "miraz_catalog_cloud_ts";
+    const MIRAJ_REVIEWS_TS_KEY = "miraz_reviews_cloud_ts";
 
     function initMirajSharedCatalog(){
       try{
@@ -1064,25 +1057,14 @@ body.golden-awakened #hero > .miraj-video-bg video{
           console.warn("MIRAJ Supabase is not configured. Using local catalog.");
           return;
         }
-        mirajSupabase = window.supabase.createClient(MIRAJ_SUPABASE_URL, MIRAJ_SUPABASE_KEY);
+        mirajSupabase = window.supabase.createClient(MIRAJ_SUPABASE_URL, MIRAJ_SUPABASE_KEY, {
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+        });
         mirajSharedCatalogEnabled = true;
-        loadMirajCloudCatalog();
-        loadLiveReviews();
-        // No continuous polling: it wastes requests and can cause unnecessary re-renders/image reloads.
-        // Refresh only when the tab returns after being hidden for a while.
-        document.addEventListener('visibilitychange', () => {
-          if(document.hidden){ mirajLastHiddenAt = Date.now(); return; }
-          if(Date.now() - mirajLastHiddenAt > 120000){
-            loadMirajCloudCatalog({force:true});
-            loadLiveReviews({force:true});
-          }
-        }, {passive:true});
-        window.addEventListener('focus', () => {
-          if(Date.now() - mirajLastCloudRefresh > 300000){
-            loadMirajCloudCatalog({force:true});
-            loadLiveReviews({force:true});
-          }
-        }, {passive:true});
+        // One cloud read per cache window. LocalStorage renders immediately; cloud only
+        // refreshes when stale, on tab return, or after an explicit admin change.
+        loadMirajCloudCatalog({force:false});
+        loadLiveReviews({force:false});
       }catch(err){
         console.error("MIRAJ Supabase initialization failed:", err);
       }
@@ -1102,9 +1084,14 @@ body.golden-awakened #hero > .miraj-video-bg video{
     }
 
     async function loadMirajCloudCatalog(options={}){
-      if(!mirajSharedCatalogEnabled || !mirajSupabase || mirajRefreshInFlight) return;
-      if(!options.force && Date.now() - mirajLastCloudRefresh < 15000) return;
-      mirajRefreshInFlight = true;
+      if(!mirajSharedCatalogEnabled || !mirajSupabase) return;
+      const force = !!options.force;
+      const now = Date.now();
+      let cachedAt = 0;
+      try { cachedAt = Number(localStorage.getItem(MIRAJ_CATALOG_TS_KEY) || 0); } catch(_) {}
+      if(!force && cachedAt && (now - cachedAt) < MIRAJ_CLOUD_CACHE_MS) return;
+      if(mirajCatalogRequest) return mirajCatalogRequest;
+      mirajCatalogRequest = (async()=>{
       try{
         const { data, error } = await mirajSupabase.from("products").select("id,name,price,description,category,images,created_at").order("created_at", {ascending:false});
         if(error) throw error;
@@ -1133,13 +1120,15 @@ body.golden-awakened #hero > .miraj-video-bg video{
         }
         refreshCategoryFilters(); renderMenu();
         if(typeof renderAdminList === "function") renderAdminList();
-        mirajLastCloudRefresh = Date.now();
+        try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY, String(Date.now())); } catch(_) {}
       }catch(err){
         console.error("MIRAJ Supabase catalog sync error:", err);
         mirajCloudStatus("⚠ Online catalog unavailable — using this device's saved catalog.", false);
-      }finally{
-        mirajRefreshInFlight = false;
+      } finally {
+        mirajCatalogRequest = null;
       }
+      })();
+      return mirajCatalogRequest;
     }
 
     function mirajItemToRow(item){
@@ -1155,43 +1144,44 @@ body.golden-awakened #hero > .miraj-video-bg video{
       return true;
     }
 
-    async function mirajOptimizeImageFile(file, maxSide=1800, quality=0.82){
-      if(!file || !file.type || !file.type.startsWith('image/')) return file;
-      // Do not spend CPU on already-small images. This keeps admin uploads responsive.
-      if(file.size <= 900*1024 && !/image\/(bmp|tiff|gif)/i.test(file.type)) return file;
-      try{
-        const bitmap = await createImageBitmap(file);
-        const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
-        const w = Math.max(1, Math.round(bitmap.width * scale));
-        const h = Math.max(1, Math.round(bitmap.height * scale));
-        if(scale === 1 && file.size <= 1400*1024 && /image\/(webp|jpeg|jpg)/i.test(file.type)) { bitmap.close(); return file; }
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d', {alpha:true});
-        ctx.drawImage(bitmap, 0, 0, w, h);
-        bitmap.close();
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
-        if(!blob || blob.size >= file.size * 0.95) return file;
-        const base = (file.name || 'image').replace(/\.[^.]+$/, '') || 'image';
-        return new File([blob], `${base}.webp`, {type:'image/webp', lastModified:Date.now()});
-      }catch(e){
-        console.warn('MIRAJ image optimization skipped:', e);
-        return file;
-      }
+    async function mirajOptimizeImageFile(file, maxSide=1600, quality=.80){
+      if(!file || !/^image\//i.test(file.type) || /image\/(svg|gif)/i.test(file.type)) return file;
+      // Avoid CPU work for already-small images.
+      if(file.size <= 350*1024) return file;
+      return new Promise(resolve=>{
+        const img=new Image();
+        const url=URL.createObjectURL(file);
+        img.onload=()=>{
+          try{
+            const scale=Math.min(1, maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+            const w=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+            const h=Math.max(1,Math.round((img.naturalHeight||1)*scale));
+            const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+            const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+            if(!ctx) throw new Error('canvas unavailable');
+            ctx.drawImage(img,0,0,w,h);
+            canvas.toBlob(blob=>{
+              URL.revokeObjectURL(url);
+              if(!blob || blob.size >= file.size) return resolve(file);
+              resolve(new File([blob], (file.name||'image').replace(/\.[^.]+$/,'')+'.webp', {type:'image/webp',lastModified:Date.now()}));
+            },'image/webp',quality);
+          }catch(_){ URL.revokeObjectURL(url); resolve(file); }
+        };
+        img.onerror=()=>{URL.revokeObjectURL(url);resolve(file)};
+        img.src=url;
+      });
     }
 
     async function uploadMirajProductPhotos(files, productId){
       if(!mirajSharedCatalogEnabled || !mirajSupabase) throw new Error("Supabase is not connected.");
       const urls=[];
       for(let i=0;i<files.length && i<5;i++){
-        const original=files[i];
-        const file=await mirajOptimizeImageFile(original,1800,0.82);
+        const file=await mirajOptimizeImageFile(files[i],1600,.80);
         const safeName=(file.name || "photo.webp").replace(/[^a-zA-Z0-9._-]/g,"-");
         const path=`${productId}/${Date.now()}-${i}-${safeName}`;
-        const {error}=await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,file,{contentType:file.type || "image/jpeg",cacheControl:'31536000',upsert:false});
+        const {error}=await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,file,{contentType:file.type || "image/webp",cacheControl:"31536000",upsert:false});
         if(error) throw error;
-        const {data}=mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path);
-        urls.push(data.publicUrl);
+        urls.push(mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path).data.publicUrl);
       }
       return urls;
     }
@@ -1329,11 +1319,20 @@ body.golden-awakened #hero > .miraj-video-bg video{
       }
       refreshCategoryFilters();
       renderMenu();
-      return await pushMirajCatalogToCloud();
+      const ok=await pushMirajCatalogToCloud();
+      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} }
+      return ok;
     }
 
-    async function loadLiveReviews() {
+    async function loadLiveReviews(options={}) {
       if (mirajSharedCatalogEnabled && mirajSupabase) {
+        const force=!!options.force;
+        const now=Date.now();
+        let cachedAt=0;
+        try { cachedAt=Number(localStorage.getItem(MIRAJ_REVIEWS_TS_KEY)||0); } catch(_) {}
+        if(!force && cachedAt && (now-cachedAt)<MIRAJ_CLOUD_CACHE_MS) return;
+        if(mirajReviewsRequest) return mirajReviewsRequest;
+        mirajReviewsRequest=(async()=>{
         try {
           const { data, error } = await mirajSupabase
             .from("reviews")
@@ -1352,11 +1351,16 @@ body.golden-awakened #hero > .miraj-video-bg video{
           }));
           renderMarqueeReviews();
           mirajReviewsCloudStatus(true);
+          try { localStorage.setItem(MIRAJ_REVIEWS_TS_KEY,String(Date.now())); } catch(_) {}
           return;
         } catch (err) {
           console.error("MIRAJ reviews sync error:", err);
           mirajReviewsCloudStatus(false);
+        } finally {
+          mirajReviewsRequest=null;
         }
+        })();
+        return mirajReviewsRequest;
       }
       // Offline fallback: keep only lightweight, locally submitted reviews.
       try {
@@ -1388,12 +1392,11 @@ body.golden-awakened #hero > .miraj-video-bg video{
 
     async function uploadMirajReviewPhoto(file, reviewId) {
       if (!file || !mirajSupabase) return null;
-      const safeName = (file.name || 'review-photo.jpg').replace(/[^a-zA-Z0-9._-]/g, '-');
-      const optimized = await mirajOptimizeImageFile(file,1400,0.78);
-      const safeOptimizedName = (optimized.name || safeName).replace(/[^a-zA-Z0-9._-]/g, '-');
-      const path = `reviews/${reviewId}/${Date.now()}-${safeOptimizedName}`;
-      const { error } = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path, optimized, {
-        contentType: optimized.type || 'image/jpeg',
+      file=await mirajOptimizeImageFile(file,1200,.78);
+      const safeName = (file.name || 'review-photo.webp').replace(/[^a-zA-Z0-9._-]/g, '-');
+      const path = `reviews/${reviewId}/${Date.now()}-${safeName}`;
+      const { error } = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path, file, {
+        contentType: file.type || 'image/webp',
         cacheControl: '31536000',
         upsert: false
       });
@@ -1412,7 +1415,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
 
       const photoHtml = rev.photo ? `
         <div class="mt-3 rounded-xl overflow-hidden border border-amber-500/20 bg-[#0d0217] h-36 flex items-center justify-center cursor-pointer" onclick="openImgModal('${rev.photo}', '${rev.fallbackPhoto || ''}', '${encodeURIComponent(rev.name + ' Photo Review')}')">
-          <img src="${rev.photo}" onerror="this.onerror=null; this.src='${rev.fallbackPhoto || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" class="w-full h-full object-cover hover:scale-105 transition duration-300" alt="Review Photo" />
+          <img src="${rev.photo}" onerror="this.onerror=null; this.src='${rev.fallbackPhoto || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" class="w-full h-full object-cover hover:scale-105 transition duration-300" alt="Review Photo" loading="lazy" decoding="async" width="600" height="360" />
         </div>
       ` : '';
 
@@ -1507,7 +1510,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
             image: imageUrl
           });
           if (error) throw error;
-          await loadLiveReviews();
+          await loadLiveReviews({force:true});
           document.getElementById('review-form').reset();
           closeReviewModal();
           alert('Thank you! Your review has been published.');
@@ -1556,6 +1559,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
       renderMenu();
     }
 
+    let mirajMenuRenderTimer=null;
+    function scheduleMenuRender(){
+      clearTimeout(mirajMenuRenderTimer);
+      mirajMenuRenderTimer=setTimeout(renderMenu,80);
+    }
+
     function renderMenu() {
       const container = document.getElementById('menu-container');
       const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -1577,7 +1586,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           </span>
           <div class="product-img-box cursor-pointer" onclick="openImgModal('${item.img}', '${item.fallback || ''}', '${encodeURIComponent(item.name)}', '${encodeURIComponent(JSON.stringify(item.images || [item.img]))}')"
 >
-            <img src="${item.img}" onerror="this.onerror=null; this.src='${item.fallback || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" alt="${item.name}" loading="lazy" decoding="async" fetchpriority="low" />\n             ${(item.images && item.images.length > 1) ? `<span class="absolute top-2 left-2 bg-black/80 text-amber-300 px-2 py-1 rounded-full text-[9px] font-bold border border-amber-500/35"><i class="fa-solid fa-images mr-1"></i>${item.images.length} PHOTOS</span>` : ''}
+            <img src="${item.img}" onerror="this.onerror=null; this.src='${item.fallback || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80'}';" alt="${item.name}" loading="lazy" decoding="async" width="640" height="640" />\n             ${(item.images && item.images.length > 1) ? `<span class="absolute top-2 left-2 bg-black/80 text-amber-300 px-2 py-1 rounded-full text-[9px] font-bold border border-amber-500/35"><i class="fa-solid fa-images mr-1"></i>${item.images.length} PHOTOS</span>` : ''}
             <div class="absolute bottom-2.5 right-2.5 bg-black/80 backdrop-blur-sm text-amber-200 text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 opacity-90">
               <i class="fa-solid fa-magnifying-glass-plus text-amber-300"></i> Zoom
             </div>
@@ -1916,7 +1925,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
     function renderGalleryImage(){
       document.getElementById('modal-img-tag').src=activeGallery[activeGalleryIndex];const multi=activeGallery.length>1;
       document.getElementById('gallery-prev').style.display=multi?'flex':'none';document.getElementById('gallery-next').style.display=multi?'flex':'none';
-      document.getElementById('modal-gallery-thumbs').innerHTML=activeGallery.map((src,i)=>`<button aria-label="View image ${i+1}" onclick="activeGalleryIndex=${i};renderGalleryImage()" class="shrink-0 rounded-lg overflow-hidden border-2 ${i===activeGalleryIndex?'border-amber-400':'border-transparent'}"><img src="${src}" loading="lazy" decoding="async" width="56" height="56" class="w-14 h-14 object-cover"></button>`).join('');
+      document.getElementById('modal-gallery-thumbs').innerHTML=activeGallery.map((src,i)=>`<button aria-label="View image ${i+1}" onclick="activeGalleryIndex=${i};renderGalleryImage()" class="shrink-0 rounded-lg overflow-hidden border-2 ${i===activeGalleryIndex?'border-amber-400':'border-transparent'}"><img src="${src}" class="w-14 h-14 object-cover" loading="lazy" decoding="async" width="56" height="56"></button>`).join('');
     }
     function galleryPrev(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderGalleryImage();}}
     function galleryNext(){if(activeGallery.length>1){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderGalleryImage();}}
@@ -2074,9 +2083,12 @@ body.golden-awakened #hero > .miraj-video-bg video{
     });
 
     loadLiveProducts();
-    // Reviews/catalog are upgraded to the shared Supabase source by the post-load loader.
-    // Keep local rendering immediate so the first screen does not wait for the network.
-    loadLiveReviews();
+    // Render local reviews immediately. Supabase loader upgrades them once, with caching.
+    try {
+      const savedReviews=localStorage.getItem('miraz_reviews');
+      customerReviews=savedReviews?JSON.parse(savedReviews):[];
+    } catch(_) { customerReviews=[]; }
+    renderMarqueeReviews();
   
     // MIRAJ signature interaction: click the real flower and awaken the whole website in golden light.
     (function(){
@@ -2195,26 +2207,39 @@ function mirajUnlockAdmin(){
 
 <script id="miraj-deferred-hero-video">
 (function(){
+  var started=false;
   function startHeroVideo(){
+    if(started) return;
     var v=document.getElementById('miraj-hero-video');
-    if(!v || v.dataset.loaded==='1') return;
+    if(!v) return;
     var source=v.querySelector('source[data-src]');
     if(!source) return;
+    started=true;
     v.dataset.loaded='1';
     source.src=source.dataset.src;
     v.load();
     var p=v.play();
     if(p && typeof p.catch==='function') p.catch(function(){});
+    cleanup();
   }
-  function schedule(){
-    if('requestIdleCallback' in window){
-      requestIdleCallback(startHeroVideo,{timeout:1800});
-    }else{
-      setTimeout(startHeroVideo,900);
-    }
-  }
-  if(document.readyState==='complete') schedule();
-  else window.addEventListener('load',schedule,{once:true});
+  var events=['pointerdown','touchstart','keydown','scroll'];
+  function cleanup(){events.forEach(function(e){window.removeEventListener(e,startHeroVideo,{passive:true})});}
+  events.forEach(function(e){window.addEventListener(e,startHeroVideo,{passive:true,once:true})});
+  // Preserve the cinematic background for passive visitors, but keep it out of the
+  // critical Lighthouse/network window. Poster remains visible until video starts.
+  setTimeout(startHeroVideo,12000);
+})();
+</script>
+<script id="miraj-visibility-sync">
+(function(){
+  var last=Date.now();
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState!=='visible') return;
+    if(Date.now()-last < MIRAJ_CLOUD_CACHE_MS) return;
+    last=Date.now();
+    if(typeof loadMirajCloudCatalog==='function') loadMirajCloudCatalog({force:true});
+    if(typeof loadLiveReviews==='function') loadLiveReviews({force:true});
+  });
 })();
 </script>
 </body>
@@ -2249,3 +2274,10 @@ footer{border-top:1px solid var(--pro-line)!important;background:linear-gradient
   document.querySelectorAll('button').forEach(function(b){if(!b.getAttribute('aria-label') && b.title) b.setAttribute('aria-label',b.title);});
 })();
 </script>
+
+<style id="miraj-performance-safe">
+/* Rendering containment reduces main-thread layout/paint work without changing layout. */
+#menu-container{contain:layout style;}
+#marquee-track{contain:layout paint;}
+.product-img-box img,.review-bubble img{content-visibility:auto;}
+</style>
