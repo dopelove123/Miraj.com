@@ -1046,10 +1046,16 @@ body.golden-awakened #hero > .miraj-video-bg video{
        This cuts Supabase egress (5 GB free limit) and mobile page weight.
        Set MIRAJ_IMG_PROXY=false to go back to direct Supabase URLs. */
     const MIRAJ_IMG_PROXY = true;
+    const MIRAJ_IMG_PROXY_CACHE = new Map();
     function mirajThumb(url, w){
       try{
         if(!MIRAJ_IMG_PROXY || typeof url!=="string" || url.indexOf(".supabase.co/storage/")===-1) return url;
-        return "https://wsrv.nl/?url="+encodeURIComponent(url)+"&w="+(w||640)+"&output=webp&q=75";
+        const width=w||640, key=url+"|"+width;
+        const cached=MIRAJ_IMG_PROXY_CACHE.get(key);
+        if(cached) return cached;
+        const out="https://wsrv.nl/?url="+encodeURIComponent(url)+"&w="+width+"&output=webp&q=75";
+        MIRAJ_IMG_PROXY_CACHE.set(key,out);
+        return out;
       }catch(_){ return url; }
     }
   </script>
@@ -1064,7 +1070,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
     let mirajReviewsRequest = null;
     /* EGRESS FIX: the catalog/reviews are cached in the browser (IndexedDB) for 30 min.
        Add ?fresh=1 to the URL, or log in as owner, to force a refresh. */
-    const MIRAJ_CLOUD_CACHE_MS = 30*60*1000;
+    const MIRAJ_CLOUD_CACHE_MS = 24*60*60*1000; // EGRESS SHIELD: one cloud read per 24h per browser unless admin forces refresh.
     const MIRAJ_REVIEWS_FIRST_PAGE = 24;
     const MIRAJ_FORCE_FRESH = /[?&]fresh=1/.test(location.search);
     let mirajReviewRows = [], mirajReviewsRestLoading = false, mirajReviewsObserver = null;
@@ -2422,12 +2428,12 @@ function mirajUnlockAdmin(){
 </script>
 <script id="miraj-visibility-sync">
 (function(){
-  /* EGRESS FIX: returning to the tab used to force-download the whole catalog and all
-     reviews again. The loaders now check the 30-minute cache themselves. */
+  /* EGRESS SHIELD: do not refetch Supabase when the tab becomes visible.
+     Catalog/reviews are loaded once on startup and cached for 24 hours.
+     Admin actions explicitly invalidate/refresh the cache. */
   document.addEventListener('visibilitychange',function(){
     if(document.visibilityState!=='visible') return;
-    if(typeof loadMirajCloudCatalog==='function') loadMirajCloudCatalog({force:false});
-    if(typeof loadLiveReviews==='function') loadLiveReviews({force:false});
+    // Intentionally no Supabase request here.
   });
 })();
 </script>
