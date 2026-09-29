@@ -1042,9 +1042,9 @@ body.golden-awakened #hero > .miraj-video-bg video{
     })();
   </script>
   <script>
-    /* Serve resized WebP copies of Supabase images through a caching image CDN.
-       This cuts Supabase egress (5 GB free limit) and mobile page weight.
-       Set MIRAJ_IMG_PROXY=false to go back to direct Supabase URLs. */
+    /* EGRESS-SAFE IMAGE DELIVERY: use Supabase's native image transform.
+       This avoids a third-party proxy and serves a smaller WebP image from Storage.
+       If a transformed URL fails, the <img> onerror handlers fall back to the original URL. */
     const MIRAJ_IMG_PROXY = true;
     const MIRAJ_IMG_PROXY_CACHE = new Map();
     function mirajThumb(url, w){
@@ -1053,7 +1053,10 @@ body.golden-awakened #hero > .miraj-video-bg video{
         const width=w||640, key=url+"|"+width;
         const cached=MIRAJ_IMG_PROXY_CACHE.get(key);
         if(cached) return cached;
-        const out="https://wsrv.nl/?url="+encodeURIComponent(url)+"&w="+width+"&output=webp&q=75";
+        const marker="/storage/v1/object/public/";
+        const i=url.indexOf(marker);
+        if(i===-1) return url;
+        const out=url.slice(0,i)+"/storage/v1/render/image/public/"+url.slice(i+marker.length)+"?width="+width+"&quality=75&format=webp";
         MIRAJ_IMG_PROXY_CACHE.set(key,out);
         return out;
       }catch(_){ return url; }
@@ -1160,7 +1163,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       if(!mirajSharedCatalogEnabled || !mirajSupabase) return;
       const force = !!options.force || MIRAJ_FORCE_FRESH;
       if(!force){
-        const cached = await mirajCacheGet("catalog");
+        const cached = await mirajCacheGet("catalog_v2");
         if(cached && Array.isArray(cached.rows) && (Date.now()-cached.t) < MIRAJ_CLOUD_CACHE_MS){
           if(!options.skipApply) mirajApplyCatalogRows(cached.rows);
           return; // zero network requests
@@ -1185,7 +1188,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           return;
         }
         mirajApplyCatalogRows(rows);
-        await mirajCacheSet("catalog",{t:Date.now(), rows});
+        await mirajCacheSet("catalog_v2",{t:Date.now(), rows});
         try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY, String(Date.now())); } catch(_) {}
       }catch(err){
         console.error("MIRAJ Supabase catalog sync error:", err);
@@ -1409,7 +1412,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       refreshCategoryFilters();
       renderMenu();
       const ok=await pushMirajCatalogToCloud();
-      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} try{ await mirajCacheDel("catalog"); }catch(_){} }
+      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} try{ await mirajCacheDel("catalog_v2"); }catch(_){} }
       return ok;
     }
 
@@ -1450,7 +1453,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           if(!data || data.length<PAGE) break;
         }
         mirajApplyReviewRows(mirajReviewRows);
-        await mirajCacheSet("reviews",{t:Date.now(), rows:mirajReviewRows, complete:true});
+        await mirajCacheSet("reviews_v2",{t:Date.now(), rows:mirajReviewRows, complete:true});
       }catch(err){ console.error("MIRAJ reviews lazy load error:", err); }
       finally{ mirajReviewsRestLoading = false; }
     }
@@ -1459,7 +1462,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
       if (mirajSharedCatalogEnabled && mirajSupabase) {
         const force = !!options.force || MIRAJ_FORCE_FRESH;
         if(!force){
-          const cached = await mirajCacheGet("reviews");
+          const cached = await mirajCacheGet("reviews_v2");
           if(cached && Array.isArray(cached.rows) && (Date.now()-cached.t) < MIRAJ_CLOUD_CACHE_MS){
             mirajReviewRows = cached.rows; mirajApplyReviewRows(cached.rows); mirajReviewsCloudStatus(true);
             if(!cached.complete) mirajWatchReviewsForRest();
@@ -1476,7 +1479,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           mirajApplyReviewRows(mirajReviewRows);
           mirajReviewsCloudStatus(true);
           const complete = mirajReviewRows.length < MIRAJ_REVIEWS_FIRST_PAGE;
-          await mirajCacheSet("reviews",{t:Date.now(), rows:mirajReviewRows, complete});
+          await mirajCacheSet("reviews_v2",{t:Date.now(), rows:mirajReviewRows, complete});
           try { localStorage.setItem(MIRAJ_REVIEWS_TS_KEY,String(Date.now())); } catch(_) {}
           if(!complete){ mirajReviewsObserver && mirajReviewsObserver.disconnect(); mirajReviewsObserver=null; mirajWatchReviewsForRest(); }
           return;
@@ -2123,7 +2126,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           }catch(e){ failed++; console.error("MIRAJ migration review failed:",row.id,e); }
         }
         if(!failed){ try{ localStorage.setItem("miraj_storage_migration_v1","done"); }catch(_){} }
-        await mirajCacheDel("catalog"); await mirajCacheDel("reviews");
+        await mirajCacheDel("catalog_v2"); await mirajCacheDel("reviews_v2");
         await loadMirajCloudCatalog({force:true}); await loadLiveReviews({force:true});
         alert("Photo storage cleanup finished.\nProducts moved: "+okP+"/"+prod.length+"\nReview photos moved: "+okR+"/"+rev.length+(failed?"\nSome items failed (see console); they were left unchanged and will retry next login.":"\nNothing was deleted. A backup file was downloaded.")+"\nYour Supabase egress will now stop growing.");
       }catch(err){
@@ -2244,7 +2247,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           mirajCloudStatus("Deleting product online…");
           const {error} = await mirajSupabase.from("products").delete().eq("id", targetId);
           if(error) throw error;
-          try{ await mirajCacheDel("catalog"); }catch(_){}
+          try{ await mirajCacheDel("catalog_v2"); }catch(_){}
         }
 
         menuItems = old.filter(item => String(item.id) !== targetId);
@@ -2428,12 +2431,11 @@ function mirajUnlockAdmin(){
 </script>
 <script id="miraj-visibility-sync">
 (function(){
-  /* EGRESS SHIELD: do not refetch Supabase when the tab becomes visible.
-     Catalog/reviews are loaded once on startup and cached for 24 hours.
-     Admin actions explicitly invalidate/refresh the cache. */
+  /* EGRESS FIX: returning to the tab used to force-download the whole catalog and all
+     reviews again. The loaders now check the 30-minute cache themselves. */
   document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState!=='visible') return;
-    // Intentionally no Supabase request here.
+    // Intentionally no Supabase request here. Catalog/reviews are cached and
+    // refreshed only on startup when stale or after an explicit admin change.
   });
 })();
 </script>
