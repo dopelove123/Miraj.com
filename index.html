@@ -1062,12 +1062,51 @@ body.golden-awakened #hero > .miraj-video-bg video{
     let mirajSharedCatalogEnabled = false;
     let mirajCatalogRequest = null;
     let mirajReviewsRequest = null;
-    const MIRAJ_CLOUD_CACHE_MS = 60000;
+    /* EGRESS FIX: the catalog/reviews are cached in the browser (IndexedDB) for 30 min.
+       Add ?fresh=1 to the URL, or log in as owner, to force a refresh. */
+    const MIRAJ_CLOUD_CACHE_MS = 30*60*1000;
+    const MIRAJ_REVIEWS_FIRST_PAGE = 24;
+    const MIRAJ_FORCE_FRESH = /[?&]fresh=1/.test(location.search);
+    let mirajReviewRows = [], mirajReviewsRestLoading = false, mirajReviewsObserver = null;
+    const mirajDbPromise = new Promise(res=>{
+      try{
+        const r = indexedDB.open("miraj-cache",1);
+        r.onupgradeneeded = ()=>r.result.createObjectStore("kv");
+        r.onsuccess = ()=>res(r.result);
+        r.onerror = r.onblocked = ()=>res(null);
+      }catch(_){ res(null); }
+    });
+    async function mirajCacheGet(key){
+      const db = await mirajDbPromise; if(!db) return null;
+      return new Promise(res=>{ try{ const q=db.transaction("kv","readonly").objectStore("kv").get(key); q.onsuccess=()=>res(q.result||null); q.onerror=()=>res(null); }catch(_){res(null)} });
+    }
+    async function mirajCacheSet(key,val){
+      const db = await mirajDbPromise; if(!db) return;
+      return new Promise(res=>{ try{ const tx=db.transaction("kv","readwrite"); tx.objectStore("kv").put(val,key); tx.oncomplete=tx.onerror=tx.onabort=()=>res(); }catch(_){res()} });
+    }
+    async function mirajCacheDel(key){
+      const db = await mirajDbPromise; if(!db) return;
+      return new Promise(res=>{ try{ const tx=db.transaction("kv","readwrite"); tx.objectStore("kv").delete(key); tx.oncomplete=tx.onerror=tx.onabort=()=>res(); }catch(_){res()} });
+    }
+    /* Fetch a table in small pages so one request can never become a giant response. */
+    async function mirajFetchPages(table, cols, build, pageSize, maxPages){
+      let all = [];
+      for(let p=0;p<(maxPages||20);p++){
+        let q = mirajSupabase.from(table).select(cols);
+        q = build(q).range(p*pageSize,(p+1)*pageSize-1);
+        const {data,error} = await q;
+        if(error) throw error;
+        all = all.concat(data||[]);
+        if(!data || data.length<pageSize) break;
+      }
+      return all;
+    }
     const MIRAJ_CATALOG_TS_KEY = "miraz_catalog_cloud_ts";
     const MIRAJ_REVIEWS_TS_KEY = "miraz_reviews_cloud_ts";
 
     function initMirajSharedCatalog(){
       try{
+        if(mirajSupabase) return; // never initialise (or fetch) twice
         if(!window.supabase || !MIRAJ_SUPABASE_URL || !MIRAJ_SUPABASE_KEY){
           console.warn("MIRAJ Supabase is not configured. Using local catalog.");
           return;
@@ -1098,20 +1137,37 @@ body.golden-awakened #hero > .miraj-video-bg video{
       }));
     }
 
+    function mirajApplyCatalogRows(rows){
+      menuItems = mirajRowsToItems(rows);
+      // Lightweight offline fallback only (never store large image data locally).
+      try {
+        const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
+        localStorage.setItem("miraz_products", JSON.stringify(slim));
+      } catch(storageErr) {
+        try { localStorage.removeItem("miraz_products"); } catch(_) {}
+      }
+      refreshCategoryFilters(); renderMenu();
+      if(typeof renderAdminList === "function") renderAdminList();
+    }
+
     async function loadMirajCloudCatalog(options={}){
       if(!mirajSharedCatalogEnabled || !mirajSupabase) return;
-      const force = !!options.force;
-      const now = Date.now();
-      let cachedAt = 0;
-      try { cachedAt = Number(localStorage.getItem(MIRAJ_CATALOG_TS_KEY) || 0); } catch(_) {}
-      if(!force && cachedAt && (now - cachedAt) < MIRAJ_CLOUD_CACHE_MS) return;
+      const force = !!options.force || MIRAJ_FORCE_FRESH;
+      if(!force){
+        const cached = await mirajCacheGet("catalog");
+        if(cached && Array.isArray(cached.rows) && (Date.now()-cached.t) < MIRAJ_CLOUD_CACHE_MS){
+          if(!options.skipApply) mirajApplyCatalogRows(cached.rows);
+          return; // zero network requests
+        }
+      }
       if(mirajCatalogRequest) return mirajCatalogRequest;
       mirajCatalogRequest = (async()=>{
       try{
-        const { data, error } = await mirajSupabase.from("products").select("id,name,price,description,category,images,created_at").order("created_at", {ascending:false});
-        if(error) throw error;
-        const meta = (data || []).some(r => String(r.id) === "_meta");
-        const rows = (data || []).filter(r => String(r.id) !== "_meta");
+        // Only the columns the page needs, in pages of 100 rows.
+        const data = await mirajFetchPages("products","id,name,price,description,category,images",
+          q=>q.order("created_at",{ascending:false}).order("id",{ascending:true}),100,20);
+        const meta = data.some(r => String(r.id) === "_meta");
+        const rows = data.filter(r => String(r.id) !== "_meta");
         if(!rows.length && !meta){
           // First setup: publish the catalog that already exists in this browser once.
           const seed = (menuItems || []).map(item => mirajItemToRow(item));
@@ -1122,19 +1178,8 @@ body.golden-awakened #hero > .miraj-video-bg video{
           await mirajSupabase.from("products").upsert([{id:"_meta", name:"MIRAJ_CATALOG_META", price:0, description:"initialized", category:"_meta", images:[]}], {onConflict:"id"});
           return;
         }
-        menuItems = mirajRowsToItems(rows);
-        // Cloud is the source of truth. Do not copy the full catalog (which may
-        // contain large image data) into localStorage; browsers have small quotas.
-        // Keep only a lightweight offline fallback when it fits.
-        try {
-          const slim = menuItems.map(item => ({...item, images: Array.isArray(item.images) ? item.images.filter(u => typeof u === "string" && !u.startsWith("data:")) : [], img: (typeof item.img === "string" && !item.img.startsWith("data:")) ? item.img : "images/mini-album.jpg"}));
-          localStorage.setItem("miraz_products", JSON.stringify(slim));
-        } catch(storageErr) {
-          console.warn("MIRAJ local fallback storage skipped:", storageErr);
-          try { localStorage.removeItem("miraz_products"); } catch(_) {}
-        }
-        refreshCategoryFilters(); renderMenu();
-        if(typeof renderAdminList === "function") renderAdminList();
+        mirajApplyCatalogRows(rows);
+        await mirajCacheSet("catalog",{t:Date.now(), rows});
         try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY, String(Date.now())); } catch(_) {}
       }catch(err){
         console.error("MIRAJ Supabase catalog sync error:", err);
@@ -1151,8 +1196,31 @@ body.golden-awakened #hero > .miraj-video-bg video{
       return {id:String(item.id), name:item.name || "", price:Number(item.price || 0), description:item.desc || item.description || "", category:item.category || "", images:imgs};
     }
 
+    async function mirajDataUrlToFile(dataUrl,name){
+      const res = await fetch(dataUrl); const blob = await res.blob();
+      return new File([blob], name, {type: blob.type || "image/jpeg"});
+    }
+    async function mirajUploadDataUrl(dataUrl, folder, idx){
+      const f = await mirajOptimizeImageFile(await mirajDataUrlToFile(dataUrl, "photo-"+idx+".jpg"), 1100, .78);
+      const ext = (f.name.match(/\.([a-z0-9]+)$/i)||[,"jpg"])[1].toLowerCase();
+      const path = folder+"/"+Date.now()+"-"+idx+"-"+Math.random().toString(36).slice(2,7)+"."+ext;
+      const {error} = await mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).upload(path,f,{contentType:f.type||"image/webp",cacheControl:"31536000",upsert:false});
+      if(error) throw error;
+      return mirajSupabase.storage.from(MIRAJ_SUPABASE_BUCKET).getPublicUrl(path).data.publicUrl;
+    }
     async function pushMirajCatalogToCloud(){
       if(!mirajSharedCatalogEnabled || !mirajSupabase) return false;
+      // Permanent guard: base64 photos are moved to Storage; the database only ever gets URLs.
+      for(const item of menuItems){
+        const imgs = Array.isArray(item.images) ? item.images : (item.img ? [item.img] : []);
+        if(imgs.some(u => typeof u==="string" && u.startsWith("data:"))){
+          const out=[]; 
+          for(let i=0;i<imgs.length;i++){
+            out.push((typeof imgs[i]==="string" && imgs[i].startsWith("data:")) ? await mirajUploadDataUrl(imgs[i],"products/"+item.id,i) : imgs[i]);
+          }
+          item.images = out; item.img = out[0] || item.img;
+        }
+      }
       const rows = menuItems.map(mirajItemToRow);
       const {error} = await mirajSupabase.from("products").upsert(rows, {onConflict:"id"});
       if(error){ console.error("MIRAJ catalog save failed:", error); mirajCloudStatus("⚠ Product save failed: "+error.message, false); return false; }
@@ -1335,38 +1403,76 @@ body.golden-awakened #hero > .miraj-video-bg video{
       refreshCategoryFilters();
       renderMenu();
       const ok=await pushMirajCatalogToCloud();
-      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} }
+      if(ok){ try { localStorage.setItem(MIRAJ_CATALOG_TS_KEY,String(Date.now())); } catch(_) {} try{ await mirajCacheDel("catalog"); }catch(_){} }
       return ok;
+    }
+
+    function mirajApplyReviewRows(rows){
+      customerReviews = (rows || []).map(r => ({
+        id: String(r.id),
+        name: r.name || "Customer",
+        location: r.location || "",
+        rating: Math.max(1, Math.min(5, Number(r.rating || 5))),
+        date: r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {day:"numeric", month:"short", year:"numeric"}) : "Recent",
+        comment: r.review || "",
+        photo: r.image || null,
+        fallbackPhoto: null
+      }));
+      renderMarqueeReviews();
+    }
+    const MIRAJ_REVIEW_COLS = "id,name,location,rating,review,image,created_at";
+    /* Older reviews are fetched lazily, only when the visitor scrolls to the reviews section. */
+    function mirajWatchReviewsForRest(){
+      if(mirajReviewsObserver) return;
+      const sec = document.getElementById("reviews");
+      if(!sec || !("IntersectionObserver" in window)){ mirajLoadRemainingReviews(); return; }
+      mirajReviewsObserver = new IntersectionObserver(entries=>{
+        if(entries.some(e=>e.isIntersecting)){ mirajReviewsObserver.disconnect(); mirajLoadRemainingReviews(); }
+      },{rootMargin:"400px 0px"});
+      mirajReviewsObserver.observe(sec);
+    }
+    async function mirajLoadRemainingReviews(){
+      if(mirajReviewsRestLoading || !mirajSupabase) return;
+      mirajReviewsRestLoading = true;
+      try{
+        const PAGE = 50;
+        for(let i=0;i<8;i++){
+          const from = mirajReviewRows.length;
+          const {data,error} = await mirajSupabase.from("reviews").select(MIRAJ_REVIEW_COLS).order("created_at",{ascending:false}).order("id",{ascending:true}).range(from,from+PAGE-1);
+          if(error) throw error;
+          mirajReviewRows = mirajReviewRows.concat(data||[]);
+          if(!data || data.length<PAGE) break;
+        }
+        mirajApplyReviewRows(mirajReviewRows);
+        await mirajCacheSet("reviews",{t:Date.now(), rows:mirajReviewRows, complete:true});
+      }catch(err){ console.error("MIRAJ reviews lazy load error:", err); }
+      finally{ mirajReviewsRestLoading = false; }
     }
 
     async function loadLiveReviews(options={}) {
       if (mirajSharedCatalogEnabled && mirajSupabase) {
-        const force=!!options.force;
-        const now=Date.now();
-        let cachedAt=0;
-        try { cachedAt=Number(localStorage.getItem(MIRAJ_REVIEWS_TS_KEY)||0); } catch(_) {}
-        if(!force && cachedAt && (now-cachedAt)<MIRAJ_CLOUD_CACHE_MS) return;
+        const force = !!options.force || MIRAJ_FORCE_FRESH;
+        if(!force){
+          const cached = await mirajCacheGet("reviews");
+          if(cached && Array.isArray(cached.rows) && (Date.now()-cached.t) < MIRAJ_CLOUD_CACHE_MS){
+            mirajReviewRows = cached.rows; mirajApplyReviewRows(cached.rows); mirajReviewsCloudStatus(true);
+            if(!cached.complete) mirajWatchReviewsForRest();
+            return; // zero network requests
+          }
+        }
         if(mirajReviewsRequest) return mirajReviewsRequest;
         mirajReviewsRequest=(async()=>{
         try {
-          const { data, error } = await mirajSupabase
-            .from("reviews")
-            .select("id,name,location,rating,review,image,created_at")
-            .order("created_at", { ascending: false });
+          const { data, error } = await mirajSupabase.from("reviews").select(MIRAJ_REVIEW_COLS)
+            .order("created_at", { ascending: false }).order("id",{ascending:true}).range(0, MIRAJ_REVIEWS_FIRST_PAGE-1);
           if (error) throw error;
-          customerReviews = (data || []).map(r => ({
-            id: String(r.id),
-            name: r.name || "Customer",
-            location: r.location || "",
-            rating: Math.max(1, Math.min(5, Number(r.rating || 5))),
-            date: r.created_at ? new Date(r.created_at).toLocaleDateString(undefined, {day:"numeric", month:"short", year:"numeric"}) : "Recent",
-            comment: r.review || "",
-            photo: r.image || null,
-            fallbackPhoto: null
-          }));
-          renderMarqueeReviews();
+          mirajReviewRows = data || [];
+          mirajApplyReviewRows(mirajReviewRows);
           mirajReviewsCloudStatus(true);
+          const complete = mirajReviewRows.length < MIRAJ_REVIEWS_FIRST_PAGE;
+          await mirajCacheSet("reviews",{t:Date.now(), rows:mirajReviewRows, complete});
           try { localStorage.setItem(MIRAJ_REVIEWS_TS_KEY,String(Date.now())); } catch(_) {}
+          if(!complete){ mirajReviewsObserver && mirajReviewsObserver.disconnect(); mirajReviewsObserver=null; mirajWatchReviewsForRest(); }
           return;
         } catch (err) {
           console.error("MIRAJ reviews sync error:", err);
@@ -1957,8 +2063,74 @@ body.golden-awakened #hero > .miraj-video-bg video{
       }
     }
     function closeAdminModal(){document.getElementById('admin-modal').classList.add('hidden');}
+    /* One-time, non-destructive cleanup: legacy base64 photos stored inside database rows are
+       copied to Supabase Storage and replaced by their URL. Rows are never deleted, and a JSON
+       backup of every affected row is downloaded first. Runs automatically after owner login. */
+    async function mirajMigrateLegacyImages(){
+      if(!mirajSupabase || !mirajOwnerSession || window.__mirajMigrating) return;
+      try{ if(localStorage.getItem("miraj_storage_migration_v1")==="done") return; }catch(_){}
+      window.__mirajMigrating = true;
+      const isData = u => typeof u==="string" && u.startsWith("data:");
+      try{
+        mirajCloudStatus("Checking photo storage…");
+        const prod=[], rev=[]; const PAGE=10;
+        for(let p=0;p<100;p++){
+          const {data,error}=await mirajSupabase.from("products").select("id,images").order("id",{ascending:true}).range(p*PAGE,(p+1)*PAGE-1);
+          if(error) throw error;
+          (data||[]).forEach(r=>{ const a=Array.isArray(r.images)?r.images:(r.images?[r.images]:[]); if(a.some(isData)) prod.push({id:r.id,images:a}); });
+          if(!data||data.length<PAGE) break;
+        }
+        for(let p=0;p<100;p++){
+          const {data,error}=await mirajSupabase.from("reviews").select("id,image").order("id",{ascending:true}).range(p*PAGE,(p+1)*PAGE-1);
+          if(error) throw error;
+          (data||[]).forEach(r=>{ if(isData(r.image)) rev.push({id:r.id,image:r.image}); });
+          if(!data||data.length<PAGE) break;
+        }
+        if(!prod.length && !rev.length){
+          try{ localStorage.setItem("miraj_storage_migration_v1","done"); }catch(_){}
+          mirajCloudStatus("✓ Photo storage is already optimized.");
+          return;
+        }
+        // Backup first (nothing is deleted anywhere).
+        try{
+          const blob=new Blob([JSON.stringify({products:prod,reviews:rev},null,1)],{type:"application/json"});
+          const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="miraj-photo-backup-"+Date.now()+".json";
+          document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+        }catch(_){}
+        let okP=0, okR=0, failed=0;
+        for(const row of prod){
+          try{
+            mirajCloudStatus("Moving product photos to Storage… "+(okP+1)+"/"+prod.length);
+            const out=[]; for(let i=0;i<row.images.length;i++) out.push(isData(row.images[i]) ? await mirajUploadDataUrl(row.images[i],"products/"+row.id,i) : row.images[i]);
+            const {data,error}=await mirajSupabase.from("products").update({images:out}).eq("id",row.id).select("id");
+            if(error || !data || !data.length) throw (error || new Error("no permission to update product "+row.id));
+            okP++;
+          }catch(e){ failed++; console.error("MIRAJ migration product failed:",row.id,e); }
+        }
+        for(const row of rev){
+          try{
+            mirajCloudStatus("Moving review photos to Storage… "+(okR+1)+"/"+rev.length);
+            const url=await mirajUploadDataUrl(row.image,"reviews/"+row.id,0);
+            const {data,error}=await mirajSupabase.from("reviews").update({image:url}).eq("id",row.id).select("id");
+            if(error || !data || !data.length) throw (error || new Error("no permission to update review "+row.id));
+            okR++;
+          }catch(e){ failed++; console.error("MIRAJ migration review failed:",row.id,e); }
+        }
+        if(!failed){ try{ localStorage.setItem("miraj_storage_migration_v1","done"); }catch(_){} }
+        await mirajCacheDel("catalog"); await mirajCacheDel("reviews");
+        await loadMirajCloudCatalog({force:true}); await loadLiveReviews({force:true});
+        alert("Photo storage cleanup finished.\nProducts moved: "+okP+"/"+prod.length+"\nReview photos moved: "+okR+"/"+rev.length+(failed?"\nSome items failed (see console); they were left unchanged and will retry next login.":"\nNothing was deleted. A backup file was downloaded.")+"\nYour Supabase egress will now stop growing.");
+      }catch(err){
+        console.error("MIRAJ migration error:",err);
+        mirajCloudStatus("⚠ Photo cleanup could not finish: "+(err.message||err),false);
+      }finally{ window.__mirajMigrating=false; }
+    }
+    window.mirajMigrateLegacyImages = mirajMigrateLegacyImages;
+
     function showOwnerDashboard(session){
       mirajOwnerSession=session;
+      /* Owner always works on fresh data, then the one-time cleanup runs. */
+      Promise.resolve().then(()=>loadMirajCloudCatalog({force:true})).then(()=>mirajMigrateLegacyImages()).catch(()=>{});
       document.getElementById('admin-auth-box').classList.add('hidden');
       document.getElementById('admin-dashboard-box').classList.remove('hidden');
       renderAdminList();
@@ -2066,6 +2238,7 @@ body.golden-awakened #hero > .miraj-video-bg video{
           mirajCloudStatus("Deleting product online…");
           const {error} = await mirajSupabase.from("products").delete().eq("id", targetId);
           if(error) throw error;
+          try{ await mirajCacheDel("catalog"); }catch(_){}
         }
 
         menuItems = old.filter(item => String(item.id) !== targetId);
@@ -2249,13 +2422,12 @@ function mirajUnlockAdmin(){
 </script>
 <script id="miraj-visibility-sync">
 (function(){
-  var last=Date.now();
+  /* EGRESS FIX: returning to the tab used to force-download the whole catalog and all
+     reviews again. The loaders now check the 30-minute cache themselves. */
   document.addEventListener('visibilitychange',function(){
     if(document.visibilityState!=='visible') return;
-    if(Date.now()-last < MIRAJ_CLOUD_CACHE_MS) return;
-    last=Date.now();
-    if(typeof loadMirajCloudCatalog==='function') loadMirajCloudCatalog({force:true});
-    if(typeof loadLiveReviews==='function') loadLiveReviews({force:true});
+    if(typeof loadMirajCloudCatalog==='function') loadMirajCloudCatalog({force:false});
+    if(typeof loadLiveReviews==='function') loadLiveReviews({force:false});
   });
 })();
 </script>
